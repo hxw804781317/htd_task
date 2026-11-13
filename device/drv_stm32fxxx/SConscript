@@ -1,0 +1,44 @@
+# for module compiling
+import os
+from building import *
+import rtconfig
+
+# get current dir path
+cwd = GetCurrentDir()
+
+list = os.listdir(cwd)
+objs = []
+
+# init src and inc vars
+src = []
+inc = [cwd]
+
+if GetDepend('SOC_SERIES_STM32F0'):
+    src = src + Glob('./*.c')
+    src += Glob('./stm32f0/*.c');
+    inc += [cwd + '/stm32f0'];
+elif GetDepend('SOC_SERIES_STM32F1'):
+    src = src + Glob('./*.c')
+    src += Glob('./stm32f1/*.c');
+    inc += [cwd + '/stm32f1'];
+elif GetDepend('SOC_SERIES_STM32F2'):
+    src = src + Glob('./*.c')
+    src += Glob('./stm32f2/*.c');
+    inc += [cwd + '/stm32f2'];
+elif GetDepend('SOC_SERIES_STM32F3'):
+    src = src + Glob('./*.c')
+    src += Glob('./stm32f3/*.c');
+    inc += [cwd + '/stm32f3'];
+elif GetDepend('SOC_SERIES_STM32F4'):
+    src = src + Glob('./*.c')
+    src += Glob('./stm32f4/*.c');
+    inc += [cwd + '/stm32f4'];
+elif GetDepend('SOC_SERIES_STM32F7'):
+    src = src + Glob('./*.c')
+    src += Glob('./stm32f7/*.c');
+    inc += [cwd + '/stm32f7'];
+else:
+    Return('objs')
+    
+objs = DefineGroup('htd_device', src, depend = [], CPPPATH = inc, LOCAL_CCFLAGS = '')            
+Return('objs')
