@@ -1,7 +1,7 @@
 menu "components config"
-    #source "$SDK_DIR/components/htd_boot/Kconfig"
-    source "$SDK_DIR/components/htd_console/Kconfig"
-    #source "$SDK_DIR/components/htd_button/Kconfig"
-    #source "$SDK_DIR/components/htd_led/Kconfig"
-    #source "$SDK_DIR/components/htd_vfs/Kconfig"
+    #rsource "./htd_boot/Kconfig"
+    rsource "./htd_console/Kconfig"
+    #rsource "./htd_button/Kconfig"
+    #rsource "./htd_led/Kconfig"
+    #rsource "./htd_vfs/Kconfig"
 endmenu

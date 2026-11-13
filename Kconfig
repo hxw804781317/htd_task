@@ -1,0 +1,2 @@
+rsource "./task/Kconfig"
+rsource "./components/Kconfig"

@@ -1,0 +1,38 @@
+mainmenu "Configuration"
+
+config BSP_DIR
+    string
+    option env="BSP_ROOT"
+    default "."
+
+config SDK_DIR
+    string
+    option env="SDK_ROOT"
+    default "../.."
+    
+config PKGS_DIR
+    string
+    option env="PKGS_ROOT"
+    default "packages"
+
+config SOC_FAMILY_STM32
+    bool 
+    default n
+config SOC_SERIES_STM32F1
+    bool
+    default n
+config SOC_SERIES_STM32F103XX
+    bool
+    default n
+    
+config SOC_STM32F103XB
+    bool
+    select SOC_FAMILY_STM32
+    select SOC_SERIES_STM32F1
+    select SOC_SERIES_STM32F103XX
+    select ARCH_ARM_CORTEX_M3
+    default y
+
+rsource "../../../Kconfig"
+rsource "../../../mcu_sdk/stm32fxxx/stm32f103.Kconfig"
+

@@ -1,0 +1,27 @@
+# for module compiling
+import os
+from building import *
+
+# get current dir path
+cwd = GetCurrentDir()
+objs = []
+
+# init src and inc vars
+src = []
+inc = [cwd]
+
+src += Glob('./task/common/*.c')
+src += Glob('./task/memheap/*.c')
+src += Glob('./task/*.c')
+
+inc += [cwd + '/task/common']
+inc += [cwd + '/task/memheap']
+inc += [cwd + '/task']
+objs = DefineGroup('htd_task', src, depend = [''], CPPPATH = inc, LOCAL_CCFLAGS = '')
+
+list = os.listdir(cwd)
+for d in list:
+    path = os.path.join(cwd, d)
+    if os.path.isfile(os.path.join(path, 'SConscript')):
+        objs = objs + SConscript(os.path.join(d, 'SConscript')) 
+Return('objs')
