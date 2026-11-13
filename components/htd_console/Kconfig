@@ -1,0 +1,26 @@
+menuconfig HTD_CONSOLE_ENABLE
+    bool "htd console command enable."
+    default y
+    if HTD_CONSOLE_ENABLE
+        config HTD_CONSOLE_NAME
+            string "The console name"
+            default "htd"
+			        
+        config HTD_CONSOLE_SUPPORT_CMD
+            bool "support command input."
+            default y
+        config HTD_CONSOLE_SUPPORT_CMD_HISTORY
+            depends on HTD_CONSOLE_SUPPORT_CMD
+            bool "support command history"
+            default y
+        config HTD_CONSOLE_HISTORY_LINES
+            depends on HTD_CONSOLE_SUPPORT_CMD_HISTORY
+            int "The command history line number"
+            range 3 32
+            default 5
+        config HTD_CONSOLE_CMD_SIZE
+            depends on HTD_CONSOLE_SUPPORT_CMD_HISTORY
+            int "The command line size for shell"
+            range 32 256
+            default 48
+    endif

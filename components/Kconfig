@@ -1,0 +1,7 @@
+menu "components config"
+    #source "$SDK_DIR/components/htd_boot/Kconfig"
+    source "$SDK_DIR/components/htd_console/Kconfig"
+    #source "$SDK_DIR/components/htd_button/Kconfig"
+    #source "$SDK_DIR/components/htd_led/Kconfig"
+    #source "$SDK_DIR/components/htd_vfs/Kconfig"
+endmenu
