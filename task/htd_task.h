@@ -20,6 +20,7 @@
 #include "htd_bitmap.h"
 #include "htd_time.h"
 #include "htd_printf_fmt.h"
+#include "htd_tlv.h"
 
 #include "htd_task_port.h"
 #include "htd_task_sch.h"
