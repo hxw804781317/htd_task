@@ -1,4 +1,3 @@
-# for module compiling
 import os
 from building import *
 
@@ -10,13 +9,9 @@ objs = []
 src = []
 inc = [cwd]
 
-# 使用 SDK 自己附带的 freeRTOS
-if GetDepend('USE_SDK_FREERTOS'):
-    Return('objs');
-
-if GetDepend('USE_FREERTOS_V1051'):
-    src = src + Glob('./*.c')
-    inc += [cwd + '/include']    
+if GetDepend('HTD_LIB_USE_SEGGER_RTT') and GetDepend('USE_FREERTOS_V1051'):
+    src += Glob('./*.c')
+    inc += [cwd + '/include']
     objs = DefineGroup('FreeRTOS', src, depend = [''], CPPPATH = inc, LOCAL_CCFLAGS = '')
     list = os.listdir(cwd)
     for d in list:

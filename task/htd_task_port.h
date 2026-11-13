@@ -33,8 +33,6 @@ extern "C" {
     //#define HTD_MEM_USE_BYTELOOP                    1
     // printf是否支持浮点数，默认不支持
     //#define HTD_PRINTF_SUPPORT_FLOAT                1
-    // 是否使用 SEGGER-RTT
-    //#define LIB_SEGGER_RTT_ENABLE                   1
     // 是否为正式版本，默认为调试版本，打开后，所有 ASSERT 定义为空
     //#define VER_RELEASE                             1
 #endif
