@@ -1,0 +1,20 @@
+import rtconfig
+Import('RTT_ROOT')
+from building import *
+
+# get current directory
+cwd = GetCurrentDir()
+src = [];
+
+src += Glob('./STM32F4xx_HAL_Driver/Src/*.c');
+src += Glob('./CMSIS/Device/ST/stm32f4xx/Source/Templates/system_stm32f4xx.c');
+path = [cwd + '/CMSIS/Device/ST/stm32f4xx/Include', cwd + '/STM32F4xx_HAL_Driver/Inc'];
+path += [cwd + '/CMSIS/Include']
+
+CPPDEFINES = ['USE_HAL_DRIVER', 'USE_FULL_LL_DRIVER']
+group = DefineGroup('stm32_sdk', src, depend = ['SOC_SERIES_STM32F4'], CPPPATH = path, CPPDEFINES = CPPDEFINES)
+list = os.listdir(cwd)
+for item in list:
+    if os.path.isfile(os.path.join(cwd, item, 'SConscript')):
+        group = group + SConscript(os.path.join(item, 'SConscript'))
+Return('group')
