@@ -1,0 +1,20 @@
+menuconfig HTD_LED_ENABLE
+    bool "htd led enable."
+    default n
+    if HTD_LED_ENABLE
+        config HTD_LED_SUPPORT_CHARLIE
+            bool "support charlie-led."
+            default n
+        
+        config HTD_LED_SUPPORT_MATRIX
+            bool "support matrix-led."
+            default n
+			
+		config HTD_LED_USE_HW_TIMER
+            bool "led use hw-timer"
+            default n
+		config HTD_LED_HW_TIMER_NAME
+			depends on HTD_LED_USE_HW_TIMER
+			string "led hw-timer name"
+			default "timer1"
+    endif
