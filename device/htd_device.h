@@ -1,6 +1,15 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #ifndef _HTD_DEVICE_H_
 #define _HTD_DEVICE_H_
 
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdarg.h>
 #include "htd_task.h"
 
 #ifdef __cplusplus
@@ -103,7 +112,7 @@ void htd_dev_evt_broadcast(htd_dev_evt_t evt, void* p_param, uint32_t param_len)
 #include "htd_dev_crc.h"
 #include "htd_dev_delay.h"
 #include "htd_dev_gpio.h"
-#include "htd_dev_info.h"
+#include "htd_dev_info.h" 
 #include "htd_dev_i2cm.h"
 #include "htd_dev_adc.h"
 #include "htd_dev_inflash.h"

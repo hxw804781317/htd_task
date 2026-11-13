@@ -1,9 +1,10 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #ifndef _HTD_DEV_GPIO_H_
 #define _HTD_DEV_GPIO_H_
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "htd_config.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -29,8 +30,8 @@ extern "C" {
     #define PORT_P                  (0x0eU)
     #define PORT_Z                  (0x0fU)
     #define PORT_IDX_GET(Port)      CONCAT_2(PORT_, Port)
-    typedef uint16_t pin_num_t;
-    #define PIN_NUM_INVALID         0xffff
+    typedef uint8_t pin_num_t;
+    #define PIN_NUM_INVALID         0xff
     #define PIN_NUM_GET(Port, Pin)  ((PORT_IDX_GET(Port)<<4) | ((Pin)&0x0f))
     
 #elif defined(SOC_FAMILY_HC32)

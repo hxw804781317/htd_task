@@ -8,7 +8,7 @@
 #define ALIGNED_LEN         sizeof(uintptr_t)
 
 // @brief memset
-void *htd_memset(void *s, int c, size_t count)
+void *__htd_memset(void *s, int c, size_t count)
 {
 #if HTD_MEM_USE_BYTELOOP
     uint8_t* p_dst = s;
@@ -67,7 +67,7 @@ void *htd_memset(void *s, int c, size_t count)
 }
 
 // @brief 内存拷贝 memcpy
-void *htd_memcpy(void *dst, const void *src, size_t count)
+void *__htd_memcpy(void *dst, const void *src, size_t count)
 {
 #if HTD_MEM_USE_BYTELOOP
     uint8_t* p_dst = dst;
@@ -117,7 +117,7 @@ void *htd_memcpy(void *dst, const void *src, size_t count)
 }
 
 // @brief memmove
-void *htd_memmove(void *dst, const void *src, size_t n)
+void *__htd_memmove(void *dst, const void *src, size_t n)
 {
     char *p_dst = (char*)dst;
     char *p_src = (char*)src;
@@ -133,7 +133,7 @@ void *htd_memmove(void *dst, const void *src, size_t n)
 }
 
 // @brief 内存比较
-int32_t htd_memcmp(const void *v1, const void *v2, size_t n)
+int32_t __htd_memcmp(const void *v1, const void *v2, size_t n)
 {
     const uint8_t *p1 = v1;
     const uint8_t *p2 = v2;
@@ -147,7 +147,7 @@ int32_t htd_memcmp(const void *v1, const void *v2, size_t n)
 }
 
 // @brief 获取字符串长度 strlen
-size_t htd_strlen(const char *p_str)
+size_t __htd_strlen(const char *p_str)
 {
     const char *p_start = p_str;
     while (*p_str) {
@@ -157,7 +157,7 @@ size_t htd_strlen(const char *p_str)
 }
 
 // @brief 获取字符串长度 strnlen
-size_t htd_strnlen(const char *p_str, size_t max_len)
+size_t __htd_strnlen(const char *p_str, size_t max_len)
 {
     const char *p_start = p_str;
     while (max_len && *p_str) {
@@ -168,7 +168,7 @@ size_t htd_strnlen(const char *p_str, size_t max_len)
 }
 
 // @brief 拷贝字符串 strcpy
-char *htd_strcpy(char *dst, const char *src)
+char *__htd_strcpy(char *dst, const char *src)
 {
     char* p_dst = dst;
     while ((*p_dst++ = *src++) != '\0');
@@ -176,7 +176,7 @@ char *htd_strcpy(char *dst, const char *src)
 }
 
 // @brief 拷贝字符串 strncpy
-char *htd_strncpy(char *dst, const char *src, size_t n)
+char *__htd_strncpy(char *dst, const char *src, size_t n)
 {
     char* p_dst = dst;
     while (n && *src) {
@@ -190,7 +190,7 @@ char *htd_strncpy(char *dst, const char *src, size_t n)
 }
 
 // @brief 字符串比较
-int32_t htd_strcmp(const char *v1, const char *v2)
+int32_t __htd_strcmp(const char *v1, const char *v2)
 {
     while (*v1 && *v1 == *v2) {
         v1++, v2++;
@@ -199,7 +199,7 @@ int32_t htd_strcmp(const char *v1, const char *v2)
 }
 
 // @brief 字符串对比，忽略字母大小写
-uint32_t htd_strcasecmp(const char *v1, const char *v2)
+uint32_t __htd_strcasecmp(const char *v1, const char *v2)
 {
     char byte_v1, byte_v2;
     do {
@@ -216,7 +216,7 @@ uint32_t htd_strcasecmp(const char *v1, const char *v2)
 }
 
 // @brief 字符串查找
-char *htd_strstr(const char *v1, const char *v2)
+char *__htd_strstr(const char *v1, const char *v2)
 {
     int v2_len = htd_strlen(v2);
     if (!v2_len) {

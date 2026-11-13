@@ -19,7 +19,7 @@ static int console_help_cmd(int argc, char **argv)
     p_item = htd_section_first_item_get(m_htd_console.cmd_table_begin, m_htd_console.cmd_table_end);
     while (p_item) {
         p_shell = (csl_cmd_cb_t*)p_item;
-        if (MEMCMP(p_shell->p_name, "_cmd_", 6) == 0) {
+        if (htd_memcmp(p_shell->p_name, "_cmd_", 6) == 0) {
             htd_console_print("%s \r\n", &p_shell->p_name[5]);
         }
         p_item = htd_section_next_item_get(p_item, m_htd_console.cmd_table_end, sizeof(csl_cmd_cb_t));
@@ -65,7 +65,7 @@ static int console_split(char *cmd, uint32_t cmd_len, char *argv[HTD_CONSOLE_ARG
             break;
         }
 
-        /* handle string */
+        // 字符串
         if (*ptr == '"') {
             ptr++;
             position++;
@@ -87,7 +87,7 @@ static int console_split(char *cmd, uint32_t cmd_len, char *argv[HTD_CONSOLE_ARG
                 break;
             }
 
-            /* skip '"' */
+            /* 跳过 '"' */
             *ptr = '\0';
             ptr++;
             position++;
@@ -116,8 +116,8 @@ static cmd_function_t console_shell_cmd_get(const char *cmd, int size)
     while (p_item) {
         p_shell = (csl_cmd_cb_t*)p_item;
         //htd_console_print("p_name=%s\n", p_shell->p_name);
-        if (MEMCMP(p_shell->p_name, "_cmd_", 6) == 0) {
-            if (MEMCMP(&p_shell->p_name[5], cmd, size) == 0 && p_shell->p_name[5 + size] == '\0') {
+        if (htd_memcmp(p_shell->p_name, "_cmd_", 6) == 0) {
+            if (htd_memcmp(&p_shell->p_name[5], cmd, size) == 0 && p_shell->p_name[5 + size] == '\0') {
                 //htd_console_print("p_name=%s\n", p_shell->p_name);
                 cmd_func = p_shell->func;
                 break;
@@ -156,7 +156,7 @@ static int console_exec_cmd(char *cmd, uint32_t cmd_len, int *retp)
 
     // 分割命令和参数
     char *argv[HTD_CONSOLE_ARG_MAX];
-    MEMSET(argv, 0x00, sizeof(argv));
+    htd_memset(argv, 0x00, sizeof(argv));
     int argc = console_split(cmd, cmd_len, argv);
     if (argc == 0) {
         htd_console_print("split failed.\n");
@@ -188,7 +188,7 @@ void htd_auto_complete_path(char *path)
         return;
     }
 
-    char* p_fullpath = (char *)MALLOC(256);
+    char* p_fullpath = (char *)htd_malloc(256);
     if (p_fullpath == NULL) {
         return; 
     }
@@ -214,14 +214,14 @@ void htd_auto_complete_path(char *path)
         p_ptr++;
     }
     uint32_t length = p_index - path;
-    MEMCPY(&p_fullpath[fullpath_len], path, length);
+    htd_memcpy(&p_fullpath[fullpath_len], path, length);
     fullpath_len += length;
     p_fullpath[fullpath_len] = 0;
     
     struct dirent *dirent = NULL;
     DIR* dir = opendir(p_fullpath);
     if (dir == NULL)  {
-        FREE(p_fullpath);
+        htd_free(p_fullpath);
         return;
     }
     
@@ -241,7 +241,7 @@ void htd_auto_complete_path(char *path)
             if (dirent == NULL) {
                 break;
             }
-            if (MEMCMP(p_index, dirent->d_name, index_len) == 0) {
+            if (htd_memcmp(p_index, dirent->d_name, index_len) == 0) {
                 if (dirent->d_type == DT_DIR) {       // 文件夹
                     htd_console_print("\t\033[0;35m%s\n\033[0m", dirent->d_name);
                 } else {
@@ -249,7 +249,7 @@ void htd_auto_complete_path(char *path)
                 }
                 if (fullpath_len == 0) {
                     fullpath_len = strlen(dirent->d_name);
-                    MEMCPY(p_fullpath, dirent->d_name, fullpath_len+1);
+                    htd_memcpy(p_fullpath, dirent->d_name, fullpath_len+1);
                 } else {
                     length = str_common_len(dirent->d_name, p_fullpath);
                     if (length < fullpath_len) {
@@ -259,12 +259,12 @@ void htd_auto_complete_path(char *path)
             }
         }
         if (fullpath_len) {
-            MEMCPY(p_index, p_fullpath, fullpath_len);
+            htd_memcpy(p_index, p_fullpath, fullpath_len);
             p_index[fullpath_len] = 0;
         }
     }
     closedir(dir);
-    FREE(p_fullpath);
+    htd_free(p_fullpath);
 }
 #endif
 
@@ -284,9 +284,9 @@ void htd_console_auto_complete(char *prefix)
     const uint32_t* p_item = htd_section_first_item_get(m_htd_console.cmd_table_begin, m_htd_console.cmd_table_end);
     while (p_item) {
         p_shell = (csl_cmd_cb_t*)p_item;
-        if (MEMCMP(p_shell->p_name, "_cmd_", 5) == 0) {
+        if (htd_memcmp(p_shell->p_name, "_cmd_", 5) == 0) {
             p_cmd_name = (const char *)&p_shell->p_name[5];
-            if (MEMCMP(prefix, p_cmd_name, prefix_len) == 0) {
+            if (htd_memcmp(prefix, p_cmd_name, prefix_len) == 0) {
                 // 查找最短的命令
                 if (min_length == 0) {
                     p_name = p_cmd_name;
@@ -303,7 +303,7 @@ void htd_console_auto_complete(char *prefix)
         p_item = htd_section_next_item_get(p_item, m_htd_console.cmd_table_end, sizeof(csl_cmd_cb_t));
     }
     if (p_name) {
-        MEMCPY(prefix, p_name, min_length + 1);
+        htd_memcpy(prefix, p_name, min_length + 1);
         return ;
     }
     
@@ -363,9 +363,8 @@ void htd_console_process_loop(uint8_t ch)
     }
     
     /*
-     * handle control key
-     * 上键  : 0x1b 0x5b 0x41
-     * 下键:   0x1b 0x5b 0x42
+     * 上键: 0x1b 0x5b 0x41
+     * 下键: 0x1b 0x5b 0x42
      * 右键: 0x1b 0x5b 0x43
      * 左键: 0x1b 0x5b 0x44
      */
@@ -408,12 +407,12 @@ void htd_console_process_loop(uint8_t ch)
         }
     }
 
-    /* received null or error */
-    if (ch == '\0' || ch == 0xFF){
+    if (ch == '\0' || ch == 0xFF) {
+        // 空或者错误	    
         return;
         
     } else if (ch == '\t') {
-        /* move the cursor to the beginning of line */
+        // 光标移动整行，闪烁一下
         for (i=0; i<p_console->line_curpos; i++) {
             htd_console_print("\b");
         }
@@ -423,7 +422,6 @@ void htd_console_process_loop(uint8_t ch)
         return;
         
     } else if (ch == 0x7f || ch == 0x08) {
-        /* note that p_console->line_curpos >= 0 */
         if (p_console->line_curpos == 0) {
             return;
         }
@@ -431,7 +429,7 @@ void htd_console_process_loop(uint8_t ch)
         p_console->line_curpos--;
 
         if (p_console->line_position > p_console->line_curpos) {
-            MEMMOVE(&p_console->line[p_console->line_curpos],
+            htd_memmove(&p_console->line[p_console->line_curpos],
                     &p_console->line[p_console->line_curpos + 1],
                     p_console->line_position - p_console->line_curpos);
             p_console->line[p_console->line_position] = 0;
@@ -457,7 +455,7 @@ void htd_console_process_loop(uint8_t ch)
             console_history_cmd_reset(p_console);
         }
         htd_console_print(CONSOLE_PROMPT);
-        MEMSET(p_console->line, 0, sizeof(p_console->line));
+        htd_memset(p_console->line, 0, sizeof(p_console->line));
         p_console->line_curpos = p_console->line_position = 0;
         return;
     }
@@ -469,7 +467,7 @@ void htd_console_process_loop(uint8_t ch)
     
     // 正常字符
     if (p_console->line_curpos < p_console->line_position) {
-        MEMMOVE(&p_console->line[p_console->line_curpos + 1], 
+        htd_memmove(&p_console->line[p_console->line_curpos + 1], 
                 &p_console->line[p_console->line_curpos], 
                 p_console->line_position - p_console->line_curpos);
         p_console->line[p_console->line_curpos] = ch;
@@ -497,7 +495,7 @@ void htd_console_process_loop(uint8_t ch)
 int32_t htd_console_process_init(htd_csl_write_handle_t write_handle)
 {
     ASSERT(write_handle);
-    MEMSET(&m_htd_console, 0, sizeof(htd_console_t));
+    htd_memset(&m_htd_console, 0, sizeof(htd_console_t));
     m_htd_console.cmd_table_begin = (uint32_t*)HTD_SECTION_START_ADDR(CONSOLE_SECTION_NAME);
     m_htd_console.cmd_table_end = (uint32_t*)HTD_SECTION_END_ADDR(CONSOLE_SECTION_NAME);
     m_htd_console.write_handle = write_handle;
@@ -508,7 +506,7 @@ int32_t htd_console_process_init(htd_csl_write_handle_t write_handle)
 static void console_fprintf_fwrite(void const * p_user_ctx, char const * p_str, size_t length)
 {
     htd_console_t* p_console = (htd_console_t*)p_user_ctx;
-    if (p_console && p_console->write_handle) {
+    if (p_console) {
         p_console->write_handle((uint8_t*)p_str, length);
     }
 }
@@ -518,6 +516,10 @@ int32_t htd_console_print(const char *fmt, ...)
 {
     uint32_t buff_len;
     char buff[64];
+
+    if (m_htd_console.write_handle == NULL) {
+        return 0;
+    }
 
     htd_printf_ctx_t ctx;
     ctx.p_user_ctx = &m_htd_console;
@@ -536,6 +538,10 @@ int32_t htd_console_print(const char *fmt, ...)
 // @brief 控制台打印输出，返回打印的字符长度
 uint32_t htd_console_fprintf(char const *p_fmt, va_list *p_args)
 {
+    if (m_htd_console.write_handle == NULL) {
+        return 0;
+    }
+
     char buff[64];
     htd_printf_ctx_t ctx;
     ctx.p_user_ctx = &m_htd_console;
@@ -569,6 +575,10 @@ static void console_fprintf_fwrite(void const * p_user_ctx, char const * p_str, 
 // @brief 控制台打印, 通过初始化输入的write_handle输出数据
 int32_t htd_console_print(const char *fmt, ...)
 {
+    if (m_log_write_handle == NULL) {
+        return 0;
+    }
+
     uint32_t buff_len;
     char buff[64];
 
@@ -588,6 +598,10 @@ int32_t htd_console_print(const char *fmt, ...)
 // @brief 控制台打印输出，返回打印的字符长度
 uint32_t htd_console_fprintf(char const *p_fmt, va_list *p_args)
 {
+    if (m_log_write_handle == NULL) {
+        return 0;
+    }
+
     char buff[64];
     htd_printf_ctx_t ctx;
     ctx.fwrite = console_fprintf_fwrite;

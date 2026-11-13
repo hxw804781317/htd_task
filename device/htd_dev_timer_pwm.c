@@ -1,8 +1,9 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #define DEBUG_LVL           1       // 1:error; 2:warning; 3:debug; 4:log
 #define DEBUG_TAG           "dev.pwm"
-#include "htd_dev_timer_pwm.h"
 #include "htd_device.h"
-#include "htd_components.h"
+#include "htd_dev_timer_pwm.h"
 
 
 //////////////////////////////////////////////////////////////////////
@@ -174,6 +175,7 @@ int32_t htd_dev_pwm_is_active(htd_pwm_handle_t* p_handle, uint8_t ch_idx)
 
 //////////////////////////////////////////////////////////////////////
 #if (defined(HTD_CONSOLE_ENABLE) && defined(BSP_USING_PWM) && (DEBUG_LVL == 4) && 1)
+#include "htd_console_process.h"
 static htd_pwm_handle_t* m_pwm_handle = NULL;
 
 // @brief 启动

@@ -4,14 +4,14 @@ from building import *
 
 # get current dir path
 cwd = GetCurrentDir()
-list = os.listdir(cwd)
 objs = []
 
 # init src and inc vars
 src = []
 inc = [cwd]
-
 objs = DefineGroup('htd_task', src, depend = [''], CPPPATH = inc, LOCAL_CCFLAGS = '')
+
+list = os.listdir(cwd)
 for d in list:
     path = os.path.join(cwd, d)
     if os.path.isfile(os.path.join(path, 'SConscript')):

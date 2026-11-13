@@ -1,12 +1,11 @@
-#ifndef __STM32_ASSERT_H
-#define __STM32_ASSERT_H
+#ifndef _STM32_ASSERT_H_
+#define _STM32_ASSERT_H_
 
 #include "stm32f1xx_hal.h"
 
 #ifdef __cplusplus
  extern "C" {
 #endif
-
 
 #if (defined(USE_FULL_ASSERT) && (USE_FULL_ASSERT == 1))
     #ifndef Error_Handler
@@ -16,8 +15,6 @@
 #else
     #define Error_Handler()
 #endif
-
-
 
 #ifdef __cplusplus
 }

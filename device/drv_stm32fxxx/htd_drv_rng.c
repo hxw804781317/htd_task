@@ -1,7 +1,10 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #define DEBUG_LVL   4       // 1:error; 2:warning; 3:debug; 4:log
 #define DEBUG_TAG   "drv.rng"
-#include "htd_drv_common.h"
 #include "htd_device.h"
+#include "htd_drv_common.h"
+
 
 
 #if defined(BSP_USING_RNG) && defined(RNG) && 1

@@ -5,7 +5,7 @@ menuconfig HTD_CONSOLE_ENABLE
         config HTD_CONSOLE_NAME
             string "The console name"
             default "htd"
-			        
+                    
         config HTD_CONSOLE_SUPPORT_CMD
             bool "support command input."
             default y
@@ -23,4 +23,21 @@ menuconfig HTD_CONSOLE_ENABLE
             int "The command line size for shell"
             range 32 256
             default 48
+            
+        config HTD_CONSOLE_SERIAL_NAME
+            depends on HTD_TASK_ENABLE
+            string "Serial name"
+            default "uart1"
+        config HTD_CONSOLE_SERIAL_TX_PINNUM
+            depends on HTD_TASK_ENABLE
+            hex "Serial tx pin-number"
+            default 0x09
+        config HTD_CONSOLE_SERIAL_RX_PINNUM
+            depends on HTD_TASK_ENABLE
+            hex "Serial rx pin-number"
+            default 0x0A
+        config HTD_CONSOLE_SERIAL_BAUDRATE
+            depends on HTD_TASK_ENABLE
+            int "Serial baudrate"
+            default 115200
     endif

@@ -1,8 +1,9 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 //#define DEBUG_LVL       4       // 1:error; 2:warning; 3:debug; 4:log
 #define DEBUG_TAG       "sfw.i2cm"
-#include "htd_dev_i2cm.h"
 #include "htd_device.h"
-#include "htd_components.h"
+#include "htd_dev_i2cm.h"
 
 
 #if (defined(BSP_USING_SFW_I2CM0) || defined(BSP_USING_SFW_I2CM1) || defined(BSP_USING_SFW_I2CM2) || defined(BSP_USING_SFW_I2CM3))

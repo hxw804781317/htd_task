@@ -26,6 +26,10 @@
 #define HTD_CONSOLE_SUPPORT_CMD_HISTORY 1
 #define HTD_CONSOLE_HISTORY_LINES 5
 #define HTD_CONSOLE_CMD_SIZE 48
+#define HTD_CONSOLE_SERIAL_NAME "segger_rtt"
+#define HTD_CONSOLE_SERIAL_TX_PINNUM 0x09
+#define HTD_CONSOLE_SERIAL_RX_PINNUM 0x0A
+#define HTD_CONSOLE_SERIAL_BAUDRATE 115200
 /* end of components config */
 
 /* On-chip Peripheral Drivers */

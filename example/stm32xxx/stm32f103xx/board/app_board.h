@@ -14,15 +14,8 @@ extern "C" {
     #define Error_Handler()     stm32_error_handler(__FUNCTION__, __LINE__)
 #endif
 
-// @brief 延迟毫秒
-void htd_delay_ms(uint32_t ms);
-
-// @brief 配置系统时钟
-void SystemClock_Config(void);
-
-// @brief 初始化内存堆
-void app_heap_init(void);
-
+// @brief 初始化板子
+void app_board_init(void);
 
 
 #ifdef __cplusplus

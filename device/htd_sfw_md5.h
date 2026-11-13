@@ -42,7 +42,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include "htd_common.h"
 
 #ifdef __cplusplus
 extern "C" {

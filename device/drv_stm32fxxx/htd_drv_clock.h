@@ -1,8 +1,12 @@
-#ifndef _DRV_CLOCK_H_
-#define _DRV_CLOCK_H_
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
+#ifndef _HTD_DRV_CLOCK_H_
+#define _HTD_DRV_CLOCK_H_
 
-#include "htd_drv_common.h"
-#include "htd_drv_dma.h"
+#include <stdint.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,9 +23,8 @@ void drv_clock_spi_enable(void* p_instance, bool is_enable);
 void drv_clock_i2c_enable(void* p_instance, bool is_enable);
 
 
-
 #ifdef __cplusplus
 }
 #endif
-#endif /*_DRV_CLOCK_H_*/
+#endif /*_HTD_DRV_CLOCK_H_*/
 

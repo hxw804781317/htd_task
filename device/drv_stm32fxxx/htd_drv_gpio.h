@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #ifndef _HTD_DRV_GPIO_H_
 #define _HTD_DRV_GPIO_H_
 
@@ -5,8 +7,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include "stm32_assert.h"
-#include "htd_dev_gpio.h"
 
 #ifdef __cplusplus
 extern "C" {

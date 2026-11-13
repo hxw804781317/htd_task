@@ -40,6 +40,7 @@
 
 #include "htd_sfw_md5.h"
 #include <string.h>
+#include "htd_device.h"
 
 /*
  * 32-bit integer manipulation macros (little endian)

@@ -1,7 +1,12 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #ifndef _HTD_DRV_CONFIG_STM32F2XX_H_
 #define _HTD_DRV_CONFIG_STM32F2XX_H_
 
-#include "htd_drv_gpio.h"
+#include <stdint.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
 
 #if defined(SOC_SERIES_STM32F2)
 #ifdef __cplusplus

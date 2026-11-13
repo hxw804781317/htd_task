@@ -46,23 +46,23 @@ extern "C" {
 #ifndef ASSERT
     #define ASSERT(a)                           
 #endif
-#ifndef MEMSET
-    #define MEMSET(ptr, v, n)                   htd_memset(ptr, v, n)
+#ifndef htd_memset
+    #define htd_memset(ptr, v, n)               memset(ptr, v, n)
 #endif
-#ifndef MEMCPY
-    #define MEMCPY(dst, src, n)                 htd_memcpy(dst, src, n)
+#ifndef htd_memcpy
+    #define htd_memcpy(dst, src, n)             memcpy(dst, src, n)
 #endif
-#ifndef MEMMOVE
-    #define MEMMOVE(dst, src, n)                htd_memmove(dst, src, n)
+#ifndef htd_memmove
+    #define htd_memmove(dst, src, n)            memmove(dst, src, n)
 #endif
-#ifndef MEMCMP
-    #define MEMCMP(v1, v2, n)                   htd_memcmp(v1, v2, n)
+#ifndef htd_memcmp
+    #define htd_memcmp(v1, v2, n)               memcmp(v1, v2, n)
 #endif
-#ifndef MALLOC
-    #define MALLOC(size)                        htd_malloc(size)
+#ifndef htd_malloc
+    #define htd_malloc(size)                    malloc(size)
 #endif
-#ifndef FREE
-    #define FREE(p_ptr)                         htd_free(p_ptr)
+#ifndef htd_free
+    #define htd_free(p_ptr)                     free(p_ptr)
 #endif
 
 
@@ -79,6 +79,27 @@ extern "C" {
 #ifndef STRINGIFY
     #define STRINGIFY(val)                      STR(val)
 #endif 
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////
+// @brief 初始化控制台(打开字符输出)
+// @note 内部使用了 htd_malloc，必须在 ram_heap_init 初始化后再调用
+int32_t app_console_init(void);
+// @brief 去初始化控制台
+int32_t app_console_uninit(void);
+// @brief 控制台开始接收数据
+void app_console_read_start(void);
+// @brief 刷新
+// @return 返回0说明已经刷新完毕，返回大于0，表示还有多长数据要发送
+int32_t app_console_tx_flush(uint32_t waite_timeout_ms);
+
+
+
 
 
 #ifdef __cplusplus

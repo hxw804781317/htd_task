@@ -1,6 +1,8 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #define DEBUG_LVL           2       // 1:error; 2:warning; 3:debug; 4:log
 #define DEBUG_TAG           "dev.hash"
-#include "htd_common.h"
+#include "htd_device.h"
 #include "htd_dev_hash.h"
 
 

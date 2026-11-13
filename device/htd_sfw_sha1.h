@@ -29,8 +29,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include "htd_common.h"
-
 
 #ifdef __cplusplus
 extern "C" {
@@ -40,8 +38,7 @@ extern "C" {
 /**
  * \brief          SHA-1 context structure
  */
-typedef struct
-{
+typedef struct {
     uint32_t total[2];          /*!< number of bytes processed  */
     uint32_t state[5];          /*!< intermediate digest state  */
     unsigned char buffer[64];   /*!< data block being processed */

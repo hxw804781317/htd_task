@@ -1,8 +1,15 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #ifndef _HTD_DEV_RNG_H_
 #define _HTD_DEV_RNG_H_
 
+#include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stdbool.h>
+#include <stddef.h>
+#include <stdarg.h>
 
 #ifdef __cplusplus
 extern "C" {

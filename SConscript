@@ -9,14 +9,6 @@ objs = []
 # init src and inc vars
 src = []
 inc = [cwd]
-
-src += Glob('./task/common/*.c')
-src += Glob('./task/memheap/*.c')
-src += Glob('./task/*.c')
-
-inc += [cwd + '/task/common']
-inc += [cwd + '/task/memheap']
-inc += [cwd + '/task']
 objs = DefineGroup('htd_task', src, depend = [''], CPPPATH = inc, LOCAL_CCFLAGS = '')
 
 list = os.listdir(cwd)

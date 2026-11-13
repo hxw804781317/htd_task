@@ -20,13 +20,14 @@
  */
 #include "htd_sfw_sha1.h"
 #include <string.h>
+#include "htd_device.h"
 
 /* Implementation that should never be optimized out by the compiler */
 static void sha1_zeroize(void *v, size_t n) 
 {
     //volatile unsigned char *p = (unsigned char*)v; 
     //while( n-- ) *p++ = 0;
-    memset(v, 0, n);
+    htd_memset(v, 0, n);
 }
 
 /*
@@ -57,7 +58,7 @@ static void sha1_zeroize(void *v, size_t n)
  */
 void htd_sfw_sha1_starts(htd_sha1_ctx_t *ctx)
 {
-    memset(ctx, 0, sizeof(htd_sha1_ctx_t));
+    htd_memset(ctx, 0, sizeof(htd_sha1_ctx_t));
     ctx->total[0] = 0;
     ctx->total[1] = 0;
 

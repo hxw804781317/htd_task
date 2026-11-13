@@ -287,32 +287,42 @@ __STATIC_INLINE int __abs(int x)
 
 //////////////////////////////////////////////////////////////////////
 // @brief memset
-void *htd_memset(void *s, int c, size_t count);
+void *__htd_memset(void *s, int c, size_t count);
 // @brief 内存拷贝 memcpy
-void *htd_memcpy(void *dst, const void *src, size_t count);
+void *__htd_memcpy(void *dst, const void *src, size_t count);
 // @brief memmove
-void *htd_memmove(void *dst, const void *src, size_t n);
+void *__htd_memmove(void *dst, const void *src, size_t n);
 // @brief 内存比较
-int32_t htd_memcmp(const void *v1, const void *v2, size_t n);
+int32_t __htd_memcmp(const void *v1, const void *v2, size_t n);
 // @brief 获取字符串长度 strlen
-size_t htd_strlen(const char *p_str);
+size_t __htd_strlen(const char *p_str);
 // @brief 获取字符串长度 strnlen
-size_t htd_strnlen(const char *p_str, size_t max_len);
+size_t __htd_strnlen(const char *p_str, size_t max_len);
 // @brief 拷贝字符串 strcpy
-char *htd_strcpy(char *dst, const char *src);
+char *__htd_strcpy(char *dst, const char *src);
 // @brief 拷贝字符串 strncpy
-char *htd_strncpy(char *dst, const char *src, size_t n);
+char *__htd_strncpy(char *dst, const char *src, size_t n);
 // @brief 字符串比较
-int32_t htd_strcmp(const char *v1, const char *v2);
+int32_t __htd_strcmp(const char *v1, const char *v2);
 // @brief 字符串对比，忽略字母大小写
-uint32_t htd_strcasecmp(const char *v1, const char *v2);
+uint32_t __htd_strcasecmp(const char *v1, const char *v2);
 // @brief 字符串查找
-char *htd_strstr(const char *v1, const char *v2);
+char *__htd_strstr(const char *v1, const char *v2);
 // @brief 判断内存每个字节是否都是 val
 bool htd_mem_allof(const uint8_t *dst, uint8_t val, uint16_t n);
 
 
-
+#define htd_memset(s, c, n)             __htd_memset(s, c, n)
+#define htd_memcpy(dst, src, n)         __htd_memcpy(dst, src, n)
+#define htd_memmove(dst, src, n)        __htd_memmove(dst, src, n)
+#define htd_memcmp(v1, v2, n)           __htd_memcmp(v1, v2, n)
+#define htd_strlen(str)                 __htd_strlen(str)
+#define htd_strnlen(str, max_len)       __htd_strnlen(str, max_len)
+#define htd_strcpy(dst, src)            __htd_strcpy(dst, src)
+#define htd_strncpy(dst, src, n)        __htd_strncpy(dst, src, n)
+#define htd_strcmp(v1, v2)              __htd_strcmp(v1, v2)
+#define htd_strcasecmp(v1, v2)          __htd_strcasecmp(v1, v2)
+#define htd_strstr(v1, v2)              __htd_strstr(v1, v2)
 
 
 

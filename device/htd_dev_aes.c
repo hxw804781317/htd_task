@@ -1,8 +1,11 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #define DEBUG_LVL           4       // 1:error; 2:warning; 3:debug; 4:log
 #define DEBUG_TAG           "aes"
-#include "htd_common.h"
-#include "htd_sfw_aes128.h"
+#include "htd_device.h"
 #include "htd_dev_rng.h"
+#include "htd_sfw_aes128.h"
+
 
 // @brief 加密数据(WEAK函数，芯片驱动可以重定义)
 // @param input 必须为16字节

@@ -1,5 +1,7 @@
 #define DEBUG_LVL 4
 #define DEBUG_TAG              "main"
+#include "htd_device.h"
+#include "htd_components.h"
 #include "app_board.h"
 
 
@@ -18,43 +20,6 @@ uint32_t htd_time_ms_get(void)
 }
 #endif /*defined(HTD_USING_NONOS)*/
 
-// @brief 延迟us
-void htd_delay_us(uint32_t us)
-{
-    if (us == 0) {
-        return ;
-    }
-
-    extern uint32_t SystemCoreClock;
-    uint32_t time_cycles = us * (SystemCoreClock / 1000000);
-
-    // 保存并启动 DWT
-    uint32_t core_debug = CoreDebug->DEMCR;
-    CoreDebug->DEMCR = core_debug | CoreDebug_DEMCR_TRCENA_Msk;
-    // Save the current state of the CTRL register in the DWT block. Make sure
-    // that the cycle counter is enabled.
-    uint32_t dwt_ctrl = DWT->CTRL;
-    DWT->CTRL = dwt_ctrl | DWT_CTRL_CYCCNTENA_Msk;
-    // Store start value of the cycle counter.
-    uint32_t cyccnt_initial = DWT->CYCCNT;
-    // 等待延迟的时间
-    while ((DWT->CYCCNT - cyccnt_initial) < time_cycles){}
-    // 恢复原始状态
-    DWT->CTRL = dwt_ctrl;
-    CoreDebug->DEMCR = core_debug;
-}
-
-// @brief 延迟毫秒
-void htd_delay_ms(uint32_t ms)
-{
-    while (ms > 5000) {
-        htd_delay_us(5000*1000);
-        ms -= 5000;
-    }
-    htd_delay_us(ms * 1000);
-}
-
-
 
 //////////////////////////////////////////////////////////////////////
 // @brief 重启设备
@@ -65,7 +30,7 @@ void htd_reboot(void)
 }
 
 // @brief 配置系统时钟
-void SystemClock_Config(void)
+static void SystemClock_Config(void)
 {
     RCC_OscInitTypeDef RCC_OscInitStruct = {0};
     RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
@@ -103,12 +68,56 @@ void SystemClock_Config(void)
 }
 
 // @brief 初始化内存堆
-void app_heap_init(void)
+static void app_heap_init(void)
 {
-    static uint8_t m_heap_memory[1024*10];      // 调试先用静态内存
+#if 0
+    static uint8_t m_heap_memory[1024*32];      // 调试先用静态内存
     htd_memheap_dev_t* p_dev = htd_memheap_ff_init(m_heap_memory, sizeof(m_heap_memory));
     ASSERT(p_dev);
     int32_t ret = htd_memheap_sram_dev_add(p_dev);
     ASSERT(ret == 0);
+#else
+    htd_memheap_dev_t* p_dev;
+    int32_t ret;
+    uint32_t idx = 0;
+    htd_ram_partition_t ram_partition;
+    while (1) {
+        if (htd_heap_partition_get(&ram_partition, 1, idx++) == 0) {
+            break;
+        }
+        print_debug("add heap: 0x%08x(0x%08xByte)", ram_partition.addr, ram_partition.size);
+        p_dev = htd_memheap_ff_init((void*)ram_partition.addr, ram_partition.size);
+        ASSERT(p_dev);
+        ret = htd_memheap_sram_dev_add(p_dev);
+        ASSERT(ret == 0);
+    }
+#endif
+}
+
+// @brief 初始化板子
+void app_board_init(void)
+{
+    // 初始化hal库
+    HAL_Init();
+    // 初始化系统时间
+    SystemClock_Config();
+    // 内存 heap 初始化
+    app_heap_init();
+    // 初始化控制台, 该函数执行之后就可以打印了
+    app_console_init();
+    // 初始化RTC
+    htd_rtc_init(0xffffffff);
+    // 初始化电源管理
+    htd_pm_init(SystemClock_Config);
+    // 初始化看门狗
+    //htd_wdt_init();
+    
+    // 初始化任务调度器
+    htd_task_sch_init(5);
+    // 初始化设备
+    htd_dev_init();
+    
+    // 控制台开始接收数据
+    app_console_read_start();
 }
 

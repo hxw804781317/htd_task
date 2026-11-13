@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_projx.xsd">
+
   <SchemaVersion>2.1</SchemaVersion>
+
   <Header>### uVision Project, (C) Keil Software</Header>
+
   <Targets>
     <Target>
       <TargetName>stm32f103xx</TargetName>
@@ -16,28 +19,28 @@
           <PackID>Keil.STM32F1xx_DFP.2.3.0</PackID>
           <PackURL>http://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00005000) IROM(0x08000000,0x00010000) CPUTYPE("Cortex-M3") CLOCK(12000000) ELITTLE</Cpu>
-          <FlashUtilSpec />
-          <StartupFile />
+          <FlashUtilSpec></FlashUtilSpec>
+          <StartupFile></StartupFile>
           <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0STM32F10x_128 -FS08000000 -FL020000 -FP0($$Device:STM32F103C8$Flash\STM32F10x_128.FLM))</FlashDriverDll>
           <DeviceId>0</DeviceId>
           <RegisterFile>$$Device:STM32F103C8$Device\Include\stm32f10x.h</RegisterFile>
-          <MemoryEnv />
-          <Cmp />
-          <Asm />
-          <Linker />
-          <OHString />
-          <InfinionOptionDll />
-          <SLE66CMisc />
-          <SLE66AMisc />
-          <SLE66LinkerMisc />
+          <MemoryEnv></MemoryEnv>
+          <Cmp></Cmp>
+          <Asm></Asm>
+          <Linker></Linker>
+          <OHString></OHString>
+          <InfinionOptionDll></InfinionOptionDll>
+          <SLE66CMisc></SLE66CMisc>
+          <SLE66AMisc></SLE66AMisc>
+          <SLE66LinkerMisc></SLE66LinkerMisc>
           <SFDFile>$$Device:STM32F103C8$SVD\STM32F103xx.svd</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
-          <BinPath />
-          <IncludePath />
-          <LibPath />
-          <RegisterFilePath />
-          <DBRegisterFilePath />
+          <BinPath></BinPath>
+          <IncludePath></IncludePath>
+          <LibPath></LibPath>
+          <RegisterFilePath></RegisterFilePath>
+          <DBRegisterFilePath></DBRegisterFilePath>
           <TargetStatus>
             <Error>0</Error>
             <ExitCodeStop>0</ExitCodeStop>
@@ -59,8 +62,8 @@
           <BeforeCompile>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name />
-            <UserProg2Name />
+            <UserProg1Name></UserProg1Name>
+            <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopU1X>0</nStopU1X>
@@ -87,7 +90,7 @@
             <nStopA2X>0</nStopA2X>
           </AfterMake>
           <SelectedForBatchBuild>0</SelectedForBatchBuild>
-          <SVCSIdString />
+          <SVCSIdString></SVCSIdString>
         </TargetCommonOption>
         <CommonProperty>
           <UseCPPCompiler>0</UseCPPCompiler>
@@ -101,8 +104,8 @@
           <AssembleAssemblyFile>0</AssembleAssemblyFile>
           <PublicsOnly>0</PublicsOnly>
           <StopOnExitCode>3</StopOnExitCode>
-          <CustomArgument />
-          <IncludeLibraryModules />
+          <CustomArgument></CustomArgument>
+          <IncludeLibraryModules></IncludeLibraryModules>
           <ComprImg>1</ComprImg>
         </CommonProperty>
         <DllOption>
@@ -111,7 +114,7 @@
           <SimDlgDll>DCM.DLL</SimDlgDll>
           <SimDlgDllArguments>-pCM3</SimDlgDllArguments>
           <TargetDllName>SARMCM3.DLL</TargetDllName>
-          <TargetDllArguments />
+          <TargetDllArguments></TargetDllArguments>
           <TargetDlgDll>TCM.DLL</TargetDlgDll>
           <TargetDlgDllArguments>-pCM3</TargetDlgDllArguments>
         </DllOption>
@@ -136,10 +139,10 @@
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
           <Flash3>"" ()</Flash3>
-          <Flash4 />
-          <pFcarmOut />
-          <pFcarmGrp />
-          <pFcArmRoot />
+          <Flash4></Flash4>
+          <pFcarmOut></pFcarmOut>
+          <pFcarmGrp></pFcarmGrp>
+          <pFcArmRoot></pFcArmRoot>
           <FcArmLst>0</FcArmLst>
         </Utilities>
         <TargetArmAds>
@@ -172,7 +175,7 @@
             <RvctClst>0</RvctClst>
             <GenPPlst>0</GenPPlst>
             <AdsCpuType>"Cortex-M3"</AdsCpuType>
-            <RvctDeviceName />
+            <RvctDeviceName></RvctDeviceName>
             <mOS>0</mOS>
             <uocRom>0</uocRom>
             <uocRam>0</uocRam>
@@ -306,7 +309,7 @@
                 <Size>0x0</Size>
               </OCR_RVCT10>
             </OnChipMemories>
-            <RvctStartVector />
+            <RvctStartVector></RvctStartVector>
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
@@ -333,10 +336,10 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls />
+              <MiscControls></MiscControls>
               <Define>STM32F103xB, USE_FULL_LL_DRIVER, USE_HAL_DRIVER</Define>
-              <Undefine />
-              <IncludePath>applications;..\..\..\components;..\..\..\components\htd_console\src;..\..\..\components\htd_console\port;..\..\..\device;..\..\..\device\drv_stm32fxxx;..\..\..\device\drv_stm32fxxx\stm32f1;..\..\..;..\..\..\task\common;..\..\..\task\memheap;..\..\..\task;.;..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\CMSIS\Device\ST\stm32f1xx\Include;..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Inc;..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\CMSIS\Include;..\..\..\mcu_sdk\stm32fxxx;board</IncludePath>
+              <Undefine></Undefine>
+              <IncludePath>applications;..\..\..\components;..\..\..\components\htd_console;..\..\..\device;..\..\..\device\drv_stm32fxxx;..\..\..\device\drv_stm32fxxx\stm32f1;..\..\..;..\..\..\task;..\..\..\task\common;..\..\..\task\external_lib;..\..\..\task\external_lib\segger_rtt;..\..\..\task\memheap;.;..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\CMSIS\Device\ST\stm32f1xx\Include;..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Inc;..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\CMSIS\Include;..\..\..\mcu_sdk\stm32fxxx;board</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -351,10 +354,10 @@
             <useXO>0</useXO>
             <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
-              <MiscControls />
-              <Define />
-              <Undefine />
-              <IncludePath />
+              <MiscControls></MiscControls>
+              <Define></Define>
+              <Undefine></Undefine>
+              <IncludePath></IncludePath>
             </VariousControls>
           </Aads>
           <LDads>
@@ -366,13 +369,13 @@
             <useFile>0</useFile>
             <TextAddressRange>0x08000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
-            <pXoBase />
+            <pXoBase></pXoBase>
             <ScatterFile>.\board\linker_scripts\link.sct</ScatterFile>
-            <IncludeLibs />
-            <IncludeLibsPath />
-            <Misc />
-            <LinkerInputFile />
-            <DisabledWarnings />
+            <IncludeLibs></IncludeLibs>
+            <IncludeLibsPath></IncludeLibsPath>
+            <Misc></Misc>
+            <LinkerInputFile></LinkerInputFile>
+            <DisabledWarnings></DisabledWarnings>
           </LDads>
         </TargetArmAds>
       </TargetOption>
@@ -388,6 +391,31 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>htd_console</GroupName>
+          <Files>
+            <File>
+              <FileName>htd_console_printf_fmt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\htd_console\htd_console_printf_fmt.c</FilePath>
+            </File>
+            <File>
+              <FileName>htd_console_process.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\htd_console\htd_console_process.c</FilePath>
+            </File>
+            <File>
+              <FileName>htd_console_history.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\htd_console\htd_console_history.c</FilePath>
+            </File>
+            <File>
+              <FileName>htd_console_port.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\htd_console\htd_console_port.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>htd_device</GroupName>
           <Files>
             <File>
@@ -395,316 +423,226 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\device\drv_stm32fxxx\htd_drv_adc.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_drv_clock.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\drv_stm32fxxx\htd_drv_clock.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_drv_common.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\drv_stm32fxxx\htd_drv_common.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_drv_crc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\drv_stm32fxxx\htd_drv_crc.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_drv_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\drv_stm32fxxx\htd_drv_dma.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_drv_gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\drv_stm32fxxx\htd_drv_gpio.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_drv_hash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\drv_stm32fxxx\htd_drv_hash.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_drv_i2c_master.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\drv_stm32fxxx\htd_drv_i2c_master.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_drv_pm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\drv_stm32fxxx\htd_drv_pm.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_drv_rng.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\drv_stm32fxxx\htd_drv_rng.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_drv_rtc_v1.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\drv_stm32fxxx\htd_drv_rtc_v1.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_drv_rtc_v2.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\drv_stm32fxxx\htd_drv_rtc_v2.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_drv_spi_master.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\drv_stm32fxxx\htd_drv_spi_master.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_drv_uart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\drv_stm32fxxx\htd_drv_uart.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_drv_wdt.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\drv_stm32fxxx\htd_drv_wdt.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_drv_config.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\drv_stm32fxxx\stm32f1\htd_drv_config.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_drv_inflash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\drv_stm32fxxx\stm32f1\htd_drv_inflash.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_drv_wkup.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\drv_stm32fxxx\stm32f1\htd_drv_wkup.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_adc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_adc.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_aes.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_aes.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_crc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_crc.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_gpio.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_hash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_hash.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_i2cm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_i2cm.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_inflash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_inflash.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_info.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_info.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_pm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_pm.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_rng.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_rng.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_rtc.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_sdio.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_sdio.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_segger_rtt.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_segger_rtt.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_serial.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_serial.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_spim.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_spim.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_timer.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_timer_occ.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_timer_occ.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_timer_pwm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_timer_pwm.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_usbd.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_usbd.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_dev_wdt.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_dev_wdt.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_device.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_device.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_sfw_aes128.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_sfw_aes128.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_sfw_crc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_sfw_crc.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_sfw_i2cm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_sfw_i2cm.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_sfw_md5.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_sfw_md5.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_sfw_sha1.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_sfw_sha1.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_sfw_sha256.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\device\htd_sfw_sha256.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_sfw_spim.c</FileName>
               <FileType>1</FileType>
@@ -716,124 +654,100 @@
           <GroupName>htd_task</GroupName>
           <Files>
             <File>
-              <FileName>htd_base32.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\task\common\htd_base32.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>htd_task_nos.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\task\htd_task_nos.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>htd_log.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\task\common\htd_log.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>htd_task_thread_sch.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\task\htd_task_thread_sch.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>htd_task_nos_sch.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\task\htd_task_nos_sch.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>htd_task_sch.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\task\htd_task_sch.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>htd_task_freertos.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\task\htd_task_freertos.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>htd_task_win32_sdl2.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\task\htd_task_win32_sdl2.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>htd_bitmap.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\task\common\htd_bitmap.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>htd_task.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\task\htd_task.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>htd_time.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\task\common\htd_time.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>htd_memheap_ff.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\task\memheap\htd_memheap_ff.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
               <FileName>htd_base16.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\task\common\htd_base16.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
-              <FileName>htd_task_port.c</FileName>
+              <FileName>htd_base32.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\task\htd_task_port.c</FilePath>
+              <FilePath>..\..\..\task\common\htd_base32.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>htd_base64.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\task\common\htd_base64.c</FilePath>
             </File>
-          </Files>
-          <Files>
+            <File>
+              <FileName>htd_bitmap.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\task\common\htd_bitmap.c</FilePath>
+            </File>
             <File>
               <FileName>htd_fifo.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\task\common\htd_fifo.c</FilePath>
             </File>
-          </Files>
-          <Files>
+            <File>
+              <FileName>htd_log.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\task\common\htd_log.c</FilePath>
+            </File>
             <File>
               <FileName>htd_printf_fmt.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\task\common\htd_printf_fmt.c</FilePath>
             </File>
-          </Files>
-          <Files>
+            <File>
+              <FileName>htd_time.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\task\common\htd_time.c</FilePath>
+            </File>
+            <File>
+              <FileName>SEGGER_RTT.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\task\external_lib\segger_rtt\SEGGER_RTT.c</FilePath>
+            </File>
+            <File>
+              <FileName>SEGGER_RTT_printf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\task\external_lib\segger_rtt\SEGGER_RTT_printf.c</FilePath>
+            </File>
+            <File>
+              <FileName>htd_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\task\htd_task.c</FilePath>
+            </File>
+            <File>
+              <FileName>htd_task_freertos.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\task\htd_task_freertos.c</FilePath>
+            </File>
+            <File>
+              <FileName>htd_task_nos.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\task\htd_task_nos.c</FilePath>
+            </File>
+            <File>
+              <FileName>htd_task_nos_sch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\task\htd_task_nos_sch.c</FilePath>
+            </File>
+            <File>
+              <FileName>htd_task_port.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\task\htd_task_port.c</FilePath>
+            </File>
+            <File>
+              <FileName>htd_task_sch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\task\htd_task_sch.c</FilePath>
+            </File>
+            <File>
+              <FileName>htd_task_thread_sch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\task\htd_task_thread_sch.c</FilePath>
+            </File>
+            <File>
+              <FileName>htd_task_win32_sdl2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\task\htd_task_win32_sdl2.c</FilePath>
+            </File>
+            <File>
+              <FileName>htd_memheap_ff.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\task\memheap\htd_memheap_ff.c</FilePath>
+            </File>
             <File>
               <FileName>htd_memheap_sram_dev.c</FileName>
               <FileType>1</FileType>
@@ -845,415 +759,299 @@
           <GroupName>stm32_libraries</GroupName>
           <Files>
             <File>
-              <FileName>stm32f1xx_hal_i2s.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_i2s.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_nand.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_nand.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_smartcard.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_smartcard.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_ll_sdmmc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_sdmmc.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_flash_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_flash_ex.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_gpio_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_gpio_ex.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_spi.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_can.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_can.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_rtc_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_rtc_ex.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_ll_rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_rtc.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_ll_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_dma.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_adc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_adc.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_tim_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_tim_ex.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_nor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_nor.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_tim.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_flash.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_flash.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_pccard.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_pccard.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_rtc.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_dma.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_ll_pwr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_pwr.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_i2c.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_ll_exti.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_exti.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_ll_utils.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_utils.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_cec.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_cec.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_pwr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_pwr.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_crc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_crc.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
               <FileName>stm32f1xx_hal_mmc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_mmc.c</FilePath>
             </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_dac_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_dac_ex.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_ll_fsmc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_fsmc.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_irda.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_irda.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_adc_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_adc_ex.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_ll_crc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_crc.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_ll_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_tim.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_usart.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_hcd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_hcd.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_wwdg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_wwdg.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_eth.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_eth.c</FilePath>
-            </File>
-          </Files>
-          <Files>
             <File>
               <FileName>stm32f1xx_hal_rcc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_rcc.c</FilePath>
             </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_ll_adc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_adc.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_gpio.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_sd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_sd.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_ll_rcc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_rcc.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_exti.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_exti.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_ll_usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_usart.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_dac.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_dac.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_cortex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_cortex.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_uart.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_sram.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_sram.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_ll_usb.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_usb.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_ll_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_spi.c</FilePath>
-            </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_pcd_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_pcd_ex.c</FilePath>
-            </File>
-          </Files>
-          <Files>
             <File>
               <FileName>system_stm32f1xx.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\CMSIS\Device\ST\stm32f1xx\Source\Templates\system_stm32f1xx.c</FilePath>
             </File>
-          </Files>
-          <Files>
+            <File>
+              <FileName>stm32f1xx_hal_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_ll_crc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_crc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_i2s.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_i2s.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_can.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_can.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_pccard.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_pccard.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_ll_fsmc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_fsmc.c</FilePath>
+            </File>
             <File>
               <FileName>stm32f1xx_ll_i2c.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_i2c.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
-              <FileName>stm32f1xx_hal_iwdg.c</FileName>
+              <FileName>stm32f1xx_ll_adc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_iwdg.c</FilePath>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_adc.c</FilePath>
             </File>
-          </Files>
-          <Files>
+            <File>
+              <FileName>stm32f1xx_hal_cortex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_cortex.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_spi.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_ll_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_exti.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_pwr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_pwr.c</FilePath>
+            </File>
             <File>
               <FileName>stm32f1xx_hal_rcc_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_rcc_ex.c</FilePath>
             </File>
-          </Files>
-          <Files>
+            <File>
+              <FileName>stm32f1xx_hal_crc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_crc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_sd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_sd.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_ll_pwr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_pwr.c</FilePath>
+            </File>
             <File>
               <FileName>stm32f1xx_hal_pcd.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_pcd.c</FilePath>
             </File>
-          </Files>
-          <Files>
+            <File>
+              <FileName>stm32f1xx_ll_utils.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_utils.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_sram.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_sram.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_ll_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_spi.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_cec.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_cec.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_smartcard.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_smartcard.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_dac.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_dac.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_nand.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_nand.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_tim_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_tim_ex.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_gpio_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_gpio_ex.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_ll_exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_exti.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_ll_sdmmc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_sdmmc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_eth.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_eth.c</FilePath>
+            </File>
             <File>
               <FileName>stm32f1xx_ll_dac.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_dac.c</FilePath>
             </File>
-          </Files>
-          <Files>
+            <File>
+              <FileName>stm32f1xx_hal_pcd_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_pcd_ex.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_dac_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_dac_ex.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_wwdg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_wwdg.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_irda.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_irda.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_adc_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_adc_ex.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_nor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_nor.c</FilePath>
+            </File>
             <File>
               <FileName>stm32f1xx_ll_gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_ll_rcc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_rcc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_ll_usb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_usb.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_flash_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_flash_ex.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_hcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_hcd.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_ll_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_rtc_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_rtc_ex.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_iwdg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_iwdg.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_ll_rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_ll_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\mcu_sdk\stm32fxxx\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_gpio.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1261,48 +1059,44 @@
           <GroupName>stm32f103</GroupName>
           <Files>
             <File>
-              <FileName>startup_stm32f103xb.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>board\startup_stm32f103xb.s</FilePath>
+              <FileName>stm32f1xx_hal_msp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>board\stm32f1xx_hal_msp.c</FilePath>
             </File>
-          </Files>
-          <Files>
             <File>
               <FileName>app_board.c</FileName>
               <FileType>1</FileType>
               <FilePath>board\app_board.c</FilePath>
             </File>
-          </Files>
-          <Files>
-            <File>
-              <FileName>stm32f1xx_hal_msp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>board\stm32f1xx_hal_msp.c</FilePath>
-            </File>
-          </Files>
-          <Files>
             <File>
               <FileName>stm32f1xx_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>board\stm32f1xx_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>startup_stm32f103xb.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>board\startup_stm32f103xb.s</FilePath>
             </File>
           </Files>
         </Group>
       </Groups>
     </Target>
   </Targets>
+
   <RTE>
-    <apis />
+    <apis/>
     <components>
       <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.4.0" condition="ARMv6_7_8-M Device">
-        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.7.0" />
+        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.7.0"/>
         <targetInfos>
-          <targetInfo name="stm32f103xx_board" />
+          <targetInfo name="stm32f103xx_board"/>
         </targetInfos>
       </component>
     </components>
-    <files />
+    <files/>
   </RTE>
+
   <LayerInfo>
     <Layers>
       <Layer>
@@ -1311,4 +1105,5 @@
       </Layer>
     </Layers>
   </LayerInfo>
+
 </Project>

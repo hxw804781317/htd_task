@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #ifndef _HTD_DRV_COMMON_H_
 #define _HTD_DRV_COMMON_H_
 
@@ -5,7 +7,23 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include "stm32_assert.h"
+#if defined(SOC_SERIES_STM32F0)
+    #include "stm32f0xx_hal.h"
+#elif defined(SOC_SERIES_STM32F1)
+    #include "stm32f1xx_hal.h"
+#elif defined(SOC_SERIES_STM32F2)
+    #include "stm32f2xx_hal.h"
+#elif defined(SOC_SERIES_STM32F3)
+    #include "stm32f3xx_hal.h"
+#elif defined(SOC_SERIES_STM32F4)
+    #include "stm32f4xx_hal.h"
+#elif defined(SOC_SERIES_STM32F7)
+    #include "stm32f7xx_hal.h"
+#else
+    #error "Please Select STM32Fxx SOC."
+#endif
+#include "htd_drv_dma.h"
+#include "htd_drv_clock.h"
 #include "htd_drv_config.h"
 
 #ifdef __cplusplus

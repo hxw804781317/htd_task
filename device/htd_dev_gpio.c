@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #define DEBUG_LVL       1       // 1:error; 2:warning; 3:debug; 4:log
 #define DEBUG_TAG       "gpio"
 #include "htd_device.h"
@@ -136,7 +138,7 @@ HTD_PIN_INT_FUNC_REGISTER(PIN_NUM_INVALID, invalid_pin_int);
 
 //////////////////////////////////////////////////////////////////////
 #if (defined(HTD_CONSOLE_ENABLE) && (DEBUG_LVL == 4))
-#include "htd_components.h"
+#include "htd_console_process.h"
 
 static pin_num_t pin_name2num(const char* pin_name)
 {

@@ -1,8 +1,9 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #define DEBUG_LVL           1       // 1:error; 2:warning; 3:debug; 4:log
 #define DEBUG_TAG           "dev.occ"
-#include "htd_dev_timer_occ.h"
 #include "htd_device.h"
-#include "htd_components.h"
+#include "htd_dev_timer_occ.h"
 
 
 //////////////////////////////////////////////////////////////////////
@@ -144,6 +145,7 @@ int32_t htd_dev_occ_is_active(htd_occ_handle_t* p_handle)
 
 //////////////////////////////////////////////////////////////////////
 #if (defined(HTD_CONSOLE_ENABLE) && defined(BSP_USING_OCC) && (DEBUG_LVL == 4))
+#include "htd_console_process.h"
 static htd_occ_handle_t* m_occ_handle = NULL;
 
 // @brief 启动

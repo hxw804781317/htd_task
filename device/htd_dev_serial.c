@@ -1,7 +1,9 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #define DEBUG_LVL       1       // 1:error; 2:warning; 3:debug; 4:log
 #define DEBUG_TAG       "dev.serial"
+#include "htd_device.h"
 #include "htd_dev_serial.h"
-#include "htd_components.h"
 
 
 //////////////////////////////////////////////////////////////////////
@@ -94,6 +96,7 @@ int32_t htd_serial_ctrl(htd_serial_handle_t* p_handle, htd_serial_cmd_t cmd, voi
 
 //////////////////////////////////////////////////////////////////////
 #if (defined(HTD_CONSOLE_ENABLE) && (DEBUG_LVL == 4))
+#include "htd_console_process.h"
 static htd_serial_handle_t* m_serial_test_handle = NULL;
 static volatile uint32_t m_notify_ms = 0;
 

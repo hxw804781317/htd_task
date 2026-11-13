@@ -238,7 +238,7 @@ static void float_print(htd_printf_ctx_t * const p_ctx, double v, uint32_t digit
         transform = true;
     }
 
-    MEMCPY(&num, &v, sizeof(num));
+    htd_memcpy(&num, &v, sizeof(num));
     sign = HTD_FMT_DOUBLE_SIGN_GET(num);
     exp = HTD_FMT_DOUBLE_EXP_GET(num);
     mant = HTD_FMT_DOUBLE_MANT_GET(num);
@@ -619,7 +619,7 @@ uint32_t htd_snprintf(char* p_data, uint32_t data_size, char const * p_fmt, ...)
     }
 
     htd_printf_ctx_t printf_ctx;
-    MEMSET(&printf_ctx, 0, sizeof(htd_printf_ctx_t));
+    htd_memset(&printf_ctx, 0, sizeof(htd_printf_ctx_t));
     printf_ctx.p_io_buffer = p_data;
     printf_ctx.io_buffer_size = data_size;
 
@@ -638,7 +638,7 @@ uint32_t htd_vsnprintf(char* p_data, uint32_t data_size, char const * p_fmt, va_
     }
 
     htd_printf_ctx_t printf_ctx;
-    MEMSET(&printf_ctx, 0, sizeof(htd_printf_ctx_t));
+    htd_memset(&printf_ctx, 0, sizeof(htd_printf_ctx_t));
     printf_ctx.p_io_buffer = p_data;
     printf_ctx.io_buffer_size = data_size;
     

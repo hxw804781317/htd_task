@@ -24,10 +24,10 @@ void console_history_cmd_save(htd_console_t *p_console)
     }
 
     htd_slist_t *p_node;
-    history_cmd_t* p_new = MALLOC(sizeof(history_cmd_t));
+    history_cmd_t* p_new = htd_malloc(sizeof(history_cmd_t));
     ASSERT(p_new);
-    MEMSET(p_new->history_cmd, 0, sizeof(p_new->history_cmd));
-    MEMCPY(p_new->history_cmd, p_console->line, p_console->line_position);
+    htd_memset(p_new->history_cmd, 0, sizeof(p_new->history_cmd));
+    htd_memcpy(p_new->history_cmd, p_console->line, p_console->line_position);
     htd_slist_append(&p_console->history_head, &p_new->node);
     p_console->history_count++;
     if (p_console->history_count > HTD_CONSOLE_HISTORY_LINES) {
@@ -35,7 +35,7 @@ void console_history_cmd_save(htd_console_t *p_console)
         p_node = htd_slist_first(&p_console->history_head);
         htd_slist_remove(&p_console->history_head, p_node);
         p_new = htd_slist_entry(p_node, history_cmd_t, node);
-        FREE(p_new);
+        htd_free(p_new);
     }
     p_console->history_current = NULL;
 #endif
@@ -75,7 +75,7 @@ void console_key_up(htd_console_t *p_console)
     }
     if (p_find) {
         p_console->history_current = p_find;
-        MEMCPY(p_console->line, p_find->history_cmd, HTD_CONSOLE_CMD_SIZE);
+        htd_memcpy(p_console->line, p_find->history_cmd, HTD_CONSOLE_CMD_SIZE);
         p_console->line_curpos = p_console->line_position = strlen(p_console->line);
         console_print_history(p_console);
         return;
@@ -95,11 +95,11 @@ void console_key_down(htd_console_t *p_console)
     htd_slist_node_t *p_node = p_console->history_current->node.next;
     if (p_node == NULL) {
         p_console->history_current = NULL;
-        MEMSET(p_console->line, 0, sizeof(p_console->line));
+        htd_memset(p_console->line, 0, sizeof(p_console->line));
         p_console->line_curpos = p_console->line_position = 0;
     } else {
         p_console->history_current = htd_slist_entry(p_node, history_cmd_t, node);
-        MEMCPY(p_console->line, p_console->history_current->history_cmd, HTD_CONSOLE_CMD_SIZE);
+        htd_memcpy(p_console->line, p_console->history_current->history_cmd, HTD_CONSOLE_CMD_SIZE);
         p_console->line_curpos = p_console->line_position = strlen(p_console->line);
     }
     console_print_history(p_console);

@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 //#define DEBUG_LVL       4       // 1:error; 2:warning; 3:debug; 4:log
 #define DEBUG_TAG       "drv.rtt"
 #include "htd_device.h"
@@ -7,7 +9,6 @@
 #if defined(LIB_SEGGER_RTT_ENABLE)
 //////////////////////////////////////////////////////////////////////
 #include "SEGGER_RTT.h"
-#include "htd_components.h"
 
 // @brief 发送数据
 static int32_t segger_rtt_write_handle(htd_serial_handle_t* p_handle, const uint8_t* p_data, uint32_t data_len)

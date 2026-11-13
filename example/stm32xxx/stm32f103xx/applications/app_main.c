@@ -1,14 +1,32 @@
 #define DEBUG_LVL 4
 #define DEBUG_TAG              "main"
+#include "htd_device.h"
+#include "htd_components.h"
 #include "app_board.h"
+
 
 
 //////////////////////////////////////////////////////////////////////
 // @brief 模拟休眠函数
 uint32_t app_sleep_func(uint32_t sleep_ms)
 {
-    // 不休眠
+#if 0
+    uint32_t diff_ms;
+    uint32_t start_ms = htd_time_ms_get();
+    // 判断打印日志是否已经传输完毕
+    if (app_console_tx_flush(sleep_ms) > 0) {
+        return 0;
+    }
+    diff_ms = htd_time_ms_diff(htd_time_ms_get(), start_ms);
+    if (diff_ms >= sleep_ms) {
+        return sleep_ms;
+    }
+
+    sleep_ms -= diff_ms;
+    return htd_pm_run(sleep_ms);
+#else
     return 0;
+#endif
 }
 
 
@@ -73,15 +91,10 @@ void load_func_test(void* arg)
 
     static uint8_t PB12_val = 0xff;
     if (PB12_val == 0xff) {
-        GPIO_InitTypeDef GPIO_InitStruct;
-        GPIO_InitStruct.Pin = GPIO_PIN_12;
-        GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-        GPIO_InitStruct.Pull = GPIO_NOPULL;
-        HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+        htd_pin_output_pp_set(PIN_NUM_GET(B, 12));
         PB12_val = 0;
     }
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, PB12_val == 0 ? GPIO_PIN_RESET : GPIO_PIN_SET);
+    htd_pin_write(PIN_NUM_GET(B, 12), PB12_val);
     PB12_val = PB12_val ? 0 : 1;
     print_debug("---load_func_test---%u", htd_time_ms_get());
 }
@@ -89,14 +102,7 @@ void load_func_test(void* arg)
 // @brief 主函数
 int main(void)
 {
-    // 初始化hal库
-    HAL_Init();
-    // 初始化系统时间
-    SystemClock_Config();
-    // 内存 heap 初始化
-    app_heap_init();
-    // 初始化任务调度器
-    htd_task_sch_init(5);
+    app_board_init();
     // 加载任务
     htd_task_load_function(load_func_test, NULL);
     // 进入任务调度

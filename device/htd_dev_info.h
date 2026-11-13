@@ -1,5 +1,7 @@
-#ifndef _HTD_MCU_INFO_H_
-#define _HTD_MCU_INFO_H_
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
+#ifndef _HTD_DEV_INFO_H_
+#define _HTD_DEV_INFO_H_
 
 #include <stdio.h>
 #include <stdint.h>
@@ -145,5 +147,5 @@ void htd_dev_info_show(void);
 #ifdef __cplusplus
 }
 #endif /*__cplusplus*/
-#endif /*_HTD_MCU_INFO_H_*/
+#endif /*_HTD_DEV_INFO_H_*/
 

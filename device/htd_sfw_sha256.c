@@ -1,6 +1,6 @@
 #define DEBUG_LVL           4       // 1:error; 2:warning; 3:debug; 4:log
 #define DEBUG_TAG           "dev.sha256"
-#include "htd_common.h"
+#include "htd_device.h"
 #include "htd_sfw_sha256.h"
 
 

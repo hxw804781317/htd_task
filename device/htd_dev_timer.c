@@ -1,8 +1,10 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #define DEBUG_LVL           1       // 1:error; 2:warning; 3:debug; 4:log
 #define DEBUG_TAG           "dev.timer"
-#include "htd_dev_timer.h"
 #include "htd_device.h"
-#include "htd_components.h"
+#include "htd_dev_timer.h"
+
 
 
 //////////////////////////////////////////////////////////////////////
@@ -103,6 +105,7 @@ void* htd_dev_timer_param_get(htd_timer_handle_t* p_handle)
 
 //////////////////////////////////////////////////////////////////////
 #if (defined(HTD_CONSOLE_ENABLE) && (DEBUG_LVL == 4) && (!defined(_WIN32)))
+#include "htd_console_process.h"
 
 // @brief 回调句柄
 void htd_dev_timer_timeout_handle(void* handle)

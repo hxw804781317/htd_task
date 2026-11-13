@@ -1,11 +1,10 @@
-#ifndef __AES128_CRYPTO_H__
-#define __AES128_CRYPTO_H__
+#ifndef _HTD_SFW_AES128_H_
+#define _HTD_SFW_AES128_H_
 
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "htd_common.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,12 +26,10 @@ extern "C" {
 
 
 #if defined(ECB) && ECB
-
 // @brief 加密数据，nopadding
 void aes128_ecb_encrypt(uint8_t* input, const uint8_t* key, uint8_t *output);
 // @brief 解密数据，zeropadding
 void aes128_ecb_decrypt(uint8_t* input, const uint8_t* key, uint8_t *output);
-
 #endif // #if defined(ECB) && ECB
 
 
@@ -45,4 +42,4 @@ void AES128_CBC_decrypt_buffer(uint8_t* output, uint8_t* input, uint32_t length,
 #ifdef __cplusplus
 }
 #endif
-#endif //__AES128_CRYPTO_H__
+#endif //_HTD_SFW_AES128_H_

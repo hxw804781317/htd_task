@@ -1,10 +1,11 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #define DEBUG_LVL   4       // 1:error; 2:warning; 3:debug; 4:log
 #define DEBUG_TAG   "drv.spim"
+#include "htd_device.h"
+#include "htd_drv_common.h"
 #include "htd_drv_dma.h"
 #include "htd_drv_clock.h"
-#include "htd_drv_common.h"
-#include "htd_device.h"
-
 
 #if (defined(BSP_USING_SPIM1) || defined(BSP_USING_SPIM2) || defined(BSP_USING_SPIM3) || \
     defined(BSP_USING_SPIM4) || defined(BSP_USING_SPIM5) || defined(BSP_USING_SPIM6))

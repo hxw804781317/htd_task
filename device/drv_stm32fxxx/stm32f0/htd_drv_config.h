@@ -1,7 +1,9 @@
-#ifndef _HTD_DRV_CONFIG_STM32F0XX_H_
-#define _HTD_DRV_CONFIG_STM32F0XX_H_
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
+#ifndef _HTD_DRV_CONFIG_STM32F0_H_
+#define _HTD_DRV_CONFIG_STM32F0_H_
 
-#include "htd_drv_gpio.h"
+#include "htd_drv_common.h"
 
 #if defined(SOC_SERIES_STM32F0)
 #ifdef __cplusplus
@@ -236,5 +238,5 @@ void DMA2_Channel5_IRQHandler(void);
 }
 #endif
 #endif /*defined(SOC_SERIES_STM32F0)*/
-#endif /*_HTD_DRV_CONFIG_STM32F0XX_H_ */
+#endif /*_HTD_DRV_CONFIG_STM32F0_H_ */
 
