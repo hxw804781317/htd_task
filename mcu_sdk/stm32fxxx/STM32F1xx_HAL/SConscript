@@ -1,0 +1,19 @@
+from building import *
+import os
+
+# get current directory
+cwd = GetCurrentDir()
+src = [];
+
+src += Glob('./STM32F1xx_HAL_Driver/Src/*.c');
+src += Glob('./CMSIS/Device/ST/stm32f1xx/Source/Templates/system_stm32f1xx.c');
+path = [cwd + '/CMSIS/Device/ST/stm32f1xx/Include', cwd + '/STM32F1xx_HAL_Driver/Inc'];
+path += [cwd + '/CMSIS/Include']
+
+CPPDEFINES = ['USE_HAL_DRIVER', 'USE_FULL_LL_DRIVER']
+group = DefineGroup('stm32_libraries', src, depend = ['SOC_SERIES_STM32F1'], CPPPATH = path, CPPDEFINES = CPPDEFINES)
+list = os.listdir(cwd)
+for item in list:
+    if os.path.isfile(os.path.join(cwd, item, 'SConscript')):
+        group = group + SConscript(os.path.join(item, 'SConscript'))
+Return('group')
