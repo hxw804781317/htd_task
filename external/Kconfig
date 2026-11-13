@@ -1,9 +1,21 @@
-menu "components config"
+menu "external config"
     config HTD_LIB_USE_EASYTLV
         bool "easytlv enable."
         default n
 
     config HTD_LIB_USE_MICRO_ECC
         bool "micr-ecc enable"
+        default n
+        
+    config HTD_LIB_USE_SDL2
+        bool "sdl2 enable"
+        default n
+    
+    config HTD_LIB_USE_SEGGER_RTT
+        bool "SEGGER-RTT enable"
+        default n
+        
+    config HTD_LIB_USE_FREERTOS
+        bool "FreeRTOS enable"
         default n
 endmenu

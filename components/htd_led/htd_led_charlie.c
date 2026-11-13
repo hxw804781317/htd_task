@@ -19,6 +19,13 @@ static void led_charlie_pin_init(led_charlie_t * p_object)
 
 #if defined(HTD_LED_USE_HW_TIMER)               // 使用硬件定时器实现查理复用LED
 //////////////////////////////////////////////////////////////////////
+typedef struct {
+    led_charlie_t* p_object;
+    uint32_t led_idx;
+    uint8_t onoff;
+} led_onoff_param_t;
+
+
 // @brief 定时器句柄
 static void led_charlie_hw_timer_handle(void* arg)
 {

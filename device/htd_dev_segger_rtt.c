@@ -6,7 +6,7 @@
 #include "htd_dev_serial.h"
 
 
-#if defined(LIB_SEGGER_RTT_ENABLE)
+#if defined(HTD_LIB_USE_SEGGER_RTT)
 //////////////////////////////////////////////////////////////////////
 #include "SEGGER_RTT.h"
 

@@ -12,7 +12,6 @@
 #define HTD_TASK_NONOS 1
 #define HTD_MEMHEAP_FF_ENABLE 1
 #define HTD_MEMHEAP_SRAM_DEV_COUNT 2
-#define LIB_SEGGER_RTT_ENABLE 1
 /* end of HTD-TASK */
 #define ARCH_ARM 1
 #define ARCH_ARM_CORTEX_M 1
@@ -30,6 +29,18 @@
 #define HTD_CONSOLE_SERIAL_TX_PINNUM 0x09
 #define HTD_CONSOLE_SERIAL_RX_PINNUM 0x0A
 #define HTD_CONSOLE_SERIAL_BAUDRATE 115200
+#define HTD_BUTTON_ENABLE 1
+#define HTD_BUTTON_SUPPORT_MATRIX 1
+#define BUTTON_MATRIX_SUPPORT_REPEAT 1
+#define HTD_LED_ENABLE 1
+#define HTD_LED_SUPPORT_CHARLIE 1
+#define HTD_LED_USE_HW_TIMER 1
+#define HTD_LED_HW_TIMER_NAME "timer1"
+/* end of components config */
+
+/* components config */
+
+#define HTD_LIB_USE_SEGGER_RTT 1
 /* end of components config */
 
 /* On-chip Peripheral Drivers */

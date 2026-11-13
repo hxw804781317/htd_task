@@ -1,11 +1,13 @@
 menu "HTD-TASK"
     config HTD_TASK_ENABLE
+        select HTD_LIB_USE_SEGGER_RTT
         bool
         default y
     config HTD_TASK_WIN32_SDL2
-    	depends on SOC_SIMULATOR
-    	bool 
-	default y
+        depends on SOC_SIMULATOR
+        bool 
+        default y
+        select HTD_LIB_USE_SDL2
     choice
         depends on !HTD_TASK_WIN32_SDL2
         prompt "Select RTOS"
@@ -13,6 +15,7 @@ menu "HTD-TASK"
         config HTD_TASK_NONOS
             bool "No RTOS"           
         config HTD_TASK_FREERTOS
+            select HTD_LIB_USE_FREERTOS
             bool "FreeRTOS"      
     endchoice
     config HTD_TASK_THREAD_PRIORITY
@@ -28,7 +31,7 @@ menu "HTD-TASK"
         bool "memheap ff enable"
         default y
     config HTD_MEMHEAP_SRAM_DEV_COUNT
-		depends on HTD_MEMHEAP_FF_ENABLE
+        depends on HTD_MEMHEAP_FF_ENABLE
         int "memheap ram device count"
         default 2
     config HTD_MEMHEAP_FF_USE_TRACE
@@ -36,9 +39,6 @@ menu "HTD-TASK"
         bool "memheap ff trace enable"
         default n
     
-    config LIB_SEGGER_RTT_ENABLE
-        bool "segger-rtt lib enable"
-        default y
     config HTD_PRINTF_SUPPORT_FLOAT
         bool "printf-fmt support float"
         default n

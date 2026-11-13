@@ -92,7 +92,7 @@ void htd_hexdump(const uint8_t *p_data, uint32_t data_len)
 }
 
 
-#ifdef LIB_SEGGER_RTT_ENABLE
+#ifdef HTD_LIB_USE_SEGGER_RTT
 //////////////////////////////////////////////////////////////////////
 #include "SEGGER_RTT.h"
 
@@ -121,6 +121,6 @@ int32_t htd_segger_rtt_print(const char *fmt, ...)
     va_end(args);
     return buff_len;
 }
-#endif /*LIB_SEGGER_RTT_ENABLE*/
+#endif /*HTD_LIB_USE_SEGGER_RTT*/
 
 

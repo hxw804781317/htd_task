@@ -31,7 +31,7 @@ extern "C" {
     extern int32_t htd_console_print(const char *fmt, ...);
     #define htd_print(fmt, ...)                 htd_console_print(fmt, ##__VA_ARGS__)
     #define gui_kprint(fmt, ...)                htd_console_print(fmt, ##__VA_ARGS__)
-#elif defined(LIB_SEGGER_RTT_ENABLE)
+#elif defined(HTD_LIB_USE_SEGGER_RTT)
     // @brief segger-rtt 打印输出
     int32_t htd_segger_rtt_print(const char *fmt, ...); 
     #define htd_print(fmt, ...)                 htd_segger_rtt_print(fmt, ##__VA_ARGS__)
