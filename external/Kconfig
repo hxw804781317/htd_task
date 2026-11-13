@@ -1,0 +1,9 @@
+menu "components config"
+    config HTD_LIB_USE_EASYTLV
+        bool "easytlv enable."
+        default n
+
+    config HTD_LIB_USE_MICRO_ECC
+        bool "micr-ecc enable"
+        default n
+endmenu
