@@ -1,0 +1,561 @@
+config BSP_USING_TIMER
+    bool 
+    default n
+config BSP_USING_PWM
+    bool 
+    default n
+config BSP_USING_OCC
+    bool 
+    default n
+menu "On-chip Peripheral Drivers"
+    menuconfig BSP_USING_UART
+        bool "Enable UART"
+        default y
+        if BSP_USING_UART
+            config BSP_USING_UART1
+                bool "Enable UART1"
+                default n
+            config BSP_UART1_RX_USING_DMA
+                bool "Enable UART1 RX DMA"
+                depends on BSP_USING_UART1
+                default n
+            config BSP_UART1_TX_USING_DMA
+                bool "Enable UART1 TX DMA"
+                depends on BSP_USING_UART1
+                default n
+
+            config BSP_USING_UART2
+                bool "Enable UART2"
+                default n
+            config BSP_UART2_RX_USING_DMA
+                bool "Enable UART2 RX DMA"
+                depends on BSP_USING_UART2
+                default n
+            config BSP_UART2_TX_USING_DMA
+                bool "Enable UART2 TX DMA"
+                depends on BSP_USING_UART2
+                default n
+
+            config BSP_USING_UART3
+                bool "Enable UART3"
+                default n
+            config BSP_UART3_RX_USING_DMA
+                bool "Enable UART3 RX DMA"
+                depends on BSP_USING_UART3
+                default n
+            config BSP_UART3_TX_USING_DMA
+                bool "Enable UART3 TX DMA"
+                depends on BSP_USING_UART3
+                default n
+        endif
+        
+    menuconfig BSP_USING_SPIM
+        bool "Enable SPI Master"
+        default n
+        if BSP_USING_SPIM
+            config BSP_USING_SPIM1
+                bool "Enable SPI1 Master"
+                default n
+            config BSP_SPIM1_USING_DMA
+                bool "Enable SPI1 Master DMA"
+                depends on BSP_USING_SPIM1
+                default n
+                
+            config BSP_USING_SPIM2
+                bool "Enable SPI2 Master"
+                default n
+            config BSP_SPIM2_USING_DMA
+                bool "Enable SPI2 Master DMA"
+                depends on BSP_USING_SPIM2
+                default n
+
+            config BSP_USING_SFW_SPIM1
+                bool "Enable Software SPI1 Master"
+                default n
+            config BSP_USING_SFW_SPIM2
+                bool "Enable Software SPI2 Master"
+                default n
+        endif
+        
+    menuconfig BSP_USING_I2CM
+        bool "Enable I2C Master"
+        default n
+        if BSP_USING_I2CM
+            config BSP_USING_I2CM1
+                bool "Enable I2C1 Master"
+                default n
+            config BSP_USING_I2CM2
+                bool "Enable I2C2 Master"
+                default n
+            
+            config BSP_USING_SFW_I2CM1
+                bool "Enable Software I2C1 Master"
+                default n
+            config BSP_USING_SFW_I2CM2
+                bool "Enable Software I2C2 Master"
+                default n
+        endif
+    
+    menuconfig BSP_USING_SDIO
+        bool "Enable SDIO"
+        default n
+    if BSP_USING_SDIO
+        config BSP_USING_SDIO0
+            bool "Enable SDIO0"
+            default n
+        config BSP_SDIO0_USING_DMA
+            bool "Enable SDIO0 DMA"
+            depends on BSP_USING_SDIO0
+            default n
+            
+        config BSP_USING_SDIO1
+            bool "Enable SDIO1"
+            default n
+        config BSP_SDIO1_USING_DMA
+            bool "Enable SDIO1 DMA"
+            depends on BSP_USING_SDIO1
+            default n   
+    endif 
+
+    menuconfig BSP_USING_ADC
+        bool "Enable ADC"
+        default n
+    if BSP_USING_ADC
+        config BSP_USING_ADC0
+            bool "Enable ADC0"
+            default n
+        config BSP_USING_ADC1
+            bool "Enable ADC1"
+            default n
+        config BSP_USING_ADC2
+            bool "Enable ADC2"
+            default n
+        config BSP_USING_ADC3
+            bool "Enable ADC3"
+            default n
+        config BSP_USING_ADC4
+            bool "Enable ADC4"
+            default n
+        config BSP_USING_ADC5
+            bool "Enable ADC5"
+            default n
+    endif
+    
+    menuconfig BSP_USING_RTC
+        bool "Enable RTC"
+        default y
+    
+    menuconfig BSP_USING_WDT
+        bool "Enable watchdog."
+        default y
+    if BSP_USING_WDT
+        config BSP_WDT_TIMEOUT_MS
+            int "set timeout ms(2000~10000)."
+            default 3000
+    endif
+    
+    menuconfig BSP_USING_PM
+        bool "Enable Power Management"
+        default y
+
+    menuconfig BSP_USING_CRC
+        bool "Enable Cyclic Redundancy Check(CRC)."
+        default y 
+        
+    menuconfig BSP_USING_USB_DEVICE
+        bool "Enable USB-Device"
+        default n
+    if BSP_USING_USB_DEVICE
+        choice
+            prompt "Select usb device speed"
+            default BSP_USB_DEVICE_SPEED_FS
+            config BSP_USB_DEVICE_SPEED_FS
+                bool "FS"
+            config BSP_USB_DEVICE_SPEED_HS
+                bool "HS"
+            config BSP_USB_DEVICE_SPEED_AUTO
+                bool "AUTO"
+        endchoice
+        config BSP_USBD_VID
+            hex "USB device Vendor-ID"
+            default 0x36b7
+        config BSP_USBD_PID
+            hex "USB device Product-ID"
+            default 0xffff
+        config BSP_USBD_MENUFATURER_NAME
+            string "USB device menufaturer name."
+            default "htd"
+        config BSP_USBD_PRODUCT_NAME
+            string "USB device product name."
+            default "usbd-dfu"
+        config BSP_USING_USBD_CDC_ACM
+            bool "Enable USBD CDC_ACM"
+            default n
+        config BSP_USING_USBD_CDC_RNDIS
+            bool "Enable USBD CDC_RNDIS"
+            default n
+        config BSP_USING_USBD_CDC_ECM
+            bool "Enable USBD CDC_ECM"
+            default n
+        config BSP_USING_USBD_CDC_NCM
+            bool "Enable USBD CDC_NCM"
+            default n
+        config BSP_USING_USBD_ADB
+            bool "Enable USBD ADB"
+            default n
+        config BSP_USING_USBD_DFU
+            bool "Enable USBD DFU"
+            default n
+        config BSP_USING_USBD_HID
+            bool "Enable USBD HID"
+            default n
+        config BSP_USING_USBD_MSC
+            bool "Enable USBD MSC"
+            default n
+        config BSP_USBD_MSC_DEV_COUNT
+            depends on BSP_USING_USBD_MSC
+            int "USBD MSC devices count"
+            range 1 3
+            default 1
+        config BSP_USING_USBD_MTP
+            bool "Enable USBD MTP"
+            default n
+        config BSP_USING_USBD_VIDEO
+            bool "Enable USBD VIDEO"
+            default n
+        config BSP_USING_USBD_AUDIO
+            bool "Enable USBD AUDIO"
+            default n
+        config BSP_USING_USBD_VENDOR_PLAYER
+            bool "Enable USBD VENDOR_PLAYER"
+            default n
+        config BSP_USING_USBD_GAMEPAD
+            bool "Enable USBD GAMEPAD"
+            default n
+        config BSP_USING_USBD_MSC_BOOTUF2
+            depends on BSP_USING_USBD_MSC
+            bool "Enable USBD MSC bootuf2"
+            default n
+    endif
+            
+    menuconfig BSP_USING_TIM_PWM_OCC
+        bool "Enable TIM/PWM/OCC"
+        default n
+    if BSP_USING_TIM_PWM_OCC
+        config BSP_USING_TIM0
+            bool "Enable TIM0"
+            default n  
+            choice
+                depends on BSP_USING_TIM0
+                prompt "select TIM0 mode"
+                    default BSP_USING_TIM0_MODE_TIM
+                config BSP_USING_TIM0_MODE_TIM
+                    bool "Timer Mode"
+                    select BSP_USING_TIMER
+                config BSP_USING_TIM0_MODE_PWM
+                    bool "PWM Mode"
+                    select BSP_USING_PWM
+                config BSP_USING_TIM0_MODE_OCC
+                    bool "OCC Mode"
+                    select BSP_USING_OCC
+            endchoice
+            config BSP_TIM0_USING_DMA
+                bool "TIM0 using DMA."
+                depends on (BSP_USING_TIM0_MODE_PWM || BSP_USING_TIM0_MODE_OCC)
+                default n
+        config BSP_USING_TIM1
+            bool "Enable TIM1"
+            default n  
+            choice
+                depends on BSP_USING_TIM1
+                prompt "select TIM1 mode"
+                    default BSP_USING_TIM1_MODE_TIM
+                config BSP_USING_TIM1_MODE_TIM
+                    bool "Timer Mode"
+                    select BSP_USING_TIMER
+                config BSP_USING_TIM1_MODE_PWM
+                    bool "PWM Mode"
+                    select BSP_USING_PWM
+                config BSP_USING_TIM1_MODE_OCC
+                    bool "OCC Mode"
+                    select BSP_USING_OCC
+            endchoice
+            config BSP_TIM1_USING_DMA
+                bool "TIM1 using DMA."
+                depends on (BSP_USING_TIM1_MODE_PWM || BSP_USING_TIM1_MODE_OCC)
+                default n
+        config BSP_USING_TIM2
+            bool "Enable TIM2"
+            default n  
+            choice
+                depends on BSP_USING_TIM2
+                prompt "select TIM2 mode"
+                    default BSP_USING_TIM2_MODE_TIM
+                config BSP_USING_TIM2_MODE_TIM
+                    bool "Timer Mode"
+                    select BSP_USING_TIMER
+                config BSP_USING_TIM2_MODE_PWM
+                    bool "PWM Mode"
+                    select BSP_USING_PWM
+                config BSP_USING_TIM2_MODE_OCC
+                    bool "OCC Mode"
+                    select BSP_USING_OCC
+            endchoice
+            config BSP_TIM2_USING_DMA
+                bool "TIM2 using DMA."
+                depends on (BSP_USING_TIM2_MODE_PWM || BSP_USING_TIM2_MODE_OCC)
+                default n
+        config BSP_USING_TIM3
+            bool "Enable TIM3"
+            default n  
+            choice
+                depends on BSP_USING_TIM3
+                prompt "select TIM3 mode"
+                    default BSP_USING_TIM3_MODE_TIM
+                config BSP_USING_TIM3_MODE_TIM
+                    bool "Timer Mode"
+                    select BSP_USING_TIMER
+                config BSP_USING_TIM3_MODE_PWM
+                    bool "PWM Mode"
+                    select BSP_USING_PWM
+                config BSP_USING_TIM3_MODE_OCC
+                    bool "OCC Mode"
+                    select BSP_USING_OCC
+            endchoice
+            config BSP_TIM3_USING_DMA
+                bool "TIM3 using DMA."
+                depends on (BSP_USING_TIM3_MODE_PWM || BSP_USING_TIM3_MODE_OCC)
+                default n
+        config BSP_USING_TIM4
+            bool "Enable TIM4"
+            default n  
+            choice
+                depends on BSP_USING_TIM4
+                prompt "select TIM4 mode"
+                    default BSP_USING_TIM4_MODE_TIM
+                config BSP_USING_TIM4_MODE_TIM
+                    bool "Timer Mode"
+                    select BSP_USING_TIMER
+                config BSP_USING_TIM4_MODE_PWM
+                    bool "PWM Mode"
+                    select BSP_USING_PWM
+                config BSP_USING_TIM4_MODE_OCC
+                    bool "OCC Mode"
+                    select BSP_USING_OCC
+            endchoice
+            config BSP_TIM4_USING_DMA
+                bool "TIM4 using DMA."
+                depends on (BSP_USING_TIM4_MODE_PWM || BSP_USING_TIM4_MODE_OCC)
+                default n
+        config BSP_USING_TIM5
+            bool "Enable TIM5"
+            default n  
+            choice
+                depends on BSP_USING_TIM5
+                prompt "select TIM5 mode"
+                    default BSP_USING_TIM5_MODE_TIM
+                config BSP_USING_TIM5_MODE_TIM
+                    bool "Timer Mode"
+                    select BSP_USING_TIMER
+                config BSP_USING_TIM5_MODE_PWM
+                    bool "PWM Mode"
+                    select BSP_USING_PWM
+                config BSP_USING_TIM5_MODE_OCC
+                    bool "OCC Mode"
+                    select BSP_USING_OCC
+            endchoice
+            config BSP_TIM5_USING_DMA
+                bool "TIM5 using DMA."
+                depends on (BSP_USING_TIM5_MODE_PWM || BSP_USING_TIM5_MODE_OCC)
+                default n
+        config BSP_USING_TIM6
+            bool "Enable TIM6"
+            default n  
+            choice
+                depends on BSP_USING_TIM6
+                prompt "select TIM6 mode"
+                    default BSP_USING_TIM6_MODE_TIM
+                config BSP_USING_TIM6_MODE_TIM
+                    bool "Timer Mode"
+                    select BSP_USING_TIMER
+                config BSP_USING_TIM6_MODE_PWM
+                    bool "PWM Mode"
+                    select BSP_USING_PWM
+                config BSP_USING_TIM6_MODE_OCC
+                    bool "OCC Mode"
+                    select BSP_USING_OCC
+            endchoice
+            config BSP_TIM6_USING_DMA
+                bool "TIM6 using DMA."
+                depends on (BSP_USING_TIM6_MODE_PWM || BSP_USING_TIM6_MODE_OCC)
+                default n
+        config BSP_USING_TIM7
+            bool "Enable TIM7"
+            default n  
+            choice
+                depends on BSP_USING_TIM7
+                prompt "select TIM7 mode"
+                    default BSP_USING_TIM7_MODE_TIM
+                config BSP_USING_TIM7_MODE_TIM
+                    bool "Timer Mode"
+                    select BSP_USING_TIMER
+                config BSP_USING_TIM7_MODE_PWM
+                    bool "PWM Mode"
+                    select BSP_USING_PWM
+                config BSP_USING_TIM7_MODE_OCC
+                    bool "OCC Mode"
+                    select BSP_USING_OCC
+            endchoice
+            config BSP_TIM7_USING_DMA
+                bool "TIM7 using DMA."
+                depends on (BSP_USING_TIM7_MODE_PWM || BSP_USING_TIM7_MODE_OCC)
+                default n
+        config BSP_USING_TIM8
+            bool "Enable TIM8"
+            default n  
+            choice
+                depends on BSP_USING_TIM8
+                prompt "select TIM8 mode"
+                    default BSP_USING_TIM8_MODE_TIM
+                config BSP_USING_TIM8_MODE_TIM
+                    bool "Timer Mode"
+                    select BSP_USING_TIMER
+                config BSP_USING_TIM8_MODE_PWM
+                    bool "PWM Mode"
+                    select BSP_USING_PWM
+                config BSP_USING_TIM8_MODE_OCC
+                    bool "OCC Mode"
+                    select BSP_USING_OCC
+            endchoice
+            config BSP_TIM8_USING_DMA
+                bool "TIM8 using DMA."
+                depends on (BSP_USING_TIM8_MODE_PWM || BSP_USING_TIM8_MODE_OCC)
+                default n
+        config BSP_USING_TIM9
+            bool "Enable TIM9"
+            default n  
+            choice
+                depends on BSP_USING_TIM9
+                prompt "select TIM9 mode"
+                    default BSP_USING_TIM9_MODE_TIM
+                config BSP_USING_TIM9_MODE_TIM
+                    bool "Timer Mode"
+                    select BSP_USING_TIMER
+                config BSP_USING_TIM9_MODE_PWM
+                    bool "PWM Mode"
+                    select BSP_USING_PWM
+                config BSP_USING_TIM9_MODE_OCC
+                    bool "OCC Mode"
+                    select BSP_USING_OCC
+            endchoice
+            config BSP_TIM9_USING_DMA
+                bool "TIM9 using DMA."
+                depends on (BSP_USING_TIM9_MODE_PWM || BSP_USING_TIM9_MODE_OCC)
+                default n
+        config BSP_USING_TIM10
+            bool "Enable TIM10"
+            default n  
+            choice
+                depends on BSP_USING_TIM10
+                prompt "select TIM10 mode"
+                    default BSP_USING_TIM10_MODE_TIM
+                config BSP_USING_TIM10_MODE_TIM
+                    bool "Timer Mode"
+                    select BSP_USING_TIMER
+                config BSP_USING_TIM10_MODE_PWM
+                    bool "PWM Mode"
+                    select BSP_USING_PWM
+                config BSP_USING_TIM10_MODE_OCC
+                    bool "OCC Mode"
+                    select BSP_USING_OCC
+            endchoice
+            config BSP_TIM10_USING_DMA
+                bool "TIM10 using DMA."
+                depends on (BSP_USING_TIM10_MODE_PWM || BSP_USING_TIM10_MODE_OCC)
+                default n
+        config BSP_USING_TIM11
+            bool "Enable TIM11"
+            default n  
+            choice
+                depends on BSP_USING_TIM11
+                prompt "select TIM11 mode"
+                    default BSP_USING_TIM11_MODE_TIM
+                config BSP_USING_TIM11_MODE_TIM
+                    bool "Timer Mode"
+                    select BSP_USING_TIMER
+                config BSP_USING_TIM11_MODE_PWM
+                    bool "PWM Mode"
+                    select BSP_USING_PWM
+                config BSP_USING_TIM11_MODE_OCC
+                    bool "OCC Mode"
+                    select BSP_USING_OCC
+            endchoice
+            config BSP_TIM11_USING_DMA
+                bool "TIM11 using DMA."
+                depends on (BSP_USING_TIM11_MODE_PWM || BSP_USING_TIM11_MODE_OCC)
+                default n
+        config BSP_USING_TIM12
+            bool "Enable TIM12"
+            default n  
+            choice
+                depends on BSP_USING_TIM12
+                prompt "select TIM12 mode"
+                    default BSP_USING_TIM12_MODE_TIM
+                config BSP_USING_TIM12_MODE_TIM
+                    bool "Timer Mode"
+                    select BSP_USING_TIMER
+                config BSP_USING_TIM12_MODE_PWM
+                    bool "PWM Mode"
+                    select BSP_USING_PWM
+                config BSP_USING_TIM12_MODE_OCC
+                    bool "OCC Mode"
+                    select BSP_USING_OCC
+            endchoice
+            config BSP_TIM12_USING_DMA
+                bool "TIM12 using DMA."
+                depends on (BSP_USING_TIM12_MODE_PWM || BSP_USING_TIM12_MODE_OCC)
+                default n
+        config BSP_USING_TIM13
+            bool "Enable TIM13"
+            default n  
+            choice
+                depends on BSP_USING_TIM13
+                prompt "select TIM13 mode"
+                    default BSP_USING_TIM13_MODE_TIM
+                config BSP_USING_TIM13_MODE_TIM
+                    bool "Timer Mode"
+                    select BSP_USING_TIMER
+                config BSP_USING_TIM13_MODE_PWM
+                    bool "PWM Mode"
+                    select BSP_USING_PWM
+                config BSP_USING_TIM13_MODE_OCC
+                    bool "OCC Mode"
+                    select BSP_USING_OCC
+            endchoice
+            config BSP_TIM13_USING_DMA
+                bool "TIM13 using DMA."
+                depends on (BSP_USING_TIM13_MODE_PWM || BSP_USING_TIM13_MODE_OCC)
+                default n
+        config BSP_USING_TIM14
+            bool "Enable TIM14"
+            default n  
+            choice
+                depends on BSP_USING_TIM14
+                prompt "select TIM14 mode"
+                    default BSP_USING_TIM14_MODE_TIM
+                config BSP_USING_TIM14_MODE_TIM
+                    bool "Timer Mode"
+                    select BSP_USING_TIMER
+                config BSP_USING_TIM14_MODE_PWM
+                    bool "PWM Mode"
+                    select BSP_USING_PWM
+                config BSP_USING_TIM14_MODE_OCC
+                    bool "OCC Mode"
+                    select BSP_USING_OCC
+            endchoice
+            config BSP_TIM14_USING_DMA
+                bool "TIM14 using DMA."
+                depends on (BSP_USING_TIM14_MODE_PWM || BSP_USING_TIM14_MODE_OCC)
+                default n
+    endif  
+endmenu
