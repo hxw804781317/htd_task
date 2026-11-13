@@ -1,0 +1,18 @@
+# for module compiling
+import os
+from building import *
+
+# get current dir path
+cwd = GetCurrentDir()
+objs = []
+
+# init src and inc vars
+src = []
+inc = [cwd]
+
+if GetDepend('HTD_MEMHEAP_FF_ENABLE'):
+    src = src + Glob("./htd_heap_freertos.c")
+else:
+    src = src + Glob("./heap_4.c")
+objs = DefineGroup('FreeRTOS', src, depend = ['HTD_OS_FREERTOS'], CPPPATH = inc, LOCAL_CCFLAGS = '')         
+Return('objs')

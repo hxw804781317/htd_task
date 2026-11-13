@@ -1,0 +1,45 @@
+# for module compiling
+import os
+from building import *
+
+# get current dir path
+cwd = GetCurrentDir()
+
+list = os.listdir(cwd)
+objs = []
+
+# init src and inc vars
+src = []
+inc = []
+
+# 适配Keil5
+if GetOption('target') == 'mdk5' or GetOption('target') == 'si':
+    if GetDepend('ARCH_ARM_CORTEX_M0'):
+        src = src + Glob('./RVDS/ARM_CM0/port.c');
+        inc += [cwd + '/RVDS/ARM_CM0'];
+    elif GetDepend('ARCH_ARM_CORTEX_M3'):
+        src = src + Glob('./RVDS/ARM_CM3/port.c');
+        inc += [cwd + '/RVDS/ARM_CM3'];
+    elif GetDepend("ARCH_ARM_CORTEX_M4"):
+        # M4 不带浮点运算的使用 M3
+        if GetDepend('ARCH_ARM_MPU') and GetDepend('ARCH_ARM_CORTEX_FPU'):
+            src = src + Glob("./RVDS/ARM_CM4_MPU/port.c");
+            inc += [cwd + '/RVDS/ARM_CM4_MPU'];
+        elif GetDepend('ARCH_ARM_CORTEX_FPU'):
+            src = src + Glob("./RVDS/ARM_CM4F/port.c");
+            inc += [cwd + '/RVDS/ARM_CM4F'];
+        else:
+            src = src + Glob('./RVDS/ARM_CM3/port.c');
+            inc += [cwd + '/RVDS/ARM_CM3'];
+    elif GetDepend("ARCH_ARM_CORTEX_M7"):
+        src = src + Glob("./RVDS/ARM_CM7/r0p1/port.c");
+        inc += [cwd + '/RVDS/ARM_CM7/r0p1'];
+
+
+#src += Glob("./Common/*.c");
+objs = DefineGroup('FreeRTOS', src, depend = [''], CPPPATH = inc, LOCAL_CCFLAGS = '')
+for d in list:
+    path = os.path.join(cwd, d)
+    if os.path.isfile(os.path.join(path, 'SConscript')):
+        objs = objs + SConscript(os.path.join(d, 'SConscript'))              
+Return('objs')
