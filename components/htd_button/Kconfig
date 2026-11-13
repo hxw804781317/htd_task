@@ -1,0 +1,19 @@
+menuconfig HTD_BUTTON_ENABLE
+    bool "htd button enable."
+    default n
+    if HTD_BUTTON_ENABLE
+        config HTD_BUTTON_SUPPORT_MATRIX
+            bool "support matrix-button."
+            default n
+        config BUTTON_MATRIX_SUPPORT_REPEAT
+            depends on HTD_BUTTON_SUPPORT_MATRIX
+            bool "matrix-button support repeat."
+            default n
+        config HTD_BUTTON_SUPPORT_CHARLIE
+            bool "support charlie-button."
+            default n
+        config BUTTON_CHARLIE_SUPPORT_REPEAT
+            depends on HTD_BUTTON_SUPPORT_CHARLIE
+            bool "charlie-button support repeat."
+            default n
+    endif

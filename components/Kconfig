@@ -1,7 +1,7 @@
 menu "components config"
     #rsource "./htd_boot/Kconfig"
     rsource "./htd_console/Kconfig"
-    #rsource "./htd_button/Kconfig"
-    #rsource "./htd_led/Kconfig"
+    rsource "./htd_button/Kconfig"
+    rsource "./htd_led/Kconfig"
     #rsource "./htd_vfs/Kconfig"
 endmenu
