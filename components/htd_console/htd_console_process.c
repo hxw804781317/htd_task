@@ -19,7 +19,7 @@ static int console_help_cmd(int argc, char **argv)
     p_item = htd_section_first_item_get(m_htd_console.cmd_table_begin, m_htd_console.cmd_table_end);
     while (p_item) {
         p_shell = (csl_cmd_cb_t*)p_item;
-        if (htd_memcmp(p_shell->p_name, "_cmd_", 6) == 0) {
+        if (htd_memcmp(p_shell->p_name, "_cmd_", 5) == 0) {
             htd_console_print("%s \r\n", &p_shell->p_name[5]);
         }
         p_item = htd_section_next_item_get(p_item, m_htd_console.cmd_table_end, sizeof(csl_cmd_cb_t));
@@ -116,7 +116,7 @@ static cmd_function_t console_shell_cmd_get(const char *cmd, int size)
     while (p_item) {
         p_shell = (csl_cmd_cb_t*)p_item;
         //htd_console_print("p_name=%s\n", p_shell->p_name);
-        if (htd_memcmp(p_shell->p_name, "_cmd_", 6) == 0) {
+        if (htd_memcmp(p_shell->p_name, "_cmd_", 5) == 0) {
             if (htd_memcmp(&p_shell->p_name[5], cmd, size) == 0 && p_shell->p_name[5 + size] == '\0') {
                 //htd_console_print("p_name=%s\n", p_shell->p_name);
                 cmd_func = p_shell->func;
