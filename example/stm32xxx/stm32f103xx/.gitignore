@@ -4,6 +4,7 @@ Debug
 GPATH
 GRTAGS
 GTAGS
+.config.old
 .vscode
 JLinkLog.txt
 JLinkSettings.ini
@@ -24,7 +25,5 @@ cconfig.h
 /JLinkSettings.ini
 /JLinkLog.txt
 /bin
-/SConscript
-/SConstruct
 /.sconsign.dblite
-/*.py
+/version.h

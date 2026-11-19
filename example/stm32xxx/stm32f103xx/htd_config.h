@@ -38,10 +38,10 @@
 #define HTD_LED_HW_TIMER_NAME "timer1"
 /* end of components config */
 
-/* components config */
+/* external config */
 
 #define HTD_LIB_USE_SEGGER_RTT 1
-/* end of components config */
+/* end of external config */
 
 /* On-chip Peripheral Drivers */
 

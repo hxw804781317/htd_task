@@ -1,12 +1,9 @@
 # for module compiling
 import os
 from building import *
-import rtconfig
 
 # get current dir path
 cwd = GetCurrentDir()
-
-list = os.listdir(cwd)
 objs = []
 
 # init src and inc vars

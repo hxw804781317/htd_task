@@ -1,20 +1,4 @@
 mainmenu "Configuration"
-
-config BSP_DIR
-    string
-    option env="BSP_ROOT"
-    default "."
-
-config SDK_DIR
-    string
-    option env="SDK_ROOT"
-    default "../.."
-    
-config PKGS_DIR
-    string
-    option env="PKGS_ROOT"
-    default "packages"
-
 config SOC_FAMILY_STM32
     bool 
     default n

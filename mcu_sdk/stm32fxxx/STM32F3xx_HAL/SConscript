@@ -1,5 +1,4 @@
-import rtconfig
-Import('RTT_ROOT')
+import os
 from building import *
 
 # get current directory
