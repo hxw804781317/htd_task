@@ -11,6 +11,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #include <WinBase.h>
+#include <time.h>
 static uint32_t m_timestamps;
 static htd_time_t m_time;
 #endif
@@ -245,6 +246,8 @@ void htd_rtc_info_show(void)
 
 //////////////////////////////////////////////////////////////////////
 #if (defined(HTD_CONSOLE_ENABLE) && (DEBUG_LVL == 4) && 0)
+#include "htd_components.h"
+
 // @brief 调试命令
 static int rtc_cmd(int argc, char **argv)
 {

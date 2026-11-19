@@ -1,0 +1,10 @@
+mainmenu "Configuration"
+config SOC_SIMULATOR
+    bool 
+    default y
+
+config BSP_USING_PC_SIMULATOR
+    bool
+    default y
+
+rsource "../../../Kconfig"

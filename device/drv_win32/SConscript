@@ -1,0 +1,12 @@
+import os
+from building import *
+
+# get current dir path
+cwd = GetCurrentDir()
+objs = []
+src = []
+inc = [cwd]
+
+src += Glob('./*.c');
+objs = DefineGroup('htd_device', src, depend = ['SOC_SIMULATOR'], CPPPATH = inc, LOCAL_CCFLAGS = '');
+Return('objs');

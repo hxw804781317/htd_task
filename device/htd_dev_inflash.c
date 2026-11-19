@@ -180,7 +180,7 @@ static void inflash_data_dump(uint32_t addr, uint32_t size)
             data_len = size;
         }
         htd_inflash_read(addr, data, data_len);
-        htd_console_hexdump(data, data_len);
+        htd_hexdump(data, data_len);
         addr += data_len;
         size -= data_len;
         htd_delay_ms(30);

@@ -1,0 +1,17 @@
+import sys
+import os
+from building import *
+
+cwd = GetCurrentDir()
+LIBS = []
+LIBPATH = []
+CPPPATH = [cwd]
+
+src = Glob('*.c')
+obj = DefineGroup('board', src, depend = [''], CPPPATH = CPPPATH, LIBS=LIBS, LIBPATH=LIBPATH)
+
+list = os.listdir(cwd)
+for item in list:
+    if os.path.isfile(os.path.join(cwd, item, 'SConscript')):
+        obj = obj + SConscript(os.path.join(item, 'SConscript'))
+Return('obj')

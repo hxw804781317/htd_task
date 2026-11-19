@@ -1,6 +1,5 @@
 menu "HTD-TASK"
     config HTD_TASK_ENABLE
-        select HTD_LIB_USE_SEGGER_RTT
         bool
         default y
     config HTD_TASK_WIN32_SDL2
@@ -13,10 +12,12 @@ menu "HTD-TASK"
         prompt "Select RTOS"
         default HTD_TASK_NONOS
         config HTD_TASK_NONOS
-            bool "No RTOS"           
+            bool "No RTOS"
+            select HTD_LIB_USE_SEGGER_RTT
         config HTD_TASK_FREERTOS
             select HTD_LIB_USE_FREERTOS
-            bool "FreeRTOS"      
+            bool "FreeRTOS" 
+            select HTD_LIB_USE_SEGGER_RTT			
     endchoice
     config HTD_TASK_THREAD_PRIORITY
         depends on !HTD_TASK_NONOS

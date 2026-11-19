@@ -114,7 +114,7 @@ static int register_hexdump_cmd(int argc, char **argv)
         if (data_len > size) {
             data_len = size;
         }
-        htd_console_hexdump((const uint8_t*)addr, data_len);
+        htd_hexdump((const uint8_t*)addr, data_len);
         addr += data_len;
         size -= data_len;
         htd_delay_ms(30);

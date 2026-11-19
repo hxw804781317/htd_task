@@ -71,7 +71,6 @@ void htd_timer_destroy(void* handle);
 // @return 成功返回0，失败返回-1
 int htd_timer_start(void *handle);
 // @brief 重启定时器
-// @return 成功返回0，失败返回-1
 void htd_timer_restart(void *handle, unsigned int ms);
 // @brief 暂停定时器
 // @return 成功返回0，失败返回-1

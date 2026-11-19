@@ -1,0 +1,104 @@
+import os
+import sys
+import config
+
+if os.getenv('OS_ROOT'):
+    OS_ROOT = os.getenv('OS_ROOT')
+else:
+    OS_ROOT = os.path.normpath(os.getcwd() + '/../../../');
+
+# 加载编译脚本
+sys.path = sys.path + [os.path.join(OS_ROOT, 'tools')]
+try:
+    from building import *
+except Exception as e:
+    print('Cannot found root directory, please check OS_ROOT');
+    print(f"真实异常：{type(e)} , {e}")
+    import traceback
+    traceback.print_exc()
+    exit(-1)
+
+#固件名字
+TARGET = config.TARGET
+
+# 创建文件夹
+os.system("mkdir disk")
+os.system("mkdir images")
+
+# 执行当前目录下的图片资源处理脚本
+
+# 创建编译环境对象`env`
+env = Environment(TARGET_ARCH='x86')
+
+# 根据平台做部分处理
+if config.PLATFORM == 'cl':
+    libs = Split('''
+    winmm
+    gdi32
+    winspool
+    comdlg32
+    advapi32
+    shell32
+    ole32
+    oleaut32
+    uuid
+    odbc32
+    odbccp32
+    ''')
+    definitions = Split('''
+    WIN32
+    _DEBUG
+    _CONSOLE
+    MSVC
+    ''')
+    env.Append(CFLAGS=config.CFLAGS)
+    env.Append(LINKFLAGS=config.LFLAGS)
+    env['LIBS']=libs
+    env['CPPDEFINES']=definitions
+elif config.PLATFORM == 'mingw':
+    libs = Split('''
+        winmm
+        gdi32
+        winspool
+        comdlg32
+        advapi32
+        shell32
+        ole32
+        oleaut32
+        uuid
+        odbc32
+        odbccp32
+        ''')
+    DefaultEnvironment(tools=[])
+    env = Environment(tools = ['mingw'],
+        AS = config.AS, ASFLAGS = config.AFLAGS,
+        CC = config.CC, CFLAGS = config.CFLAGS,
+        AR = config.AR, ARFLAGS = '-rc',
+        LINK = config.LINK, LINKFLAGS = config.LFLAGS)
+    env['LIBS']=libs
+    env.PrependENVPath('PATH', config.EXEC_PATH)
+elif config.CROSS_TOOL == 'clang-analyze':
+    env = Environment(toolpath=[os.path.join(OS_ROOT, 'tools', 'tools')], tools = [config.CROSS_TOOL])
+else:
+    env['CC']=config.CC
+    env.Append(CFLAGS=config.CFLAGS)
+    env.Append(LINKFLAGS=config.LFLAGS)
+    if sys.platform == 'win32':
+        env.Append(LIBS=['winmm'])
+
+# 当前目录的绝对路径
+BSP_ROOT = os.path.abspath('./');
+Export('BSP_ROOT');
+Export('OS_ROOT')
+Export('config')
+
+# 编译前准备
+PrepareBuilding(env, OS_ROOT);
+
+# 添加编译文件
+objs = SConscript('SConscript', variant_dir='build', duplicate=0);
+objs.extend(SConscript(os.path.join(BSP_ROOT, '../../../SConscript'), variant_dir='build/bsp', duplicate=0));
+
+# end building
+program = env.Program(TARGET, objs);
+EndBuilding(TARGET, program);

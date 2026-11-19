@@ -29,6 +29,12 @@ void htd_delay_us(uint32_t us)
     } while (end.QuadPart < target);
 }
 
+// @brief 延迟 ms
+void htd_delay_ms(uint32_t ms)
+{
+    SDL_Delay(ms);
+}
+
 // @brief 线程睡眠
 void htd_sleep_ms(uint32_t ms)
 {
@@ -112,7 +118,6 @@ int htd_timer_start(void *handle)
     return 0;
 }
 // @brief 重启定时器
-// @return 成功返回0，失败返回-1
 void htd_timer_restart(void *handle, unsigned int ms)
 {
     sdl2_timer_t* p_timer = (sdl2_timer_t*)handle;
@@ -122,10 +127,11 @@ void htd_timer_restart(void *handle, unsigned int ms)
     p_timer->interval_ms = ms;
     p_timer->id = SDL_AddTimer(p_timer->interval_ms, win32_sdl2_timer_handle, handle);
     if (p_timer->id == 0) {
-        return -1;
+        print_error("SDL_AddTimer failed. id=%d", p_timer->id);
+        ASSERT(0);
+        return ;
     }
     p_timer->flag = SDL2_TIMER_FLAG;
-    return 0;
 }
 // @brief 暂停定时器
 // @return 成功返回0，失败返回-1
