@@ -1,0 +1,22 @@
+mainmenu "Configuration"
+config SOC_FAMILY_STM32
+    bool 
+    default n
+config SOC_SERIES_STM32F0
+    bool
+    default n
+config SOC_SERIES_STM32F072XX
+    bool
+    default n
+    
+config SOC_STM32F072XB
+    bool
+    select SOC_FAMILY_STM32
+    select SOC_SERIES_STM32F0
+    select SOC_SERIES_STM32F072XX
+    select ARCH_ARM_CORTEX_M0
+    default y
+
+rsource "../../../Kconfig"
+rsource "../../../mcu_sdk/stm32fxxx/stm32f072.Kconfig"
+

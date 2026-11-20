@@ -84,7 +84,7 @@ int32_t htd_rtc_bkp_data_get(uint8_t bkp_idx, uint8_t* p_data, uint32_t data_len
         if (data_len > sizeof(data)) {
             data_len = sizeof(data);
         }
-        memcpy(p_data, &data, data_len);
+        htd_memcpy(p_data, &data, data_len);
         return data_len;
     } 
 #endif
@@ -248,7 +248,8 @@ void drv_rtc_alarm_enable_set(bool is_enable, uint32_t tick_seconds)
         rtc_alarm.AlarmTime.Seconds = tick_seconds % 60;
         rtc_alarm.Alarm = RTC_ALARM_A;
         if (HAL_RTC_SetAlarm_IT(&m_rtc_handle, &rtc_alarm, RTC_FORMAT_BIN) != HAL_OK) {
-            Error_Handler();
+            print_error("HAL_RTC_SetAlarm_IT failed.");
+            ASSERT(0);
         }
     } else {
         HAL_RTC_DeactivateAlarm(&m_rtc_handle, RTC_ALARM_A);

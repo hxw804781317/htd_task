@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+
 #if defined(SOC_SERIES_STM32F0)
     #include "stm32f0xx_hal.h"
 #elif defined(SOC_SERIES_STM32F1)

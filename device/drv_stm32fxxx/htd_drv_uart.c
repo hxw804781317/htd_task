@@ -4,7 +4,7 @@
 #define DEBUG_TAG   "drv.uart"
 #include "htd_device.h"
 #include "htd_drv_common.h"
-
+#include "htd_drv_gpio.h"
 
 #if defined(BSP_USING_UART1) || defined(BSP_USING_UART2) || defined(BSP_USING_UART3) || \
     defined(BSP_USING_UART4) || defined(BSP_USING_UART5) || defined(BSP_USING_UART6) || \

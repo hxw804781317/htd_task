@@ -6,6 +6,7 @@
 #include "htd_drv_common.h"
 #include "htd_drv_dma.h"
 #include "htd_drv_clock.h"
+#include "htd_drv_gpio.h"
 
 #if (defined(BSP_USING_SPIM1) || defined(BSP_USING_SPIM2) || defined(BSP_USING_SPIM3) || \
     defined(BSP_USING_SPIM4) || defined(BSP_USING_SPIM5) || defined(BSP_USING_SPIM6))
