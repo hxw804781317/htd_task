@@ -1,0 +1,72 @@
+menuconfig HTD_SENSOR_USING_9AXIS
+    bool "Enable 9-AXIS(acceleromete+Gyroscope+Magnetometer)"
+    default n
+    if HTD_SENSOR_USING_9AXIS
+        choice
+            prompt "select 9-AXIS chip"
+                default HTD_9AXIS_USING_SIMULATE
+            config HTD_9AXIS_USING_SIMULATE
+                bool "Enable 9-AXIS Simulate"
+            config HTD_9AXIS_USING_MPU9250
+                bool "Enable 9-AXIS MPU9250"
+            config HTD_9AXIS_USING_ICM20948
+                bool "Enable 9-AXIS ICM20948"
+        endchoice
+        choice
+            prompt "select 9-AXIS bus i2c/spi"
+                default HTD_9AXIS_BUS_SPI
+            config HTD_9AXIS_BUS_SPI
+                bool "9-AXIS bus use SPI"
+                select BSP_USING_SPIM
+            config HTD_9AXIS_BUS_I2C
+                bool "9-AXIS bus use I2C"
+                select BSP_USING_I2CM
+        endchoice
+        config HTD_9AXIS_BUS_NAME
+            string "9-AXIS bus name"
+            default "i2cm1"
+            
+        config HTD_9AXIS_I2C_ADDR
+            hex "9-AXIS i2c addr"
+            depends on HTD_9AXIS_BUS_I2C
+            default 0x36
+        config HTD_9AXIS_I2C_PIN_SDA
+            int "9-AXIS i2c sda pin number."
+            depends on HTD_9AXIS_BUS_I2C
+            default -1
+        config HTD_9AXIS_I2C_PIN_SCK
+            int "9-AXIS i2c sck pin number."
+            depends on HTD_9AXIS_BUS_I2C
+            default -1
+            
+        config HTD_9AXIS_SPI_PIN_CS
+            int "9-AXIS SPI CS pin number."
+            depends on HTD_9AXIS_BUS_SPI
+            default -1
+        config HTD_9AXIS_SPI_PIN_SCK
+            int "9-AXIS SPI SCK pin number."
+            depends on HTD_9AXIS_BUS_SPI
+            default -1
+        config HTD_9AXIS_SPI_PIN_MOSI
+            int "9-AXIS SPI MOSI pin number."
+            depends on HTD_9AXIS_BUS_SPI
+            default -1
+        config HTD_9AXIS_SPI_PIN_MISO
+            int "9-AXIS SPI MISO pin number."
+            depends on HTD_9AXIS_BUS_SPI
+            default -1
+            
+        config HTD_9AXIS_SAMPLE_FREQ
+            int "9-AXIS sample freq"
+            default 50
+        config HTD_9AXIS_INT_PIN
+            int "9-AXIS interrupt pin number"
+            default -1
+        config HTD_9AXIS_POWER_PIN
+            int "9-AXIS power pin number"
+            default -1
+        config HTD_9AXIS_POWER_PIN_ACTIVE_HIGH
+            bool "power pin is high is power on"
+            depends on (HTD_9AXIS_POWER_PIN > 0)
+            default y
+    endif
