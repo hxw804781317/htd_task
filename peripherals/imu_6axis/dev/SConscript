@@ -1,0 +1,15 @@
+import os
+from building import * 
+
+# get current dir path
+cwd = GetCurrentDir()
+
+# init src and inc vars
+src = []
+lib = []
+inc = [cwd]
+path = [cwd]
+
+src = src + Glob('./*.c') 
+objs = DefineGroup('peripherals-6axis', src, depend = [], LIBS = lib, CPPPATH = path, LIBPATH = path)
+Return('objs')

@@ -1,0 +1,48 @@
+config HTD_6AXIS_BUS_I2C
+    bool
+    default n
+	
+menuconfig HTD_SENSOR_USING_6AXIS
+    bool "Enable 6-AXIS(acceleromete+Gyroscope)"
+    select BSP_USING_I2CM
+    default n
+    if HTD_SENSOR_USING_6AXIS
+        choice
+            prompt "select 6-AXIS chip"
+                default HTD_6AXIS_USING_SIMULATE
+            config HTD_6AXIS_USING_SIMULATE
+                bool "Enable 6-AXIS Simulate"
+            config HTD_6AXIS_USING_MPU6050
+                bool "Enable 6-AXIS MPU6050"
+                select HTD_6AXIS_BUS_I2C
+        endchoice
+    
+        config HTD_6AXIS_BUS_NAME
+            string "6-AXIS bus name"
+            default "i2cm1" 
+        config HTD_6AXIS_I2C_ADDR
+            hex "6-AXIS i2c addr"
+            depends on HTD_6AXIS_BUS_I2C
+            default 0x36
+        config HTD_6AXIS_I2C_PIN_SDA
+            int "6-AXIS i2c sda pin number."
+            depends on HTD_6AXIS_BUS_I2C
+            default -1
+        config HTD_6AXIS_I2C_PIN_SCK
+            int "6-AXIS i2c sck pin number."
+            depends on HTD_6AXIS_BUS_I2C
+            default -1
+        config HTD_6AXIS_SAMPLE_FREQ
+            int "6-AXIS sample freq"
+            default 50
+        config HTD_6AXIS_INT_PIN
+            int "6-AXIS interrupt pin number"
+            default -1
+        config HTD_6AXIS_POWER_PIN
+            int "6-AXIS power pin number"
+            default -1
+        config HTD_6AXIS_POWER_PIN_ACTIVE_HIGH
+            bool "power pin is high is power on"
+            depends on (HTD_6AXIS_POWER_PIN > 0)
+            default y
+    endif
