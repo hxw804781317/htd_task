@@ -1,0 +1,17 @@
+# for module compiling
+import os
+from building import *
+
+# get current dir path
+cwd = GetCurrentDir()
+
+list = os.listdir(cwd)
+objs = []
+
+# init src and inc vars
+src = []
+inc = [cwd]
+
+src = src + Glob('./*.c')
+objs = DefineGroup('peripherals', src, depend = ['HTD_USING_NANDFLASH'], CPPPATH = inc, LOCAL_CCFLAGS = '')            
+Return('objs')
