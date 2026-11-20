@@ -1,0 +1,49 @@
+config HTD_PIXEL_LED_BUS_SPI
+    bool
+    select BSP_USING_SPIM
+    default n
+    
+config HTD_PIXEL_LED_BUS_1WIRE
+    bool
+    default n
+    
+menuconfig HTD_USING_PIXEL_LED
+    bool "Enable Pixel-LED"
+    default n
+    if HTD_USING_PIXEL_LED
+        choice
+            prompt "select Pixel-LED chip"
+                default HTD_PIXEL_LED_USING_SIMULATE
+            config HTD_PIXEL_LED_USING_SIMULATE
+                bool "Enable Pixel-LED Simulate"
+            config HTD_PIXEL_LED_USING_WS2812B
+                bool "Enable Pixel-LED WS2812B"
+                select HTD_PIXEL_LED_BUS_1WIRE
+        endchoice
+        config HTD_PIXEL_LED_COUNT
+            int "Pixel-LED count"
+            default 2
+            
+        config HTD_PIXEL_LED_1WIRE_PIN
+            int "Pixel-LED 1Wire pin number."
+            depends on HTD_PIXEL_LED_BUS_1WIRE
+            default -1
+        config HTD_PIXEL_LED_1WIRE_USE_PWM
+            bool "use PWM simulate 1Wire"
+            depends on HTD_PIXEL_LED_BUS_1WIRE
+            select BSP_USING_PWM
+            default n
+        
+        config HTD_PIXEL_LED_BUS_NAME
+            string "Pixel-LED bus name"
+            depends on (HTD_PIXEL_LED_BUS_SPI || HTD_PIXEL_LED_1WIRE_USE_PWM)
+            default "spim1"
+        config HTD_PIXEL_LED_SPI_PIN_SCK
+            int "Pixel-LED spi sck pin number."
+            depends on HTD_PIXEL_LED_BUS_SPI
+            default -1
+        config HTD_PIXEL_LED_SPI_PIN_MOSI
+            int "Pixel-LED spi mosi pin number."
+            depends on HTD_PIXEL_LED_BUS_SPI
+            default -1  
+    endif
