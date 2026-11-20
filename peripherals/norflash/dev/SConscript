@@ -1,0 +1,21 @@
+# for module compiling
+import os
+from building import *
+
+# get current dir path
+cwd = GetCurrentDir()
+
+list = os.listdir(cwd)
+objs = []
+
+# init src and inc vars
+src = []
+inc = [cwd]
+
+if GetDepend('BSP_USING_PC_SIMULATOR'):
+    src += Glob('./drv_norflash_simulator.c');
+else:
+    src += Glob('./*.c');
+
+objs = DefineGroup('peripherals', src, depend = ['HTD_USING_NORFLASH'], CPPPATH = inc, LOCAL_CCFLAGS = '')             
+Return('objs')

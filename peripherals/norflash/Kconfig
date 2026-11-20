@@ -1,0 +1,29 @@
+menuconfig HTD_USING_NORFLASH
+    bool "Enable norflash"
+    select BSP_USING_SPIM
+    select BSP_USING_QSPIM
+    default n
+    if HTD_USING_NORFLASH
+        config HTD_NORFLASH_BUS_NAME
+            string "norflash bus name"
+            default "spim1"
+        config HTD_NORFLASH_POWER_PIN
+            int "norflash power pin number"
+            default -1
+        config HTD_NORFLASH_POWER_PIN_ACTIVE_HIGH
+            bool "power pin is high is power on"
+			depends on HTD_NORFLASH_POWER_PIN
+            default y 
+        config HTD_NORFLASH_PIN_CS
+            int "norflash cs pin number."
+            default -1
+        config HTD_NORFLASH_PIN_SCK
+            int "norflash sck pin number."
+            default -1
+        config HTD_NORFLASH_PIN_MOSI
+            int "norflash mosi pin number."
+            default -1
+        config HTD_NORFLASH_PIN_MISO
+            int "norflash miso pin number."
+            default -1
+    endif
