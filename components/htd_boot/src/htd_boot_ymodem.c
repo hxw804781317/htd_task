@@ -245,10 +245,10 @@ static int32_t ymodem_cmd_finishing(ymodem_ctx_t *p_ctx, uint32_t timeout_ms)
 // @brief 创建一个 Ymodem
 ymodem_ctx_t* htd_ymodem_create(ymodem_evt_notify_t notify_handle, ymodem_serial_read_func_t serial_read, ymodem_serial_write_func_t serial_write)
 {
-    ymodem_ctx_t* p_ctx = MALLOC(sizeof(ymodem_ctx_t));
+    ymodem_ctx_t* p_ctx = htd_malloc(sizeof(ymodem_ctx_t));
     ASSERT(p_ctx);
     
-    MEMSET(p_ctx, 0, sizeof(ymodem_ctx_t));
+    htd_memset(p_ctx, 0, sizeof(ymodem_ctx_t));
     p_ctx->evt_notify_handle = notify_handle;
     p_ctx->serial_read_handle = serial_read;
     p_ctx->serial_write_handle = serial_write;
@@ -314,7 +314,7 @@ const char* htd_ymodem_fileinfo_get(const uint8_t* p_param, uint32_t param_len, 
 int32_t htd_ymodem_destroy(ymodem_ctx_t* p_ctx)
 {
     if (p_ctx) {
-        FREE(p_ctx);
+        htd_free(p_ctx);
     }
     return 0;
 }

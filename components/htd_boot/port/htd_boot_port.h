@@ -6,7 +6,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "htd_common.h"
+
+#include "htd_task.h"
 #include "htd_boot_key.h"
 
 #ifdef __cplusplus
@@ -95,20 +96,20 @@ extern "C" {
 #ifndef ASSERT
     #define ASSERT(x)
 #endif
-#ifndef MEMSET
-    #define MEMSET(ptr, v, n)               htd_memset(ptr, v, n)
+#ifndef htd_memset
+    #define htd_memset(ptr, v, n)           memset(ptr, v, n)
 #endif
-#ifndef MEMCPY
-    #define MEMCPY(dst, src, n)             htd_memcpy(dst, src, n)
+#ifndef htd_memcpy
+    #define htd_memcpy(dst, src, n)         memcpy(dst, src, n)
 #endif
-#ifndef MEMCMP
-    #define MEMCMP(v1, v2, n)               htd_memcmp(v1, v2, n)
+#ifndef htd_memcmp
+    #define htd_memcmp(v1, v2, n)           memcmp(v1, v2, n)
 #endif
-#ifndef MALLOC
-    #define MALLOC(s)                       htd_malloc(s)
+#ifndef htd_malloc
+    #define htd_malloc(s)                   malloc(s)
 #endif
-#ifndef FREE
-    #define FREE(p)                         htd_free(p)
+#ifndef htd_free
+    #define htd_free(p)                     free(p)
 #endif
 
 

@@ -1,0 +1,94 @@
+#ifndef _HTD_CONFIG_H_
+#define _HTD_CONFIG_H_
+
+#define SOC_FAMILY_STM32 1
+#define SOC_SERIES_STM32F4 1
+#define SOC_SERIES_STM32F411XX 1
+#define SOC_STM32F411xE 1
+
+/* HTD-TASK */
+#define HTD_TASK_ENABLE 1
+#define HTD_TASK_NONOS 1
+/* HTD_TASK_FREERTOS is not set */
+#define HTD_MEMHEAP_FF_ENABLE 1
+#define HTD_MEMHEAP_SRAM_DEV_COUNT 2
+/* HTD_MEMHEAP_FF_USE_TRACE is not set */
+/* HTD_PRINTF_SUPPORT_FLOAT is not set */
+/* HTD_MEM_USE_BYTELOOP is not set */
+#define HTD_VER_RELEASE 1
+/* end of HTD-TASK */
+
+#define ARCH_ARM 1
+#define ARCH_ARM_CORTEX_M 1
+#define ARCH_ARM_CORTEX_FPU 1
+#define ARCH_ARM_CORTEX_M4 1
+
+/* components config */
+#define HTD_BOOT_ENABLE 1
+#define HTD_BOOT_IN_BOOTLOADER 1
+#define HTD_BOOTLOADER_SIZE 0x8000
+#define HTD_BOOTLOADER_ADDR 0x8000000
+#define HTD_BOOT_BANKA_ADDR 0x8010000
+#define HTD_BOOT_BANKA_SIZE 0x30000
+#define HTD_BOOT_BANKB_ADDR 0x8040000
+#define HTD_BOOT_BANKB_SIZE 0x40000
+#define HTD_BOOT_CONFIG_ADDR 0x8008000
+#define HTD_BOOT_CONFIG_SIZE 0x8000
+#define HTD_BOOT_OVERWRITE_COPY 1
+/* HTD_BOOT_OVERWRITE_SWAP is not set */
+/* HTD_BOOT_SUPPORT_UPDATE_DIFF is not set */
+/* HTD_BOOT_SUPPORT_COMPRESS_QUICKLZ is not set */
+#define HTD_BOOT_SUPPORT_COMPRESS_FASTLZ 1
+#define HTD_BOOT_SUPPORT_SERIAL 1
+#define HTD_BOOT_SERIAL_NAME "uart1"
+#define HTD_BOOT_SERIAL_TX_PINNUM 0x09
+#define HTD_BOOT_SERIAL_RX_PINNUM 0x0a
+#define HTD_BOOT_SERIAL_BAUDRATE 115200
+#define HTD_BOOT_SUPPORT_SERIAL_YMODEM 1
+#define HTD_CONSOLE_ENABLE 1
+#define HTD_CONSOLE_NAME "htd"
+/* HTD_CONSOLE_SUPPORT_CMD is not set */
+#define HTD_CONSOLE_SERIAL_NAME "segger_rtt"
+#define HTD_CONSOLE_SERIAL_TX_PINNUM 0x09
+#define HTD_CONSOLE_SERIAL_RX_PINNUM 0x0A
+#define HTD_CONSOLE_SERIAL_BAUDRATE 115200
+/* HTD_BUTTON_ENABLE is not set */
+/* HTD_LED_ENABLE is not set */
+/* end of components config */
+
+/* external config */
+/* HTD_LIB_USE_EASYTLV is not set */
+#define HTD_LIB_USE_MICRO_ECC 1
+/* HTD_LIB_USE_QUICKLZ is not set */
+#define HTD_LIB_USE_FASTLZ 1
+/* HTD_LIB_USE_SDL2 is not set */
+#define HTD_LIB_USE_SEGGER_RTT 1
+/* HTD_LIB_USE_FREERTOS is not set */
+/* end of external config */
+
+/* On-chip Peripheral Drivers */
+#define BSP_USING_UART 1
+#define BSP_USING_UART1 1
+/* BSP_UART1_RX_USING_DMA is not set */
+/* BSP_UART1_TX_USING_DMA is not set */
+/* BSP_USING_UART2 is not set */
+/* BSP_USING_UART3 is not set */
+/* BSP_USING_UART4 is not set */
+/* BSP_USING_UART5 is not set */
+/* BSP_USING_UART6 is not set */
+/* BSP_USING_SPIM is not set */
+/* BSP_USING_I2CM is not set */
+/* BSP_USING_SDIO is not set */
+/* BSP_USING_ADC is not set */
+/* BSP_USING_RTC is not set */
+/* BSP_USING_WDT is not set */
+/* BSP_USING_PM is not set */
+/* BSP_USING_CRC is not set */
+/* BSP_USING_USB_DEVICE is not set */
+/* BSP_USING_USB_HOST is not set */
+/* BSP_USING_TIM_PWM_OCC is not set */
+/* end of On-chip Peripheral Drivers */
+
+#include "htd_config_project.h"
+
+#endif /*_HTD_CONFIG_H_*/

@@ -54,13 +54,13 @@ bool boot_decompress_quicklz(htd_boot_object_t* p_object)
     const boot_flash_handle_t * p_flash = boot_flash_handle_get(p_object->fwB_download_addr);
     ASSERT(p_flash);
     // 申请内存
-    uint8_t *de_buff = (uint8_t*)MALLOC(BOOT_DECOMPRESS_BUFFER_SIZE);
+    uint8_t *de_buff = (uint8_t*)htd_malloc(BOOT_DECOMPRESS_BUFFER_SIZE);
     ASSERT(de_buff);
-    uint8_t *rd_buff = (uint8_t*)MALLOC(BOOT_COMPRESS_BUFFER_SIZE + BOOT_COMPRESS_BUFFER_PADDING);
+    uint8_t *rd_buff = (uint8_t*)htd_malloc(BOOT_COMPRESS_BUFFER_SIZE + BOOT_COMPRESS_BUFFER_PADDING);
     ASSERT(rd_buff);
-    qlz_state_decompress *p_decompress = (qlz_state_decompress*)MALLOC(sizeof(qlz_state_decompress));
+    qlz_state_decompress *p_decompress = (qlz_state_decompress*)htd_malloc(sizeof(qlz_state_decompress));
     ASSERT(p_decompress);
-    MEMSET(p_decompress, 0, sizeof(qlz_state_decompress));
+    htd_memset(p_decompress, 0, sizeof(qlz_state_decompress));
 
     boot_debug("[qlz]decompress start: fwB_download_addr=0x%08x, rd_offset=%u", p_object->fwB_download_addr, rd_offset);
     uint32_t opt_size;
@@ -70,20 +70,20 @@ bool boot_decompress_quicklz(htd_boot_object_t* p_object)
         rd_offset += sizeof(uint32_t);
         p_object->addrB_src += sizeof(uint32_t);
         if (opt_size > BOOT_COMPRESS_BUFFER_SIZE + BOOT_COMPRESS_BUFFER_PADDING) {
-            FREE(de_buff);
-            FREE(rd_buff);
-            FREE(p_decompress);
+            htd_free(de_buff);
+            htd_free(rd_buff);
+            htd_free(p_decompress);
             return false;
         }
         // 读取数据块
         boot_debug("rd_offset=%d, opt_size=0x%08x", rd_offset, opt_size);
-        MEMSET(rd_buff, 0, BOOT_COMPRESS_BUFFER_SIZE + BOOT_COMPRESS_BUFFER_PADDING);
+        htd_memset(rd_buff, 0, BOOT_COMPRESS_BUFFER_SIZE + BOOT_COMPRESS_BUFFER_PADDING);
         boot_flash_read(p_object->p_flash_fwB, p_object->addrB_src, rd_buff, opt_size);
         rd_offset += opt_size;
         p_object->addrB_src += opt_size;
         
         // 解压数据块，并将解压后的数据块存储到 flash 中
-        MEMSET(de_buff, 0, BOOT_DECOMPRESS_BUFFER_SIZE);
+        htd_memset(de_buff, 0, BOOT_DECOMPRESS_BUFFER_SIZE);
         opt_size = qlz_decompress((const char *)rd_buff, de_buff, p_decompress);
         boot_flash_erase(p_flash, p_object->addrB_dst, opt_size);
         boot_debug("wr_offset=0x%08x", wr_offset);
@@ -94,9 +94,9 @@ bool boot_decompress_quicklz(htd_boot_object_t* p_object)
         boot_config_decompress_progress_set(p_object, rd_offset, wr_offset);
     }
 
-    FREE(de_buff);
-    FREE(rd_buff);
-    FREE(p_decompress);
+    htd_free(de_buff);
+    htd_free(rd_buff);
+    htd_free(p_decompress);
     p_object->fwB_download_addr = p_object->p_env->bankB_addr + p_object->fwB_offset;
     return true;
 }
@@ -131,9 +131,9 @@ bool boot_decompress_fastlz(htd_boot_object_t* p_object)
     const boot_flash_handle_t * p_flash = boot_flash_handle_get(p_object->fwB_download_addr);
     ASSERT(p_flash);
     // 申请内存
-    uint8_t *de_buff = (uint8_t*)MALLOC(BOOT_DECOMPRESS_BUFFER_SIZE);
+    uint8_t *de_buff = (uint8_t*)htd_malloc(BOOT_DECOMPRESS_BUFFER_SIZE);
     ASSERT(de_buff);
-    uint8_t *rd_buff = (uint8_t*)MALLOC(BOOT_COMPRESS_BUFFER_SIZE + BOOT_COMPRESS_BUFFER_PADDING);
+    uint8_t *rd_buff = (uint8_t*)htd_malloc(BOOT_COMPRESS_BUFFER_SIZE + BOOT_COMPRESS_BUFFER_PADDING);
     ASSERT(rd_buff);
 
     boot_debug("[flz]decompress start: rd_offset=%u, fwB_size=%u, fwB_download_addr=0x%08x", rd_offset, p_object->fwB_size, p_object->fwB_download_addr);
@@ -145,18 +145,18 @@ bool boot_decompress_fastlz(htd_boot_object_t* p_object)
         p_object->addrB_src += sizeof(uint32_t);
         rd_offset += sizeof(uint32_t);
         if (opt_size > BOOT_COMPRESS_BUFFER_SIZE + BOOT_COMPRESS_BUFFER_PADDING) {
-            FREE(de_buff);
-            FREE(rd_buff);
+            htd_free(de_buff);
+            htd_free(rd_buff);
             return false;
         }
         // 读取数据块
-        MEMSET(rd_buff, 0, BOOT_COMPRESS_BUFFER_SIZE + BOOT_COMPRESS_BUFFER_PADDING);
+        htd_memset(rd_buff, 0, BOOT_COMPRESS_BUFFER_SIZE + BOOT_COMPRESS_BUFFER_PADDING);
         boot_flash_read(p_object->p_flash_fwB, p_object->addrB_src, rd_buff, opt_size);
         p_object->addrB_src += opt_size;
         rd_offset += opt_size;
         
         // 解压数据块，并将解压后的数据块存储到 flash 中
-        MEMSET(de_buff, 0, BOOT_DECOMPRESS_BUFFER_SIZE);
+        htd_memset(de_buff, 0, BOOT_DECOMPRESS_BUFFER_SIZE);
         opt_size = fastlz_decompress(rd_buff, opt_size, de_buff, BOOT_DECOMPRESS_BUFFER_SIZE);
         boot_flash_erase(p_flash, p_object->addrB_dst, opt_size);
         boot_flash_write(p_flash, p_object->addrB_dst, de_buff, opt_size);
@@ -166,8 +166,8 @@ bool boot_decompress_fastlz(htd_boot_object_t* p_object)
         boot_config_decompress_progress_set(p_object, rd_offset, wr_offset);
     }
 
-    FREE(de_buff);
-    FREE(rd_buff);
+    htd_free(de_buff);
+    htd_free(rd_buff);
     p_object->fwB_download_addr = p_object->p_env->bankB_addr + p_object->fwB_offset;
     return true;
 }

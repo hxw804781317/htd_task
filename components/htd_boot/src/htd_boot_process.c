@@ -28,7 +28,7 @@ htd_boot_env_t* htd_boot_env_info_get(void)
 static void boot_object_destroy(htd_boot_object_t* p_object)
 {
     if (p_object) {
-        FREE(p_object);
+        htd_free(p_object);
     }
 }
 
@@ -82,14 +82,14 @@ uint32_t boot_swap_unit_get(void)
 // @brief 初始化boot对象
 static htd_boot_object_t* boot_object_create(void)
 {
-    htd_boot_object_t *p_object = MALLOC(sizeof(htd_boot_object_t));
+    htd_boot_object_t *p_object = htd_malloc(sizeof(htd_boot_object_t));
     ASSERT(p_object);
-    MEMSET(p_object, 0, sizeof(htd_boot_object_t));
+    htd_memset(p_object, 0, sizeof(htd_boot_object_t));
 
     // 初始化配置信息
     if (!boot_config_init()) {
         boot_error("boot config init failed.");
-        FREE(p_object);
+        htd_free(p_object);
         ASSERT(0);
         return NULL;
     }
@@ -136,7 +136,7 @@ static bool boot_image_fw_verify(htd_boot_object_t* p_object, boot_header_t* p_h
         }
         read_len = boot_flash_read(p_flash, payload_addr, p_object->swap_data, data_len);
         ASSERT(read_len == data_len);
-        boot_sha256_update(p_sha256_ctx, p_object->swap_data, data_len);
+        boot_sha256_update(p_sha256_ctx, p_object->swap_data, read_len);
         payload_len -= data_len;
         payload_addr += data_len;
     }
@@ -599,13 +599,13 @@ static bool boot_image_ecdsa_sign(const uint8_t* p_data, uint32_t data_len, uint
 static uint8_t* boot_compress_quicklz(const uint8_t* p_data, uint32_t data_len, uint32_t* out_len)
 {
     uint32_t compress_len;
-    uint8_t* p_out = (uint8_t*)MALLOC(data_len);
+    uint8_t* p_out = (uint8_t*)htd_malloc(data_len);
     ASSERT(p_out);
-    MEMSET(p_out, 0, data_len);
+    htd_memset(p_out, 0, data_len);
 
-    qlz_state_compress *state_compress = (qlz_state_compress*)MALLOC(sizeof(qlz_state_compress));
+    qlz_state_compress *state_compress = (qlz_state_compress*)htd_malloc(sizeof(qlz_state_compress));
     ASSERT(state_compress);
-    MEMSET(state_compress, 0, sizeof(qlz_state_compress));
+    htd_memset(state_compress, 0, sizeof(qlz_state_compress));
 
     boot_debug("[qlz]compress start : ");
     uint32_t data_size = data_len;
@@ -620,12 +620,12 @@ static uint8_t* boot_compress_quicklz(const uint8_t* p_data, uint32_t data_len, 
         p_data += block_size;
         data_size -= block_size;
         // 保存数据长度
-        MEMCPY(p_ptr, &compress_len, sizeof(uint32_t));
+        htd_memcpy(p_ptr, &compress_len, sizeof(uint32_t));
         p_ptr += compress_len + sizeof(uint32_t);
     }
     compress_len = p_ptr - p_out;
     boot_debug("[qlz]compressed %d bytes into %d bytes, compression ratio is %d%!", data_len, compress_len, (compress_len * 100) / data_len);
-    FREE(state_compress);
+    htd_free(state_compress);
 
     if (out_len) {
         *out_len = compress_len;
@@ -637,9 +637,9 @@ static uint8_t* boot_compress_quicklz(const uint8_t* p_data, uint32_t data_len, 
 static uint8_t* boot_compress_fastlz(const uint8_t* p_data, uint32_t data_len, uint32_t* out_len)
 {
     uint32_t compress_len;
-    uint8_t* p_out = (uint8_t*)MALLOC(data_len);
+    uint8_t* p_out = (uint8_t*)htd_malloc(data_len);
     ASSERT(p_out);
-    MEMSET(p_out, 0, data_len);
+    htd_memset(p_out, 0, data_len);
 
     boot_debug("[flz]compress start: ");
     uint32_t data_size = data_len;
@@ -654,7 +654,7 @@ static uint8_t* boot_compress_fastlz(const uint8_t* p_data, uint32_t data_len, u
         p_data += block_size;
         data_size -= block_size;
         // 保存数据长度
-        MEMCPY(p_ptr, &compress_len, sizeof(uint32_t));
+        htd_memcpy(p_ptr, &compress_len, sizeof(uint32_t));
         p_ptr += compress_len + sizeof(uint32_t);
     }
     compress_len = p_ptr - p_out;
@@ -675,13 +675,13 @@ void htd_boot_fw_compress_make(boot_update_type_t update_type)
     uint32_t fw_size = 32*1024 + 3;
     htd_boot_env_t* p_env = htd_boot_env_info_get();
     const boot_flash_handle_t* p_flash = boot_flash_handle_get(p_env->bankA_addr);
-    uint8_t* p_fw_data = MALLOC(fw_size + sizeof(boot_firmware_header_t));
+    uint8_t* p_fw_data = htd_malloc(fw_size + sizeof(boot_firmware_header_t));
     ASSERT(p_fw_data);
     fw_head = (boot_firmware_header_t*)p_fw_data;
     p_fw_data += sizeof(boot_firmware_header_t);
-    MEMSET(p_fw_data, 'A', fw_size);
+    htd_memset(p_fw_data, 'A', fw_size);
     // 写入头部数据
-    MEMSET(fw_head, 0, sizeof(boot_firmware_header_t));
+    htd_memset(fw_head, 0, sizeof(boot_firmware_header_t));
     fw_head->boot_hdr.magic = HTD_BOOT_MAGIC;
     fw_head->boot_hdr.fw_hdr_size = sizeof(boot_firmware_header_t);
     fw_head->boot_hdr.update_type = BOOT_UPDATE_TYPE_FULL;
@@ -699,19 +699,19 @@ void htd_boot_fw_compress_make(boot_update_type_t update_type)
     // 写入
     boot_flash_erase(p_flash, p_env->bankA_addr, fw_size+4096);
     boot_flash_write(p_flash, p_env->bankA_addr, (uint8_t*)fw_head, sizeof(boot_firmware_header_t)+fw_size);
-    FREE(fw_head);
+    htd_free(fw_head);
     boot_debug("ImageA addr: 0x%08x, fw_size=0x%08x", p_env->bankA_addr, fw_size);
     
     // p_env->slotB_addr 这里写版本B，数据内容全为B
     fw_size = 34*1024 + 120;
     p_flash = boot_flash_handle_get(p_env->bankB_addr);
-    p_fw_data = MALLOC(fw_size + sizeof(boot_firmware_header_t));
+    p_fw_data = htd_malloc(fw_size + sizeof(boot_firmware_header_t));
     ASSERT(p_fw_data);
     fw_head = (boot_firmware_header_t*)p_fw_data;
     p_fw_data += sizeof(boot_firmware_header_t);
-    MEMSET(p_fw_data, 'B', fw_size);
+    htd_memset(p_fw_data, 'B', fw_size);
     // 写入头部数据
-    MEMSET(fw_head, 0, sizeof(boot_firmware_header_t));
+    htd_memset(fw_head, 0, sizeof(boot_firmware_header_t));
     fw_head->boot_hdr.magic = HTD_BOOT_MAGIC;
     fw_head->boot_hdr.fw_hdr_size = sizeof(boot_firmware_header_t);
     fw_head->boot_hdr.update_type = BOOT_UPDATE_TYPE_FULL;
@@ -754,8 +754,8 @@ void htd_boot_fw_compress_make(boot_update_type_t update_type)
     boot_flash_erase(p_flash, p_env->bankB_addr, p_env->bankB_size);
     boot_flash_write(p_flash, p_env->bankB_addr+temp, (uint8_t*)p_hdr, sizeof(boot_header_t));
     boot_flash_write(p_flash, p_env->bankB_addr+temp+sizeof(boot_header_t), p_compress_data, compress_data_len);
-    FREE(fw_head);
-    FREE(p_compress_data);
+    htd_free(fw_head);
+    htd_free(p_compress_data);
     boot_debug("ImageB addr: 0x%08x. fw_size=0x%08x", p_env->bankB_addr+temp, p_hdr->fw_size);
 
     // 写配置信息
@@ -771,13 +771,13 @@ void htd_boot_fw_full_make(void)
     uint32_t fw_size = 32*1024 + 3;
     htd_boot_env_t* p_env = htd_boot_env_info_get();
     const boot_flash_handle_t* p_flash = boot_flash_handle_get(p_env->bankA_addr);
-    uint8_t* p_fw_data = MALLOC(fw_size + sizeof(boot_firmware_header_t));
+    uint8_t* p_fw_data = htd_malloc(fw_size + sizeof(boot_firmware_header_t));
     ASSERT(p_fw_data);
     fw_head = (boot_firmware_header_t*)p_fw_data;
     p_fw_data += sizeof(boot_firmware_header_t);
-    MEMSET(p_fw_data, 'A', fw_size);
+    htd_memset(p_fw_data, 'A', fw_size);
     // 写入头部数据
-    MEMSET(fw_head, 0, sizeof(boot_firmware_header_t));
+    htd_memset(fw_head, 0, sizeof(boot_firmware_header_t));
     fw_head->boot_hdr.magic = HTD_BOOT_MAGIC;
     fw_head->boot_hdr.fw_hdr_size = sizeof(boot_firmware_header_t);
     fw_head->boot_hdr.update_type = BOOT_UPDATE_TYPE_FULL;
@@ -795,19 +795,19 @@ void htd_boot_fw_full_make(void)
     // 写入
     boot_flash_erase(p_flash, p_env->bankA_addr, fw_size+4096);
     boot_flash_write(p_flash, p_env->bankA_addr, (uint8_t*)fw_head, sizeof(boot_firmware_header_t)+fw_size);
-    FREE(fw_head);
+    htd_free(fw_head);
     boot_debug("ImageA addr: 0x%08x, fw_size=0x%08x", p_env->bankA_addr, fw_size);
     
     // p_env->slotB_addr 这里写版本B，数据内容全为B
     fw_size = 34*1024 + 120;
     p_flash = boot_flash_handle_get(p_env->bankB_addr);
-    p_fw_data = MALLOC(fw_size + sizeof(boot_firmware_header_t));
+    p_fw_data = htd_malloc(fw_size + sizeof(boot_firmware_header_t));
     ASSERT(p_fw_data);
     fw_head = (boot_firmware_header_t*)p_fw_data;
     p_fw_data += sizeof(boot_firmware_header_t);
-    MEMSET(p_fw_data, 'B', fw_size);
+    htd_memset(p_fw_data, 'B', fw_size);
     // 写入头部数据
-    MEMSET(fw_head, 0, sizeof(boot_firmware_header_t));
+    htd_memset(fw_head, 0, sizeof(boot_firmware_header_t));
     fw_head->boot_hdr.magic = HTD_BOOT_MAGIC;
     fw_head->boot_hdr.fw_hdr_size = sizeof(boot_firmware_header_t);
     fw_head->boot_hdr.update_type = BOOT_UPDATE_TYPE_FULL;
@@ -826,7 +826,7 @@ void htd_boot_fw_full_make(void)
     temp = htd_boot_full_download_addr_get() - p_env->bankB_addr;
     boot_flash_erase(p_flash, p_env->bankB_addr, fw_size+temp+4096);
     boot_flash_write(p_flash, p_env->bankB_addr+temp, (uint8_t*)fw_head, sizeof(boot_firmware_header_t)+fw_size);
-    FREE(fw_head);
+    htd_free(fw_head);
     boot_debug("ImageB addr: 0x%08x. fw_size=0x%08x", p_env->bankB_addr+temp, fw_size+sizeof(boot_firmware_header_t));
 
     // 写配置信息

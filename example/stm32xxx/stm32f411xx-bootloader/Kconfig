@@ -1,0 +1,20 @@
+mainmenu "Configuration"
+config SOC_FAMILY_STM32
+    bool 
+    default y
+config SOC_SERIES_STM32F4
+    bool
+    default y
+config SOC_SERIES_STM32F411XX
+    bool
+    default y
+    
+config SOC_STM32F411xE
+    bool
+    select ARCH_ARM_CORTEX_M4
+    select ARCH_ARM_CORTEX_FPU
+    default y
+
+rsource "../../../Kconfig"
+rsource "../../../mcu_sdk/stm32fxxx/stm32f411.Kconfig"
+

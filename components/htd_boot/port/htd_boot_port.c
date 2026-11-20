@@ -37,7 +37,7 @@ uint16_t htd_ymodem_crc16(const uint8_t* p_data, uint32_t data_len)
 // @brief 初始化 sha256;
 void* boot_sha256_create(void)
 {
-    htd_sha256_ctx_t* p_ctx = MALLOC(sizeof(htd_sha256_ctx_t));
+    htd_sha256_ctx_t* p_ctx = htd_malloc(sizeof(htd_sha256_ctx_t));
     ASSERT(p_ctx);
     htd_sha256_init(p_ctx);
     return p_ctx;
@@ -51,7 +51,7 @@ void boot_sha256_update(void *p_ctx, const uint8_t* p_data, uint32_t data_len)
 void boot_sha256_final(void *p_ctx, uint8_t output[32])
 {
     htd_sha256_final((htd_sha256_ctx_t*)p_ctx, output);
-    FREE(p_ctx);
+    htd_free(p_ctx);
 }
 
 // @brief 通过私钥 p_skey 对 p_data 数值进行 ECDSA 签名

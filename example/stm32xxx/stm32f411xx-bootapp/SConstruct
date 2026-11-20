@@ -1,0 +1,56 @@
+import os
+import sys
+import config
+
+if os.getenv('OS_ROOT'):
+    OS_ROOT = os.getenv('OS_ROOT');
+else:
+    OS_ROOT = os.path.normpath(os.getcwd() + '/../../../');
+
+# 加载编译脚本
+sys.path = sys.path + [os.path.join(OS_ROOT, 'tools')]
+try:
+    from building import *
+except Exception as e:
+    print('Cannot found root directory, please check OS_ROOT');
+    print(f"真实异常：{type(e)} , {e}")
+    import traceback
+    traceback.print_exc()
+    exit(-1)
+
+#固件名字
+TARGET = config.TARGET
+
+# 清空 SCons 默认自带工具链，避免系统 gcc 干扰
+DefaultEnvironment(tools=[]);
+# 创建编译环境对象`env`，编译器全部从`config.py`读取
+env = Environment(tools = ['mingw'],
+    AS = config.AS, ASFLAGS = config.AFLAGS,
+    CC = config.CC, CFLAGS = config.CFLAGS,
+    AR = config.AR, ARFLAGS = '-rc',
+    CXX = config.CXX, CXXFLAGS = config.CXXFLAGS,
+    LINK = config.LINK, LINKFLAGS = config.LFLAGS)
+# 把编译器可执行文件路径加到 PATH 环境变量
+env.PrependENVPath('PATH', config.EXEC_PATH)
+
+# 如果平台是 IAR，替换编译命令模板，生成 map 文件
+if config.PLATFORM in ['iccarm']:
+    env.Replace(CCCOM = ['$CC $CFLAGS $CPPFLAGS $_CPPDEFFLAGS $_CPPINCFLAGS -o $TARGET $SOURCES'])
+    env.Replace(ARFLAGS = [''])
+    env.Replace(LINKCOM = env["LINKCOM"] + ' --map ' + config.PROJ_NAME + '.map')
+
+# 当前目录的绝对路径
+BSP_ROOT = os.path.abspath('./');
+Export('BSP_ROOT');
+Export('OS_ROOT');
+Export('config');
+
+# 编译前准备
+PrepareBuilding(env, OS_ROOT);
+
+# 添加编译文件
+objs = SConscript('SConscript', variant_dir='build', duplicate=0);
+objs.extend(SConscript(os.path.join(BSP_ROOT, '../../../SConscript'), variant_dir='build/bsp', duplicate=0));
+
+# 开始编译
+DoBuilding(TARGET, objs);

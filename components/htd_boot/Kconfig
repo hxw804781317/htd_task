@@ -1,5 +1,6 @@
 menuconfig HTD_BOOT_ENABLE
     bool "htd bootloader enable."
+    select HTD_LIB_USE_MICRO_ECC
     default n
     if HTD_BOOT_ENABLE
         config HTD_BOOT_IN_BOOTLOADER
@@ -45,12 +46,12 @@ menuconfig HTD_BOOT_ENABLE
             bool "Update method: diff"
             default n
         config HTD_BOOT_SUPPORT_COMPRESS_QUICKLZ
-			select HTD_LIB_USE_QUICKLZ
+            select HTD_LIB_USE_QUICKLZ
             depends on HTD_BOOT_IN_BOOTLOADER
             bool "Update method: compress quicklz"
             default n
         config HTD_BOOT_SUPPORT_COMPRESS_FASTLZ
-			select HTD_LIB_USE_FASTLZ
+            select HTD_LIB_USE_FASTLZ
             depends on HTD_BOOT_IN_BOOTLOADER
             bool "Update method: compress fastlz"
             default n

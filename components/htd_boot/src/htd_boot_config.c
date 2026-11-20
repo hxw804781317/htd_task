@@ -67,7 +67,7 @@ static void ftl_var_check_data(boot_ftl_var_t* p_var)
     uint32_t addr = p_var->start;
     while (addr + sizeof(ftl_val_head_t) < p_var->end) {
         // 先读取头部
-        MEMSET(&head, 0xff, sizeof(ftl_val_head_t));
+        htd_memset(&head, 0xff, sizeof(ftl_val_head_t));
         boot_flash_read(p_var->p_flash, addr, (uint8_t*)&head, sizeof(ftl_val_head_t));
         if (head.magic == 0xff && head.len == 0xffff && head.crc == 0xff && head.index == 0xffffffff) {
             // 跳到下一页
@@ -80,7 +80,7 @@ static void ftl_var_check_data(boot_ftl_var_t* p_var)
         }
         
         // 读取数据
-        MEMSET(data, 0xff, head.len);
+        htd_memset(data, 0xff, head.len);
         boot_flash_read(p_var->p_flash, addr + sizeof(ftl_val_head_t), data, head.len);
         // 判断校验是否通过
         if (boot_checksum_get(data, head.len) != head.crc) {
@@ -117,7 +117,7 @@ static int32_t ftl_var_init(boot_ftl_var_t* p_var, uint32_t start, uint32_t end)
         return (-ERROR_CODE_INVALID_PARAM);
     }
     
-    MEMSET(p_var, 0, sizeof(boot_ftl_var_t));
+    htd_memset(p_var, 0, sizeof(boot_ftl_var_t));
     p_var->p_flash = p_flash;
     p_var->init_flag = ftl_var_init_flag;
     p_var->var_addr = FTL_VAR_INVALID_ADDR;
@@ -133,7 +133,7 @@ static int32_t ftl_var_init(boot_ftl_var_t* p_var, uint32_t start, uint32_t end)
 static int32_t ftl_var_deinit(boot_ftl_var_t* p_var)
 {
     if (p_var) {
-        MEMSET(p_var, 0, sizeof(boot_ftl_var_t));
+        htd_memset(p_var, 0, sizeof(boot_ftl_var_t));
     }
     return ERROR_CODE_SUCCESS;
 }
@@ -181,8 +181,8 @@ static int32_t ftl_var_set(boot_ftl_var_t* p_var, const void* p_buff, uint16_t b
     head.crc = boot_checksum_get(p_buff, buff_len);
     head.len = buff_len;
     head.index = p_var->index + 1;
-    MEMCPY(data, &head, sizeof(ftl_val_head_t));
-    MEMCPY(&data[sizeof(ftl_val_head_t)], p_buff, buff_len);
+    htd_memcpy(data, &head, sizeof(ftl_val_head_t));
+    htd_memcpy(&data[sizeof(ftl_val_head_t)], p_buff, buff_len);
     
     // 写入数据
     int32_t ret = boot_flash_write(p_var->p_flash, addr, data, buff_len + sizeof(ftl_val_head_t));
@@ -325,14 +325,14 @@ int32_t boot_config_offset_state_set(uint32_t offset, boot_state_t state)
 void boot_config_get(boot_info_t* p_config)
 {
     ASSERT(p_config);
-    MEMCPY(p_config, &m_boot_info, sizeof(boot_info_t));
+    htd_memcpy(p_config, &m_boot_info, sizeof(boot_info_t));
 }
 
 // @brief 写入配置信息
 int32_t boot_config_set(boot_info_t* p_config)
 {
     ASSERT(p_config);
-    MEMCPY(&m_boot_info, p_config, sizeof(boot_info_t));
+    htd_memcpy(&m_boot_info, p_config, sizeof(boot_info_t));
     return ftl_var_set(&m_ftl_var_boot_config, &m_boot_info, sizeof(boot_info_t));
 }
 
