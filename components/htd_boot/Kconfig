@@ -1,0 +1,81 @@
+menuconfig HTD_BOOT_ENABLE
+    bool "htd bootloader enable."
+    default n
+    if HTD_BOOT_ENABLE
+        config HTD_BOOT_IN_BOOTLOADER
+            bool "This is a bootloader program?"
+            default y
+        config HTD_BOOTLOADER_SIZE
+            hex "bootloader partition size."
+            default 0x10000
+        config HTD_BOOTLOADER_ADDR
+            hex "bootloader partition address."
+            default 0x8000000
+
+        config HTD_BOOT_BANKA_ADDR
+            hex "Bank A partition address"
+            default 0x00
+        config HTD_BOOT_BANKA_SIZE
+            hex "Bank A partition size"
+            default 0x10000
+        config HTD_BOOT_BANKB_ADDR
+            hex "BANK B partition address"
+            default 0x00
+        config HTD_BOOT_BANKB_SIZE
+            hex "BANK B partition size"
+            default 0x10000
+        config HTD_BOOT_CONFIG_ADDR
+            hex "bootloader config address"
+            default 0x00
+        config HTD_BOOT_CONFIG_SIZE
+            hex "bootloader config partition size"
+            default 0x8000
+                    
+        choice
+            prompt "select boot overwrite method"
+                default HTD_BOOT_OVERWRITE_COPY
+            config HTD_BOOT_OVERWRITE_COPY
+                bool "overwrite method: copy"
+            config HTD_BOOT_OVERWRITE_SWAP
+                bool "overwrite method: swap"
+        endchoice 
+    
+        config HTD_BOOT_SUPPORT_UPDATE_DIFF
+            depends on HTD_BOOT_IN_BOOTLOADER
+            bool "Update method: diff"
+            default n
+        config HTD_BOOT_SUPPORT_COMPRESS_QUICKLZ
+			select HTD_LIB_USE_QUICKLZ
+            depends on HTD_BOOT_IN_BOOTLOADER
+            bool "Update method: compress quicklz"
+            default n
+        config HTD_BOOT_SUPPORT_COMPRESS_FASTLZ
+			select HTD_LIB_USE_FASTLZ
+            depends on HTD_BOOT_IN_BOOTLOADER
+            bool "Update method: compress fastlz"
+            default n
+            
+        config HTD_BOOT_SUPPORT_SERIAL
+            bool "Support Serial"
+            default n
+        config HTD_BOOT_SERIAL_NAME
+            depends on HTD_BOOT_SUPPORT_SERIAL
+            string "Serial name"
+            default "uart1"
+        config HTD_BOOT_SERIAL_TX_PINNUM
+            depends on HTD_BOOT_SUPPORT_SERIAL
+            hex "Serial tx pin-number"
+            default 0x09
+        config HTD_BOOT_SERIAL_RX_PINNUM
+            depends on HTD_BOOT_SUPPORT_SERIAL
+            hex "Serial rx pin-number"
+            default 0x0A
+        config HTD_BOOT_SERIAL_BAUDRATE
+            depends on HTD_BOOT_SUPPORT_SERIAL
+            int "Serial baudrate"
+            default 115200
+        config HTD_BOOT_SUPPORT_SERIAL_YMODEM
+            depends on HTD_BOOT_SUPPORT_SERIAL
+            bool "Serial Y-Modem Protocol"
+            default y
+    endif
