@@ -1,0 +1,54 @@
+config HTD_GSENSOR_BUS_I2C
+    bool
+    default n
+	
+menuconfig HTD_SENSOR_USING_GSENSOR
+    bool "Enable G-Sensor(3-axis acceleromete)"
+    select BSP_USING_I2CM
+    default n
+    if HTD_SENSOR_USING_GSENSOR
+        choice
+            prompt "select G-Sensor chip"
+                default HTD_GSENSOR_USING_SIMULATE
+            config HTD_GSENSOR_USING_SIMULATE
+                bool "Enable G-Sensor Simulate"
+            config HTD_GSENSOR_USING_SC7A20E
+                bool "Enable G-Sensor sc7a20e"
+                select HTD_GSENSOR_BUS_I2C
+            config HTD_GSENSOR_USING_SC7A20H
+                bool "Enable G-Sensor sc7a20h"
+                select HTD_GSENSOR_BUS_I2C
+            config HTD_GSENSOR_USING_STK8321
+                bool "Enable G-Sensor stk8321"
+                select HTD_GSENSOR_BUS_I2C
+        endchoice
+    
+        config HTD_GSENSOR_BUS_NAME
+            string "G-Sensor bus name"
+            default "i2cm1" 
+        config HTD_GSENSOR_I2C_ADDR
+            hex "G-Sensor i2c addr"
+            depends on HTD_GSENSOR_BUS_I2C
+            default 0x36
+        config HTD_GSENSOR_I2C_PIN_SDA
+            int "G-Sensor i2c sda pin number."
+            depends on HTD_GSENSOR_BUS_I2C
+            default -1
+        config HTD_GSENSOR_I2C_PIN_SCK
+            int "G-Sensor i2c sck pin number."
+            depends on HTD_GSENSOR_BUS_I2C
+            default -1
+        config HTD_GSENSOR_SAMPLE_FREQ
+            int "G-Sensor sample freq"
+            default 50
+        config HTD_GSENSOR_INT_PIN
+            int "G-Sensor interrupt pin number"
+            default 129
+        config HTD_GSENSOR_POWER_PIN
+            int "G-Sensor power pin number"
+            default -1
+        config HTD_GSENSOR_POWER_PIN_ACTIVE_HIGH
+            bool "power pin is high is power on"
+            depends on (HTD_GSENSOR_POWER_PIN > 0)
+            default y
+    endif
