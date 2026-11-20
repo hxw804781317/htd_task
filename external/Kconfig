@@ -7,6 +7,14 @@ menu "external config"
         bool "micr-ecc enable"
         default n
         
+    config HTD_LIB_USE_QUICKLZ
+        bool "quicklz enable"
+        default n
+        
+    config HTD_LIB_USE_FASTLZ
+        bool "fastlz enable"
+        default n
+        
     config HTD_LIB_USE_SDL2
         bool "sdl2 enable"
         default n

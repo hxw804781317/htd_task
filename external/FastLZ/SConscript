@@ -1,0 +1,15 @@
+# https://github.com/ariya/FastLZ
+import os
+from building import *
+
+# get current dir path
+cwd = GetCurrentDir()
+objs = []
+
+# init src and inc vars
+src = []
+inc = [cwd]
+
+src = src + Glob('./*.c')
+objs = DefineGroup('htd_external', src, depend = ['HTD_LIB_USE_FASTLZ'], CPPPATH = inc, LOCAL_CCFLAGS = '')
+Return('objs')
