@@ -35,7 +35,7 @@ extern "C" {
 
 //////////////////////////////////////////////////////////////////
 #if (!defined(ASSERT))
-    #ifdef VER_RELEASE
+    #ifdef HTD_VER_RELEASE
         #define ASSERT(ex)
     #elif (defined(DEBUG_LVL)) && (DEBUG_LVL < 3)
         #define ASSERT(ex)

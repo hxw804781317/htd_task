@@ -61,6 +61,10 @@ bool htd_task_load_function_type_data(htd_task_data_type_handle_t handle, uint16
 // @brief 初始化任务调度器
 int32_t htd_task_sch_init(uint8_t mq_count)
 {
+#if defined(HTD_TASK_WIN32_SDL2)
+    SDL_Init(SDL_INIT_AUDIO);
+#endif
+    
     if (m_task_thread == NULL) {
         m_task_thread = htd_os_sch_init("TASK", mq_count, HTD_TASK_THREAD_PRIORITY, HTD_TASK_THREAD_STACK_SIZE);
         ASSERT(m_task_thread);

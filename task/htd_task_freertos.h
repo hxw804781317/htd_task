@@ -110,7 +110,6 @@ __STATIC_INLINE int htd_timer_start(void *handle)
     return -1;
 }
 // @brief 重启定时器
-// @return 成功返回0，失败返回-1
 __STATIC_INLINE void htd_timer_restart(void *handle, unsigned int ms)
 {
     xTimerStart((htd_timer_ctrl_t*)handle, ms2tick(ms));

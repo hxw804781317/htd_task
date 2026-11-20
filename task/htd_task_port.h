@@ -51,9 +51,9 @@ extern "C" {
 
 
 ///////////////////////////////对接接口///////////////////////////////////////
-// @brief 延迟us
+// @brief 延迟us(weak 函数，需要外部实现)
 void htd_delay_us(uint32_t us);
-// @brief 断言失败回调
+// @brief 断言失败回调(weak 函数，需要外部实现)
 void htd_assert_failed(const char* file, uint32_t line);
 // @brief 获取系统时间，单位毫秒(weak 函数，需要外部实现)
 uint32_t htd_time_ms_get(void);

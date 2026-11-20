@@ -68,7 +68,7 @@ extern "C" {
     #define print_warning(fmt, ...)
 #endif
 
-#if (defined(DEBUG_LVL) && (DEBUG_LVL >= HTD_LOG_LVL_D) && !defined(VER_RELEASE))
+#if (defined(DEBUG_LVL) && (DEBUG_LVL >= HTD_LOG_LVL_D) && !defined(HTD_VER_RELEASE))
     #define gui_debug(fmt, ...)   do { \
         gui_kprint("\033[0;33m%s(%d):"fmt"\r\n\033[0;0m", DEBUG_TAG, __LINE__, ##__VA_ARGS__);  \
     }while(0)
@@ -80,7 +80,7 @@ extern "C" {
     #define print_debug(fmt, ...)
 #endif
 
-#if (defined(DEBUG_LVL) && (DEBUG_LVL >= HTD_LOG_LVL_L) && !defined(VER_RELEASE))
+#if (defined(DEBUG_LVL) && (DEBUG_LVL >= HTD_LOG_LVL_L) && !defined(HTD_VER_RELEASE))
     #define gui_log(fmt, ...)   do { \
         gui_kprint("%s(%d):"fmt"\r\n", DEBUG_TAG, __LINE__, ##__VA_ARGS__);  \
     }while(0)
