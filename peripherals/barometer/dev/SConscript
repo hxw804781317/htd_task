@@ -1,0 +1,14 @@
+import os
+from building import * 
+
+# get current dir path
+cwd = GetCurrentDir()
+
+# init src and inc vars
+src = []
+inc = [cwd]
+objs = []
+
+src = src + Glob('./*.c')
+objs = DefineGroup('peripherals-barometer', src, depend = [''], CPPPATH = inc)
+Return('objs')

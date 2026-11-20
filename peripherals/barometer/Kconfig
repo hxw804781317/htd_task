@@ -1,0 +1,58 @@
+config HTD_SENSOR_BAROMETER_BUS_I2C
+    bool
+    default n
+
+menuconfig HTD_SENSOR_USING_BAROMETER
+    bool "Enable barometer Sensor"
+    select BSP_USING_I2CM
+    default n
+    if HTD_SENSOR_USING_BAROMETER
+        choice
+            prompt "select barometer chip"
+                default HTD_BAROMETER_USING_SIMULATE
+            config HTD_BAROMETER_USING_SIMULATE
+                bool "Enable Simulate Sensor"
+            config HTD_BAROMETER_USING_BMP085
+                bool "Enable barometer BMP085"
+                select HTD_SENSOR_BAROMETER_BUS_I2C
+            config HTD_BAROMETER_USING_BMP180
+                bool "Enable barometer BMP180"
+                select HTD_SENSOR_BAROMETER_BUS_I2C
+            config HTD_BAROMETER_USING_BMP280
+                bool "Enable barometer BMP280"
+                select HTD_SENSOR_BAROMETER_BUS_I2C
+            config HTD_BAROMETER_USING_LQBP001MB
+                bool "Enable barometer LQBP001MB"
+                select HTD_SENSOR_BAROMETER_BUS_I2C
+            config HTD_BAROMETER_USING_LQBP001TA
+                bool "Enable barometer LQBP001TA"
+                select HTD_SENSOR_BAROMETER_BUS_I2C
+            config HTD_BAROMETER_USING_MSP2520R
+                bool "Enable barometer MSP2520R"
+                select HTD_SENSOR_BAROMETER_BUS_I2C 
+        endchoice
+        
+        config HTD_BAROMETER_BUS_NAME
+            string "barometer bus name"
+            default "i2cm1"
+        config HTD_BAROMETER_I2C_ADDR
+            int "barometer i2c addr"
+            depends on HTD_SENSOR_BAROMETER_BUS_I2C
+            default 16
+        config HTD_BAROMETER_I2C_PIN_SDA
+            int "barometer i2c sda pin number."
+            depends on HTD_SENSOR_BAROMETER_BUS_I2C
+            default -1
+        config HTD_BAROMETER_I2C_PIN_SCK
+            int "barometer i2c sck pin number."
+            depends on HTD_SENSOR_BAROMETER_BUS_I2C
+            default -1
+        config HTD_BAROMETER_POWER_PIN
+            int "barometer power pin number"
+            depends on (!HTD_BAROMETER_USING_SIMULATE)
+            default -1
+        config HTD_BAROMETER_POWER_PIN_ACTIVE_HIGH
+            bool "power pin is high is power on"
+            depends on (HTD_BAROMETER_POWER_PIN > 0)
+            default y
+    endif

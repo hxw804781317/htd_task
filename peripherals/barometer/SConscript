@@ -1,0 +1,20 @@
+import os
+from building import * 
+
+# get current dir path
+cwd = GetCurrentDir()
+
+# init src and inc vars
+src = []
+inc = [cwd]
+objs = []
+list = os.listdir(cwd)
+
+src = src + Glob('./*.c')
+if GetDepend('HTD_SENSOR_USING_BAROMETER'):
+    objs = DefineGroup('peripherals-barometer', src, depend = [''], CPPPATH = inc)
+    for d in list:
+        path = os.path.join(cwd, d)
+        if os.path.isfile(os.path.join(path, 'SConscript')):
+            objs = objs + SConscript(os.path.join(d, 'SConscript'))
+Return('objs')
