@@ -5,6 +5,7 @@
 #include "htd_device.h"
 #include "htd_drv_common.h"
 #include "htd_dev_i2cm.h"
+#include "htd_drv_gpio.h"
 
 
 #if defined(BSP_USING_I2CM1) || defined(BSP_USING_I2CM2) || defined(BSP_USING_I2CM3)

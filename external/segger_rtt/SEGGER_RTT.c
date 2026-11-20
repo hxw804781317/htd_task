@@ -145,8 +145,8 @@ Additional information:
 #endif
 
 #ifndef   SEGGER_RTT_MEMCPY
-  #ifdef  MEMCPY
-    #define SEGGER_RTT_MEMCPY(pDest, pSrc, NumBytes)      MEMCPY((pDest), (pSrc), (NumBytes))
+  #ifdef  htd_memcpy
+    #define SEGGER_RTT_MEMCPY(pDest, pSrc, NumBytes)      htd_memcpy((pDest), (pSrc), (NumBytes))
   #else
     #define SEGGER_RTT_MEMCPY(pDest, pSrc, NumBytes)      memcpy((pDest), (pSrc), (NumBytes))
   #endif

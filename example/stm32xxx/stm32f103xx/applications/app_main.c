@@ -106,7 +106,7 @@ int main(void)
     // 加载任务
     htd_task_load_function(load_func_test, NULL);
     // 进入任务调度
-    htd_task_sch_loop(NULL);
+    htd_task_sch_loop(app_sleep_func);
     return 0;
 }
 

@@ -1,5 +1,5 @@
 #define DEBUG_LVL 4
-#define DEBUG_TAG              "main"
+#define DEBUG_TAG              "board"
 #include "htd_device.h"
 #include "htd_components.h"
 #include "app_board.h"

@@ -2,7 +2,7 @@
 #define __APP_BOARD_H__
 
 #include <stm32f4xx.h>
-#include "htd_task.h"
+#include "htd_device.h"
 
 #ifdef __cplusplus
 extern "C" {

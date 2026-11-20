@@ -1,6 +1,8 @@
 #ifndef _HTD_CONFIG_PROJECT_H_
 #define _HTD_CONFIG_PROJECT_H_
 
+#include "version.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif /*__cplusplus*/

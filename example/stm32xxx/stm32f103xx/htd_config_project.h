@@ -16,6 +16,13 @@ extern "C" {
     #define USE_FREERTOS_V1051                  1
 #endif
 
+// 选择休眠模式
+#ifdef BSP_USING_PM
+    //#define PM_USING_IDLE_MODE                  1
+    #define PM_USING_SLEEP_MODE                 1
+    //#define PM_USING_STOP_MODE                  1
+#endif
+
 // 是否使用外部晶振(32768)
 #define BSP_CLOCK_USE_XTAL32768                 1
 

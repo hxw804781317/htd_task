@@ -23,6 +23,7 @@
 #define ARCH_ARM_CORTEX_M0 1
 
 /* components config */
+/* HTD_BOOT_ENABLE is not set */
 #define HTD_CONSOLE_ENABLE 1
 #define HTD_CONSOLE_NAME "htd"
 #define HTD_CONSOLE_SUPPORT_CMD 1
@@ -40,6 +41,8 @@
 /* external config */
 /* HTD_LIB_USE_EASYTLV is not set */
 /* HTD_LIB_USE_MICRO_ECC is not set */
+/* HTD_LIB_USE_QUICKLZ is not set */
+/* HTD_LIB_USE_FASTLZ is not set */
 /* HTD_LIB_USE_SDL2 is not set */
 #define HTD_LIB_USE_SEGGER_RTT 1
 /* HTD_LIB_USE_FREERTOS is not set */
