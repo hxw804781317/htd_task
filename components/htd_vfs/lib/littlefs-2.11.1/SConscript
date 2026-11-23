@@ -1,0 +1,17 @@
+# 下载地址
+# https://github.com/littlefs-project/littlefs
+import os
+from building import *
+
+cwd = GetCurrentDir()
+inc = [cwd]
+src = []
+objs = []
+
+
+src = src + Glob('*.c') + Glob('*.cpp') 
+objs = DefineGroup('htd_vfs_lfs', src, depend = ['HTD_VFS_USING_LITTLE_FS'], CPPPATH = inc, LOCAL_CCFLAGS = '')
+Return('objs')
+
+
+

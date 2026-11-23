@@ -18,6 +18,7 @@
 /* end of HTD-TASK */
 
 /* components config */
+/* HTD_BOOT_ENABLE is not set */
 #define HTD_CONSOLE_ENABLE 1
 #define HTD_CONSOLE_NAME "htd"
 #define HTD_CONSOLE_SUPPORT_CMD 1
@@ -30,11 +31,49 @@
 #define HTD_CONSOLE_SERIAL_BAUDRATE 115200
 /* HTD_BUTTON_ENABLE is not set */
 /* HTD_LED_ENABLE is not set */
+#define HTD_VFS_ENABLE 1
+/* HTD_VFS_USING_NORFLASH_DEV is not set */
+/* HTD_VFS_USING_NANDFLASH_DEV is not set */
+/* HTD_VFS_USING_SDCARD_DEV is not set */
+#define HTD_VFS_USING_POSIX 1
+#define HTD_VFS_FD_MAX 16
+/* HTD_VFS_USING_ROMFS is not set */
+#define HTD_VFS_USING_RAMFS 1
+/* HTD_VFS_USING_SPIFFS is not set */
+#define HTD_VFS_USING_ELM_FATFS 1
+
+/* elm-chan's FatFs, Generic FAT Filesystem Module */
+#define VFS_ELM_FATFS_CODE_PAGE 437
+#define VFS_ELM_FATFS_WORD_ACCESS 1
+/* VFS_ELM_FATFS_USE_LFN_0 is not set */
+/* VFS_ELM_FATFS_USE_LFN_1 is not set */
+/* VFS_ELM_FATFS_USE_LFN_2 is not set */
+#define VFS_ELM_FATFS_USE_LFN_3 1
+#define VFS_ELM_FATFS_USE_LFN 3
+#define VFS_ELM_FATFS_MAX_LFN 255
+#define VFS_ELM_FATFS_LFN_UNICODE_0 1
+/* VFS_ELM_FATFS_LFN_UNICODE_1 is not set */
+/* VFS_ELM_FATFS_LFN_UNICODE_2 is not set */
+/* VFS_ELM_FATFS_LFN_UNICODE_3 is not set */
+#define VFS_ELM_FATFS_LFN_UNICODE 0
+#define VFS_ELM_FATFS_DRIVES 1
+#define VFS_ELM_FATFS_REENTRANT 1
+/* end of elm-chan's FatFs, Generic FAT Filesystem Module */
+
+/* HTD_VFS_USING_LITTLE_FS is not set */
 /* end of components config */
+
+/* Hardware Drivers Config */
+/* HTD_USING_NANDFLASH is not set */
+/* HTD_USING_NORFLASH is not set */
+/* HTD_USING_EEPROM is not set */
+/* end of Hardware Drivers Config */
 
 /* external config */
 /* HTD_LIB_USE_EASYTLV is not set */
 /* HTD_LIB_USE_MICRO_ECC is not set */
+/* HTD_LIB_USE_QUICKLZ is not set */
+/* HTD_LIB_USE_FASTLZ is not set */
 #define HTD_LIB_USE_SDL2 1
 /* HTD_LIB_USE_SEGGER_RTT is not set */
 /* HTD_LIB_USE_FREERTOS is not set */

@@ -1,0 +1,64 @@
+
+menu "elm-chan's FatFs, Generic FAT Filesystem Module"
+    config VFS_ELM_FATFS_CODE_PAGE
+        int "OEM code page"
+        default 437
+    config VFS_ELM_FATFS_WORD_ACCESS
+        bool "Using VFS_ELM_FATFS_WORD_ACCESS"
+        default y
+
+    choice
+        prompt "Support long file name"
+        default VFS_ELM_FATFS_USE_LFN_3
+        config VFS_ELM_FATFS_USE_LFN_0
+            bool "0: LFN disable"
+        config VFS_ELM_FATFS_USE_LFN_1
+            bool "1: LFN with static LFN working buffer"
+        config VFS_ELM_FATFS_USE_LFN_2
+            bool "2: LFN with dynamic LFN working buffer on the stack"
+        config VFS_ELM_FATFS_USE_LFN_3
+            bool "3: LFN with dynamic LFN working buffer on the heap"
+    endchoice
+    config VFS_ELM_FATFS_USE_LFN
+        int
+        default 0 if VFS_ELM_FATFS_USE_LFN_0
+        default 1 if VFS_ELM_FATFS_USE_LFN_1
+        default 2 if VFS_ELM_FATFS_USE_LFN_2
+        default 3 if VFS_ELM_FATFS_USE_LFN_3
+    
+    config VFS_ELM_FATFS_MAX_LFN
+        int "Maximal size of file name length"
+        range 12 255
+        default 255
+
+    choice
+        prompt "Support unicode for long file name"
+            default VFS_ELM_FATFS_LFN_UNICODE_0
+        config VFS_ELM_FATFS_LFN_UNICODE_0
+            bool "0: ANSI/OEM in current CP (TCHAR = char)"
+        config VFS_ELM_FATFS_LFN_UNICODE_1
+            bool "1: Unicode in UTF-16 (TCHAR = WCHAR)"
+        config VFS_ELM_FATFS_LFN_UNICODE_2
+            bool "2: Unicode in UTF-8 (TCHAR = char)"
+        config VFS_ELM_FATFS_LFN_UNICODE_3
+            bool "3: Unicode in UTF-32 (TCHAR = DWORD)"
+    endchoice
+    config VFS_ELM_FATFS_LFN_UNICODE
+        int
+        default 0 if VFS_ELM_FATFS_LFN_UNICODE_0
+        default 1 if VFS_ELM_FATFS_LFN_UNICODE_1
+        default 2 if VFS_ELM_FATFS_LFN_UNICODE_2
+        default 3 if VFS_ELM_FATFS_LFN_UNICODE_3
+
+    config VFS_ELM_FATFS_DRIVES
+        int "Number of volumes (logical drives) to be used."
+        default 1
+
+    config VFS_ELM_FATFS_REENTRANT
+        bool "Enable the reentrancy (thread safe) of the FatFs module"
+        default y
+endmenu
+
+    
+
+

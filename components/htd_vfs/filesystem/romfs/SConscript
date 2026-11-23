@@ -1,0 +1,13 @@
+import os
+from building import *
+
+cwd = GetCurrentDir()
+inc = [cwd]
+src = []
+objs = []
+
+src = src + Glob('./*.c')
+objs = DefineGroup('htd_vfs', src, depend = [], CPPPATH = inc, LOCAL_CCFLAGS = '')          
+Return('objs')
+
+

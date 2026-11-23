@@ -58,7 +58,7 @@ menuconfig HTD_USING_NETWORK_SENSOR
 
 if HTD_USING_NETWORK_SENSOR
     menu "network config"
-        source "$SDK_DIR/peripherals/network/lwip/Kconfig"
+        rsource "./lwip/Kconfig"
     endmenu
 endif
 

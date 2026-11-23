@@ -1,0 +1,12 @@
+# 下载地址 https://github.com/pellepl/spiffs/releases/tag/0.3.7
+import os
+from building import *
+
+cwd = GetCurrentDir()
+inc = [cwd + './src']
+src = []
+objs = []
+
+src = src + Glob('./src/*.c')
+objs = DefineGroup('htd_vfs_spiffs', src, depend = ['HTD_VFS_USING_SPIFFS'], CPPPATH = inc, LOCAL_CCFLAGS = '')          
+Return('objs')

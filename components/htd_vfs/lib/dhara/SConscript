@@ -1,0 +1,15 @@
+# 下载地址
+# https://github.com/dlbeer/dhara
+import os
+from building import *
+
+cwd = GetCurrentDir()
+inc = [cwd, cwd + '/dhara']
+src = []
+objs = []
+
+src = Glob('dhara/*.c')
+src = src + Glob('./*.c')
+
+objs = DefineGroup('htd_vfs_dhara', src, depend = ['HTD_VFS_USING_LIB_DHARA'], CPPPATH = inc)
+Return('objs')

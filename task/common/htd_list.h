@@ -36,6 +36,11 @@ __STATIC_INLINE void htd_list_head_init(htd_list_node_t* p_node)
 {
     p_node->next = p_node->prev = p_node;
 }
+// @brief 初始化链表
+__STATIC_INLINE void htd_list_node_init(htd_list_node_t* p_node)
+{
+    p_node->next = p_node->prev = p_node;
+}
 // @brief 将新节点添加在某个节点 node 前面
 __STATIC_INLINE void htd_list_insert_before(htd_list_node_t* p_new, htd_list_node_t* p_node)
 {

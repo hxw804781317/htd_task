@@ -46,9 +46,10 @@ __pycache__
 build
 .gdbinit
 disk
-project.vcxproj
 font/*
 lang/*
 images/*
 /*.si4project
 /version.h
+/si_filelist.txt
+/project.sln

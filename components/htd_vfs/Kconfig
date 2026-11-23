@@ -1,0 +1,51 @@
+menuconfig HTD_VFS_ENABLE
+    bool "VFS: device virtual file system."
+    default y
+
+if HTD_VFS_ENABLE
+    config HTD_VFS_USING_NORFLASH_DEV
+        select HTD_USING_NORFLASH
+        bool "Using norflash driver api."
+        default n
+    config HTD_VFS_USING_NANDFLASH_DEV
+        select HTD_USING_NANDFLASH
+        bool "Using nandflash driver api."
+        default n
+    config HTD_VFS_USING_LIB_DHARA
+        depends on HTD_VFS_USING_NANDFLASH_DEV
+        bool "Using dhara lib(a small FTL designed to be used in resource-constrained systems for managing NAND flash)."
+        default n
+    config HTD_VFS_USING_SDCARD_DEV
+        select HTD_USING_SDCARD
+        bool "Using SD-Card driver api"
+        default n
+     
+    config HTD_VFS_USING_POSIX
+        bool "Using posix-like functions, open/read/write/close"
+        default y
+    config HTD_VFS_FD_MAX
+        int "The maximal number of opened files."
+        default 16
+
+    config HTD_VFS_USING_ROMFS
+        bool "Enable ReadOnly file system on flash."
+        default n
+    config HTD_VFS_USING_RAMFS
+        bool "Enable RAM file system."
+        default n
+    config HTD_VFS_USING_SPIFFS
+        bool "Enable SPIFFS file system."
+        default n
+        if HTD_VFS_USING_SPIFFS
+            rsource "./lib/spiffs_Kconfig"
+        endif
+    config HTD_VFS_USING_ELM_FATFS
+        bool "Enable elm-chan fatfs"
+        default n
+        if HTD_VFS_USING_ELM_FATFS
+            rsource "./lib/fatfs_Kconfig"
+        endif
+    config HTD_VFS_USING_LITTLE_FS
+        bool "Enable little-fs"
+        default n
+endif

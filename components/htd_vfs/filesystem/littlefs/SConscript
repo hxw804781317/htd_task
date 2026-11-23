@@ -1,0 +1,12 @@
+import os
+from building import *
+
+cwd = GetCurrentDir()
+inc = [cwd]
+src = []
+objs = []
+CPPDEFINES = ['LFS_CONFIG=vfs_lfs_config.h']
+
+src = src + Glob('./*.c')
+objs = DefineGroup('htd_vfs_lfs', src, depend = ['HTD_VFS_USING_LITTLE_FS'], CPPPATH = inc, LOCAL_CCFLAGS = '', CPPDEFINES = CPPDEFINES)          
+Return('objs')
