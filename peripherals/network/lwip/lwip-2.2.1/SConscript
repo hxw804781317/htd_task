@@ -1,0 +1,89 @@
+from building import *
+
+# get current directory
+cwd = GetCurrentDir()
+src = []
+
+path = [cwd + '/src/include']
+path += [cwd + '/src/include/compat/posix']
+if GetOption('target') == 'si':
+    path += [cwd + '/src/include/lwip'];
+    path += [cwd + '/src/include/lwip/apps'];
+    path += [cwd + '/src/include/lwip/priv'];
+    path += [cwd + '/src/include/lwip/prot'];
+
+# IPV6
+if GetDepend('HTD_LWIP_IPV6'):
+    src += Glob('./src/core/ipv6/*.c');
+    path += [cwd + '/src/core/ipv6'];
+
+# IPV4
+src += Glob('./src/core/ipv4/*.c');
+# 主程序
+src += Glob('./src/core/*.c');
+src += Glob('./src/api/*.c');
+
+# PPPoE/PPPoS
+if GetDepend('HTD_LWIP_PPPOE') or GetDepend('HTD_LWIP_PPPOS'):
+    src += Glob('./src/netif/ppp/*.c');
+    src += Glob('./src/netif/ppp/polarssl/*.c');
+    path += [cwd + '/src/netif/ppp']
+src += Glob('./src/netif/*.c');
+path += [cwd + '/src/include/netif']
+
+# ARM MBEDTLS related files of lwIP rep
+if GetDepend('HTD_LWIP_USER_TLS'):
+    src += Glob('./src/apps/altcp_tls/*.c');
+    path += [cwd + '/src/apps/altcp_tls']; 
+
+# HTTP server + client
+if GetDepend('HTD_LWIP_USER_HTTP'):
+    src += Glob('./src/apps/http/*.c');
+    path += [cwd + '/src/apps/http']; 
+    if GetDepend('HTD_LWIP_HTTP_USER_MAKE_FS'):
+        src += Glob('./src/apps/http/makefsdata/*.c');
+
+# IPERF server
+if GetDepend('HTD_LWIP_USER_IPERF_SERVER'):
+    src += Glob('./src/apps/lwiperf/*.c');
+    path += [cwd + '/src/apps/lwiperf']; 
+
+# MDNS responder
+if GetDepend('HTD_LWIP_USER_MDNS'):
+    src += Glob('./src/apps/mdns/*.c');
+    path += [cwd + '/src/apps/mdns']; 
+
+# MQTT client
+if GetDepend('HTD_LWIP_USER_MQTT_CLIENT'):
+    src += Glob('./src/apps/mqtt/*.c');
+    path += [cwd + '/src/apps/mqtt'];
+
+# NetBiosns server
+if GetDepend('HTD_LWIP_USER_NETBIOS_SERVER'):
+    src += Glob('./src/apps/netbiosns/*.c');
+    path += [cwd + '/src/apps/netbiosns'];  
+
+# SMTP client
+if GetDepend('HTD_LWIP_USER_SMTP_CLIENT'):
+    src += Glob('./src/apps/smtp/*.c');
+    path += [cwd + '/src/apps/smtp']; 
+
+# SNMP 代理
+if GetDepend('HTD_LWIP_USER_SNMP'):
+    src += Glob('./src/apps/snmp/*.c');
+    path += [cwd + '/src/apps/snmp']; 
+
+# SNTP client
+if GetDepend('HTD_LWIP_USER_SNTP_CLIENT'):
+    src += Glob('./src/apps/sntp/*.c');
+    path += [cwd + '/src/apps/sntp'];  
+
+# TFTP server
+if GetDepend('HTD_LWIP_USER_TFTP_SERVER'):
+    src += Glob('./src/apps/tftp/*.c');
+    path += [cwd + '/src/apps/tftp'];
+
+group = DefineGroup('LWIP', src, depend = ['HTD_USING_LWIP221'], CPPPATH = path)
+Return('group')
+
+

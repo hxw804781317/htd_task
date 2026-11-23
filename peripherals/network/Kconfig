@@ -1,0 +1,65 @@
+config HTD_NETWORK_BUS_SPI
+    bool
+    default n
+
+menuconfig HTD_USING_NETWORK_SENSOR
+    bool "Enable network Sensor"
+    select BSP_USING_SPIM
+    default n
+    if HTD_USING_NETWORK_SENSOR
+        choice
+            prompt "select network chip"
+                default HTD_NETWORK_DEV_USING_SIMULATE
+            config HTD_NETWORK_DEV_USING_SIMULATE
+                bool "Enable Simulate Sensor"
+            config HTD_NETWORK_DEV_USING_ENC28J60
+                bool "Enable network device enc28j60"
+                select HTD_NETWORK_BUS_SPI
+        endchoice
+        
+        config HTD_NETWORK_BUS_NAME
+            string "network bus name"
+            default "spim1"
+        config HTD_NETWORK_POWER_PIN
+            int "network power pin number"
+            default -1
+        config HTD_NETWORK_POWER_PIN_ACTIVE_HIGH
+            depends on (HTD_NETWORK_POWER_PIN > 0)
+            bool "power pin is high is power on"
+            default y 
+        config HTD_NETWORK_RESET_PIN
+            int "network reset pin number"
+            default -1
+        config HTD_NETWORK_INT_PIN
+            int "network int pin number"
+            default -1
+        config NETWORK_DEV_SPI_PIN_CS
+            depends on HTD_NETWORK_BUS_SPI
+            int "network device SPI CS pin number."
+            default 23
+        config NETWORK_DEV_SPI_PIN_SCK
+            depends on HTD_NETWORK_BUS_SPI
+            int "network device SPI SCK pin number."
+            default 24
+        config NETWORK_DEV_SPI_PIN_MOSI
+            depends on HTD_NETWORK_BUS_SPI
+            int "network device SPI MOSI pin number."
+            default 25
+        config NETWORK_DEV_SPI_PIN_MISO
+            depends on HTD_NETWORK_BUS_SPI
+            int "network device SPI MISO pin number."
+            default 26
+        config NETWORK_DEV_PIN_CLK_OUT
+            depends on HTD_NETWORK_BUS_SPI
+            int "network device clock out pin number."
+            default -1
+    endif
+    
+
+if HTD_USING_NETWORK_SENSOR
+    menu "network config"
+        source "$SDK_DIR/peripherals/network/lwip/Kconfig"
+    endmenu
+endif
+
+

@@ -1,0 +1,146 @@
+menuconfig HTD_USING_LWIP
+    bool "LWIP: light weight TCP/IP stack"
+    default n
+if HTD_USING_LWIP
+    choice HTD_USING_LWIP_VERSION
+        prompt "lwIP version"
+        default HTD_USING_LWIP221
+        help
+            Select the lwIP version
+        config HTD_USING_LWIP212
+            bool "lwIP v2.1.2"
+        config HTD_USING_LWIP221
+            bool "lwIP v2.2.1"
+    endchoice
+
+    config HTD_USING_LWIP_VER_NUM
+        hex
+        default 0x20201    if HTD_USING_LWIP221
+        default 0x20102    if HTD_USING_LWIP212
+        default 0x10401    if HTD_USING_LWIP141
+
+    if (HTD_USING_LWIP_VER_NUM >= 0x20000)
+        config HTD_LWIP_IPV6
+            bool "IPV6 protocol"
+            default n
+    endif
+
+    config HTD_LWIP_MEM_ALIGNMENT
+        int "Memory alignment"
+        default 8 if ARCH_CPU_64BIT
+        default 4
+
+    config HTD_LWIP_RAW_PCB_NUM
+        int "the number of RAW protocol control blocks"
+        default 4
+    config HTD_LWIP_UDP_PCB_NUM
+        int "the number of UDP protocol control blocks"
+        default 6
+    config HTD_LWIP_TCP_PCB_NUM
+        int "the number of TCP protocol control blocks"
+        default 4
+    
+    config HTD_LWIP_RAW
+        bool "RAW protocol"
+        default n
+    config HTD_LWIP_UDP
+        bool "UDP protocol"
+        default y
+    config HTD_LWIP_TCP
+        bool "TCP protocol"
+        default y
+    config HTD_LWIP_PPP
+        bool "PPP protocol"
+        default n
+    config HTD_LWIP_IGMP
+        bool "IGMP protocol"
+        default n
+    config HTD_LWIP_ICMP
+        bool "ICMP protocol"
+        default n
+    config HTD_LWIP_SNMP
+        bool "SNMP protocol"
+        select HTD_LWIP_STATS
+        default n
+    config HTD_LWIP_DNS
+        bool "DNS protocol"
+        select HTD_LWIP_UDP
+        default y
+    config HTD_LWIP_STATS
+        bool "Enable LWIP statistics"
+        default n
+    config HTD_LWIP_USER_HOOKS
+        bool "Enable user-defined LWIP hooks"
+        default n   
+        
+    config HTD_LWIP_USER_TLS
+        bool "MBED-TLS"
+        default n
+    config HTD_LWIP_USER_HTTP
+        bool "http server and client."
+        select HTD_LWIP_TCP
+        default n
+    config HTD_LWIP_HTTP_USER_MAKE_FS
+        bool "http user makefs"
+        depends on HTD_LWIP_USER_HTTP
+        default n
+    config HTD_LWIP_USER_IPERF_SERVER
+        bool "IPERF server"
+        default n
+    config HTD_LWIP_USER_MDNS
+        bool "MDNS responder"
+        default n
+    config HTD_LWIP_USER_MQTT_CLIENT
+        bool "MQTT client"
+        default n
+    config HTD_LWIP_USER_NETBIOS_SERVER
+        bool "NetBiosns server"
+        default n
+    config HTD_LWIP_USER_SMTP_CLIENT
+        bool "SMTP client"
+        default n
+    config HTD_LWIP_USER_SNMP
+        bool "SNMP Agent"
+        default n
+    config HTD_LWIP_USER_SNTP_CLIENT
+        bool "SNTP client"
+        default n
+    config HTD_LWIP_USER_TFTP_SERVER
+        bool "TFTP server"
+        default n
+    
+    choice HTD_USER_IP_ADDR_ASSIGNMENT
+        prompt "IP address assignment."
+        default HTD_LWIP_IP_ADDR_DHCP
+        config HTD_LWIP_IP_ADDR_STATIC
+            bool "IP Address Assignment use STATIC-IP"
+        config HTD_LWIP_IP_ADDR_DHCP
+            select HTD_LWIP_UDP
+            bool "IP Address Assignment use DHCP"
+        config HTD_LWIP_IP_ADDR_PPPOS
+            select HTD_LWIP_PPP
+            bool "IP Address Assignment use PPPoS"
+        config HTD_LWIP_IP_ADDR_PPPOE
+            select HTD_LWIP_PPP
+            bool "IP Address Assignment use PPPoE"
+    endchoice
+
+    config IP_SOF_BROADCAST
+        depends on HTD_LWIP_IP_ADDR_DHCP
+        int "SOF broadcast"
+        default 1
+    config IP_SOF_BROADCAST_RECV
+        depends on HTD_LWIP_IP_ADDR_DHCP
+        int "SOF broadcast recv"
+        default 1
+
+    config HTD_LWIP_IPADDR
+        string "IPv4: IP address"
+        default "192.168.1.30"
+    config HTD_LWIP_GWADDR
+        string "IPv4: Gateway address"
+        default "192.168.1.1"
+    config HTD_LWIP_MSKADDR
+        string "IPv4: Mask address"
+        default "255.255.255.0"
+endif

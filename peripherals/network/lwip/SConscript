@@ -1,0 +1,20 @@
+# for network related component
+# 下载网址：https://download.savannah.nongnu.org/releases/lwip/
+
+import os
+from building import *
+
+src = []
+objs = []
+cwd = GetCurrentDir()
+list = os.listdir(cwd);
+inc = [cwd]
+
+if GetDepend('HTD_USING_LWIP'):
+    src = src + Glob('./*.c');
+    objs = DefineGroup('LWIP', src, depend = [''], CPPPATH = inc, LOCAL_CCFLAGS = '')
+    for d in list:
+        path = os.path.join(cwd, d)
+        if os.path.isfile(os.path.join(path, 'SConscript')):
+            objs = objs + SConscript(os.path.join(d, 'SConscript'))
+Return('objs')

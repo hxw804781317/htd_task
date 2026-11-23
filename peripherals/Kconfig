@@ -1,0 +1,13 @@
+menu "Hardware Drivers Config"
+	rsource "./nandflash/Kconfig"
+	rsource "./norflash/Kconfig"
+	rsource "./eeprom/Kconfig"
+    if !BSP_USING_PC_SIMULATOR
+        rsource "./barometer/Kconfig"
+        rsource "./imu_3axis_gsensor/Kconfig"
+        rsource "./imu_6axis/Kconfig"
+        rsource "./pixel_led/Kconfig"
+        rsource "./sdcard/Kconfig"
+        rsource "./network/Kconfig"
+    endif
+endmenu

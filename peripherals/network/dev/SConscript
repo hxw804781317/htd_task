@@ -1,0 +1,20 @@
+import os
+from building import *
+import rtconfig
+
+cwd = GetCurrentDir()
+inc = [cwd]
+src = []
+objs = []
+
+if GetDepend('HTD_NETWORK_DEV_USING_ENC28J60'):
+    src += Glob('./drv_network_enc28j60.c');
+elif GetDepend('HTD_NETWORK_DEV_USING_SIMULATE'):
+    src += Glob('./drv_network_simulate.c');
+else:
+    pass;
+
+objs = DefineGroup('peripherals-net', src, depend = ['HTD_USING_NETWORK_SENSOR'], CPPPATH = inc, LOCAL_CCFLAGS = '')        
+Return('objs')
+
+
