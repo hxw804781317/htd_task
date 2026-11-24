@@ -12,7 +12,7 @@ menuconfig HTD_USING_NORFLASH
             default -1
         config HTD_NORFLASH_POWER_PIN_ACTIVE_HIGH
             bool "power pin is high is power on"
-			depends on HTD_NORFLASH_POWER_PIN
+			depends on (HTD_NORFLASH_POWER_PIN >= 0)
             default y 
         config HTD_NORFLASH_PIN_CS
             int "norflash cs pin number."

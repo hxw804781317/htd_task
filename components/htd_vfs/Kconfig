@@ -1,5 +1,5 @@
 menuconfig HTD_VFS_ENABLE
-    bool "VFS: device virtual file system."
+    bool "htd_vfs: virtual file system."
     default y
 
 if HTD_VFS_ENABLE
@@ -12,8 +12,8 @@ if HTD_VFS_ENABLE
         bool "Using nandflash driver api."
         default n
     config HTD_VFS_USING_LIB_DHARA
-        depends on HTD_VFS_USING_NANDFLASH_DEV
-        bool "Using dhara lib(a small FTL designed to be used in resource-constrained systems for managing NAND flash)."
+        depends on (HTD_VFS_USING_NANDFLASH_DEV || HTD_VFS_USING_NORFLASH_DEV)
+        bool "Using dhara lib(a small FTL designed to be used in resource-constrained systems for managing Nand/Nor flash)."
         default n
     config HTD_VFS_USING_SDCARD_DEV
         select HTD_USING_SDCARD

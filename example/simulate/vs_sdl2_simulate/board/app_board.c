@@ -5,7 +5,7 @@
 #include "app_board.h"
 #include "htd_device.h"
 #include "htd_components.h"
-
+#include "app_filesystem.h"
 
 // @brief 初始化内存
 static void app_heap_init(void)
@@ -32,10 +32,21 @@ int app_board_init(void)
     app_console_init();
     app_console_read_start();
 #endif
-    // 初始化任务调度器
-    htd_task_sch_init(32);
     // 初始化设备
     htd_dev_init();
+    // 初始化文件系统
+    app_filesystem_init();
+    // 初始化norflash
+    htd_dev_norflash_init();
+    // 初始化nandflash
+    //htd_dev_nandflash_init();
+    
+    // 挂载文件系统
+    app_filesystem_mount();
+    // 初始化任务调度器
+    htd_task_sch_init(32);
+    
+    
     return 0;
 }
 

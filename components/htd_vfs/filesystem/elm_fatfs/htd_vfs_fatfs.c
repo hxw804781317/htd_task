@@ -113,17 +113,17 @@ static int vfs_fatfs_mount(htd_vfs_t *p_vfs, const void *data)
         if (ret == 0) {
             // 挂载成功
             p_vfs->p_fs_dev = p_fs_dev;
-            htd_print("fatfs mount success. %d, logic_path=%s\n", p_fs_dev->pdrv, logic_path);
+            htd_print("fatfs mount success. %d, logic_path=%s\r\n", p_fs_dev->pdrv, logic_path);
             f_closedir(&root);
             return 0;
         }
         
-        htd_print("opendir failed. root_path=%s, ret=%d", root_path, ret);
+        htd_print("opendir failed. root_path=%s, ret=%d\r\n", root_path, ret);
         // 卸载掉
         f_mount(NULL, logic_path, 1);
     } 
     
-    htd_print("mount failed. ret=%d, logic_path=%s\n", ret, logic_path);
+    htd_print("mount failed. ret=%d, logic_path=%s\r\n", ret, logic_path);
     vfs_fatfs_dev_unregister(p_dev->disk_idx, false);
     htd_free(p_fs_dev);
     return -ret;
@@ -157,31 +157,31 @@ static int vfs_fatfs_mk(htd_vfs_t *p_vfs, const void* p_param)
     char logic_path[8];
     char *p_work = (char*)htd_malloc(FF_MAX_SS);
     ASSERT(p_work);
-    FATFS *p_fs_dev = (FATFS *)p_vfs->p_fs_dev;
-    if (p_fs_dev == NULL) {
+
+    // 还没挂载的走这里
+    if (p_param) {
         const elm_fatfs_dev_t* p_dev = (elm_fatfs_dev_t*)p_param;
-        if (p_dev == NULL) {
-            htd_free(p_work), p_work = NULL;
-            return -ERROR_CODE_INVALID_PARAM;
-        }
         vfs_fatfs_dev_register(p_dev);
         
-        // 还没有挂载的, 直接格式化
         htd_snprintf(logic_path, sizeof(logic_path), "%d:", p_dev->disk_idx);
         FRESULT ret = f_mkfs(logic_path, &opt, p_work, FF_MAX_SS);
         htd_free(p_work), p_work = NULL;
         if (ret != FR_OK) {
-            htd_print("mkfs failed. ret=%d\n", ret);
+            htd_print("mkfs failed. ret=%d\r\n", ret);
             vfs_fatfs_dev_unregister(p_dev->disk_idx, false);
             return -ret;
         }
-        htd_print("mkfs success.\n");
+        htd_print("mkfs success.\r\n");
         return 0;
-    } 
-    
+    }
+
+    // 格式化的时候走这里
+    FATFS *p_fs_dev = (FATFS *)p_vfs->p_fs_dev;
+    ASSERT(p_fs_dev);
     htd_snprintf(logic_path, sizeof(logic_path), "%d:", p_fs_dev->pdrv);
     FRESULT ret = f_mkfs(logic_path, &opt, p_work, FF_MAX_SS);
     htd_free(p_work), p_work = NULL;
+    htd_print("logic_path=%s\r\n", logic_path);
     return -ret;
 }
 

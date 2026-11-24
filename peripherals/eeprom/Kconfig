@@ -10,82 +10,83 @@ config HTD_EEPROM_USING_AT24CXX
 menuconfig HTD_USING_EEPROM
     bool "Enable eeprom"
     default n
-    if HTD_USING_EEPROM
-        choice
-            prompt "select EEPROM chip"
-                default HTD_EEPROM_USING_SIMULATE
-            config HTD_EEPROM_USING_SIMULATE
-                bool "Enable EEPROM Simulate"
-            config HTD_EEPROM_USING_AT24C01
-                bool "Enable EEPROM AT24C01"
-                select HTD_EEPROM_USING_AT24CXX
-                select HTD_EEPROM_BUS_I2C
-            config HTD_EEPROM_USING_AT24C02
-                bool "Enable EEPROM AT24C02"
-                select HTD_EEPROM_BUS_I2C
-            config HTD_EEPROM_USING_AT24C04
-                bool "Enable EEPROM AT24C04"
-                select HTD_EEPROM_USING_AT24CXX
-                select HTD_EEPROM_BUS_I2C
-            config HTD_EEPROM_USING_AT24C08
-                bool "Enable EEPROM AT24C08"
-                select HTD_EEPROM_USING_AT24CXX
-                select HTD_EEPROM_BUS_I2C
-            config HTD_EEPROM_USING_AT24C16
-                bool "Enable EEPROM AT24C16"
-                select HTD_EEPROM_USING_AT24CXX
-                select HTD_EEPROM_BUS_I2C
-            config HTD_EEPROM_USING_AT24C32
-                bool "Enable EEPROM AT24C32"
-                select HTD_EEPROM_USING_AT24CXX
-                select HTD_EEPROM_BUS_I2C
-            config HTD_EEPROM_USING_AT24C64
-                bool "Enable EEPROM AT24C64"
-                select HTD_EEPROM_USING_AT24CXX
-                select HTD_EEPROM_BUS_I2C
-            config HTD_EEPROM_USING_AT24C128
-                bool "Enable EEPROM AT24C128"
-                select HTD_EEPROM_USING_AT24CXX
-                select HTD_EEPROM_BUS_I2C
-            config HTD_EEPROM_USING_AT24C256
-                bool "Enable EEPROM AT24C256"
-                select HTD_EEPROM_USING_AT24CXX
-                select HTD_EEPROM_BUS_I2C
-            config HTD_EEPROM_USING_AT24C512
-                bool "Enable EEPROM AT24C512"
-                select HTD_EEPROM_USING_AT24CXX
-                select HTD_EEPROM_BUS_I2C
-            config HTD_EEPROM_USING_AT24CM01
-                bool "Enable EEPROM AT24CM01"
-                select HTD_EEPROM_USING_AT24CXX
-                select HTD_EEPROM_BUS_I2C
-            config HTD_EEPROM_USING_AT24CM02
-                bool "Enable EEPROM AT24CM02"
-                select HTD_EEPROM_USING_AT24CXX
-                select HTD_EEPROM_BUS_I2C
-        endchoice
-    
-        config HTD_EEPROM_BUS_NAME
-            string "eeprom bus name"
-            depends on HTD_EEPROM_BUS_I2C
-            default "i2cm1"
-        config HTD_EEPROM_POWER_PIN
-            int "eeprom power pin number"
-            default -1
-        config HTD_EEPROM_POWER_PIN_ACTIVE_HIGH
-            bool "power pin is high is power on"
-            depends on HTD_EEPROM_POWER_PIN
-            default y   
-        config HTD_EEPROM_I2C_ADDR
-            hex "eeprom i2c addr"
-            depends on HTD_EEPROM_BUS_I2C
-            default 0xA0
-        config HTD_EEPROM_I2C_PIN_SDA
-            int "eeprom i2c sda pin number."
-            depends on HTD_EEPROM_BUS_I2C
-            default -1
-        config HTD_EEPROM_I2C_PIN_SCK
-            int "eeprom i2c sck pin number."
-            depends on HTD_EEPROM_BUS_I2C
-            default -1  
-    endif
+	
+if HTD_USING_EEPROM
+	choice
+		prompt "select EEPROM chip"
+			default HTD_EEPROM_USING_SIMULATE
+		config HTD_EEPROM_USING_SIMULATE
+			bool "Enable EEPROM Simulate"
+		config HTD_EEPROM_USING_AT24C01
+			bool "Enable EEPROM AT24C01"
+			select HTD_EEPROM_USING_AT24CXX
+			select HTD_EEPROM_BUS_I2C
+		config HTD_EEPROM_USING_AT24C02
+			bool "Enable EEPROM AT24C02"
+			select HTD_EEPROM_BUS_I2C
+		config HTD_EEPROM_USING_AT24C04
+			bool "Enable EEPROM AT24C04"
+			select HTD_EEPROM_USING_AT24CXX
+			select HTD_EEPROM_BUS_I2C
+		config HTD_EEPROM_USING_AT24C08
+			bool "Enable EEPROM AT24C08"
+			select HTD_EEPROM_USING_AT24CXX
+			select HTD_EEPROM_BUS_I2C
+		config HTD_EEPROM_USING_AT24C16
+			bool "Enable EEPROM AT24C16"
+			select HTD_EEPROM_USING_AT24CXX
+			select HTD_EEPROM_BUS_I2C
+		config HTD_EEPROM_USING_AT24C32
+			bool "Enable EEPROM AT24C32"
+			select HTD_EEPROM_USING_AT24CXX
+			select HTD_EEPROM_BUS_I2C
+		config HTD_EEPROM_USING_AT24C64
+			bool "Enable EEPROM AT24C64"
+			select HTD_EEPROM_USING_AT24CXX
+			select HTD_EEPROM_BUS_I2C
+		config HTD_EEPROM_USING_AT24C128
+			bool "Enable EEPROM AT24C128"
+			select HTD_EEPROM_USING_AT24CXX
+			select HTD_EEPROM_BUS_I2C
+		config HTD_EEPROM_USING_AT24C256
+			bool "Enable EEPROM AT24C256"
+			select HTD_EEPROM_USING_AT24CXX
+			select HTD_EEPROM_BUS_I2C
+		config HTD_EEPROM_USING_AT24C512
+			bool "Enable EEPROM AT24C512"
+			select HTD_EEPROM_USING_AT24CXX
+			select HTD_EEPROM_BUS_I2C
+		config HTD_EEPROM_USING_AT24CM01
+			bool "Enable EEPROM AT24CM01"
+			select HTD_EEPROM_USING_AT24CXX
+			select HTD_EEPROM_BUS_I2C
+		config HTD_EEPROM_USING_AT24CM02
+			bool "Enable EEPROM AT24CM02"
+			select HTD_EEPROM_USING_AT24CXX
+			select HTD_EEPROM_BUS_I2C
+	endchoice
+
+	config HTD_EEPROM_BUS_NAME
+		string "eeprom bus name"
+		depends on HTD_EEPROM_BUS_I2C
+		default "i2cm1"
+	config HTD_EEPROM_POWER_PIN
+		int "eeprom power pin number"
+		default -1
+	config HTD_EEPROM_POWER_PIN_ACTIVE_HIGH
+		bool "power pin is high is power on"
+		depends on (HTD_EEPROM_POWER_PIN >= 0)
+		default y   
+	config HTD_EEPROM_I2C_ADDR
+		hex "eeprom i2c addr"
+		depends on HTD_EEPROM_BUS_I2C
+		default 0xA0
+	config HTD_EEPROM_I2C_PIN_SDA
+		int "eeprom i2c sda pin number."
+		depends on HTD_EEPROM_BUS_I2C
+		default -1
+	config HTD_EEPROM_I2C_PIN_SCK
+		int "eeprom i2c sck pin number."
+		depends on HTD_EEPROM_BUS_I2C
+		default -1  
+endif

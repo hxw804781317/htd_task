@@ -3,27 +3,28 @@ menuconfig HTD_USING_NANDFLASH
     select BSP_USING_SPIM
     select BSP_USING_QSPIM
     default n
-    if HTD_USING_NANDFLASH
-        config HTD_NANDFLASH_BUS_NAME
-            string "nandflash bus name"
-            default "spim1"
-        config HTD_NANDFLASH_POWER_PIN
-            int "nandflash power pin number"
-            default -1
-        config HTD_NANDFLASH_POWER_PIN_ACTIVE_HIGH
-            bool "power pin is high is power on"
-			depends on HTD_NANDFLASH_POWER_PIN
-            default y 
-        config HTD_NANDFLASH_PIN_CS
-            int "nandflash cs pin number."
-            default -1
-        config HTD_NANDFLASH_PIN_SCK
-            int "nandflash sck pin number."
-            default -1
-        config HTD_NANDFLASH_PIN_MOSI
-            int "nandflash mosi pin number."
-            default -1
-        config HTD_NANDFLASH_PIN_MISO
-            int "nandflash miso pin number."
-            default -1
-    endif
+	
+if HTD_USING_NANDFLASH
+	config HTD_NANDFLASH_BUS_NAME
+		string "nandflash bus name"
+		default "spim1"
+	config HTD_NANDFLASH_POWER_PIN
+		int "nandflash power pin number"
+		default -1
+	config HTD_NANDFLASH_POWER_PIN_ACTIVE_HIGH
+		bool "power pin is high is power on"
+		depends on (HTD_NANDFLASH_POWER_PIN >= 0)
+		default y 
+	config HTD_NANDFLASH_PIN_CS
+		int "nandflash cs pin number."
+		default -1
+	config HTD_NANDFLASH_PIN_SCK
+		int "nandflash sck pin number."
+		default -1
+	config HTD_NANDFLASH_PIN_MOSI
+		int "nandflash mosi pin number."
+		default -1
+	config HTD_NANDFLASH_PIN_MISO
+		int "nandflash miso pin number."
+		default -1
+endif

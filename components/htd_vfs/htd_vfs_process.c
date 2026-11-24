@@ -6,7 +6,6 @@
 #include "htd_vfs_slist.h"
 
 
-
 //////////////////////////////////////////////////////////////////////
 HTD_SECTION_DEF(HTD_VFS_API_SECTION_NAME, htd_vfs_api_t);
 
@@ -215,12 +214,12 @@ int htd_vfs_mount(htd_vfs_type_t fs_type, const char *p_path, const void *fs_dev
         htd_print("mkfs\r\n");
         ret = p_vfs->fs_mk(p_vfs, fs_dev);
         if (ret != ERROR_CODE_SUCCESS) {
-            htd_print("mkfs failed. ret=%d\n", ret);
+            htd_print("mkfs failed. ret=%d\r\n", ret);
             break;
         }
         ret = p_vfs->fs_mount(p_vfs, fs_dev);
         if (ret != ERROR_CODE_SUCCESS) {
-            htd_print("mount again failed. ret=%d\n", ret);
+            htd_print("mount again failed. ret=%d\r\n", ret);
             break;
         }
     }while (0);

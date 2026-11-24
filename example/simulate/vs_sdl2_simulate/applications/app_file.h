@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #ifndef __APP_FILE_H__
 #define __APP_FILE_H__
 

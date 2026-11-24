@@ -208,11 +208,12 @@ static int vfs_cmd_mount(int argc, char **argv)
             htd_print("%d  %-s\n", p_iter->type, p_iter->p_path);
         }
         return 0;
-    } else if (argc == 4) {
+    } else if (argc == 3) {
         htd_vfs_type_t fs_type = atoi(argv[1]);
         char *path = argv[2];
+
+        // FIXME: 根据路径 path 从配置表里面获取配置信息，创建设备，然后再挂载
         
-        /* mount a filesystem to the specified directory */
         htd_print("mount %s onto %s ... ", fs_type, path);
         if (htd_vfs_mount(fs_type, path, NULL, false) == 0) {
             htd_print("succeed!\n");

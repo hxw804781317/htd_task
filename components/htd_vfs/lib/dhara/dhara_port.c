@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #define DEBUG_LVL 4
 #define DEBUG_TAG              "dhara"
 #include "htd_vfs_port.h"
@@ -62,7 +64,7 @@ int dhara_nand_is_free(const struct dhara_nand *n, dhara_page_t p)
     uint32_t page_size = 1 << n->log2_page_size;
     
     p += n->start_block_id * (1 << n->log2_ppb);
-    uint32_t *p_data = vfs_malloc(page_size);
+    uint32_t *p_data = htd_malloc(page_size);
     ASSERT(p_data);
     
     int32_t ret = n->page_read_handle(p, 0, (uint8_t*)p_data, page_size);
@@ -77,7 +79,7 @@ int dhara_nand_is_free(const struct dhara_nand *n, dhara_page_t p)
     } else {
         is_free = false;
     }
-    vfs_free(p_data);
+    htd_free(p_data);
 
     //print_warning("page[%d] is free. is_free=%d, ret=%d", p, is_free, ret);
     return is_free;
@@ -106,7 +108,7 @@ int dhara_nand_copy(const struct dhara_nand *n, dhara_page_t src, dhara_page_t d
     src += n->start_block_id * (1 << n->log2_ppb);
     
     uint32_t data_len = 1 << n->log2_page_size;
-    char* p_data = vfs_malloc(data_len);
+    char* p_data = htd_malloc(data_len);
     ASSERT(p_data);
 
     int32_t ret = n->page_read_handle(src, 0, p_data, data_len);
@@ -114,12 +116,12 @@ int dhara_nand_copy(const struct dhara_nand *n, dhara_page_t src, dhara_page_t d
         if (err) {
             *err = DHARA_E_ECC;
         }
-        vfs_free(p_data);
+        htd_free(p_data);
         return -1;
     }
 
     ret = n->page_write_handle(dst, p_data, data_len);
-    vfs_free(p_data);
+    htd_free(p_data);
     if (ret == data_len) {
         return 0;
     }

@@ -11,6 +11,10 @@ extern "C" {
     #include "htd_console_process.h"
 #endif
 
+#ifdef HTD_VFS_ENABLE
+    #include "htd_vfs_process.h"
+#endif
+
 #ifdef HTD_BOOT_ENABLE
     #include "htd_boot_process.h"
 #endif

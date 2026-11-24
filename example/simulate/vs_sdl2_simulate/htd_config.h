@@ -32,8 +32,9 @@
 /* HTD_BUTTON_ENABLE is not set */
 /* HTD_LED_ENABLE is not set */
 #define HTD_VFS_ENABLE 1
-/* HTD_VFS_USING_NORFLASH_DEV is not set */
+#define HTD_VFS_USING_NORFLASH_DEV 1
 /* HTD_VFS_USING_NANDFLASH_DEV is not set */
+#define HTD_VFS_USING_LIB_DHARA 1
 /* HTD_VFS_USING_SDCARD_DEV is not set */
 #define HTD_VFS_USING_POSIX 1
 #define HTD_VFS_FD_MAX 16
@@ -65,7 +66,13 @@
 
 /* Hardware Drivers Config */
 /* HTD_USING_NANDFLASH is not set */
-/* HTD_USING_NORFLASH is not set */
+#define HTD_USING_NORFLASH 1
+#define HTD_NORFLASH_BUS_NAME "spim1"
+#define HTD_NORFLASH_POWER_PIN -1
+#define HTD_NORFLASH_PIN_CS -1
+#define HTD_NORFLASH_PIN_SCK -1
+#define HTD_NORFLASH_PIN_MOSI -1
+#define HTD_NORFLASH_PIN_MISO -1
 /* HTD_USING_EEPROM is not set */
 /* end of Hardware Drivers Config */
 

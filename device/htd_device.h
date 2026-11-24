@@ -53,6 +53,8 @@ typedef struct {
     dev_init_func_t init_func;
 } dev_init_t;
 #define DEV_INIT_MAGIC         0x58908761
+
+// 初始化函数注册，主要初始化设备注册函数
 #define DEVICE_INIT_SECTION_NAME    htd_init_device
 #define DEVICE_INIT_FUNC_REGISTER(func)                                     \
     HTD_SECTION_ITEM_REGISTER(DEVICE_INIT_SECTION_NAME, static const dev_init_t CONCAT_2(htd_dev_, func)) = {\
@@ -60,9 +62,6 @@ typedef struct {
         .name = STR(func),                                                  \
         .init_func = (dev_init_func_t)func                                  \
     };
-#ifndef INIT_DEVICE_EXPORT
-    #define INIT_DEVICE_EXPORT(func)            DEVICE_INIT_FUNC_REGISTER(func)
-#endif
 
 // @brief 初始化
 int32_t htd_dev_init(void);
