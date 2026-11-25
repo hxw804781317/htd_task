@@ -19,13 +19,13 @@ typedef struct htd_slist_node htd_slist_node_t;
 
 
 // @brief 初始化单链表
-static inline void htd_slist_init(htd_slist_t *p_slist)
+__STATIC_INLINE void htd_slist_init(htd_slist_t *p_slist)
 {
     p_slist->next = NULL;
 }
 
 // @brief 在链表尾部添加一个新的节点
-static inline void htd_slist_append(htd_slist_t *p_slist, htd_slist_node_t *p_new_node)
+__STATIC_INLINE void htd_slist_append(htd_slist_t *p_slist, htd_slist_node_t *p_new_node)
 {
     struct htd_slist_node *p_node  = p_slist;
     while (p_node->next) {
@@ -36,14 +36,14 @@ static inline void htd_slist_append(htd_slist_t *p_slist, htd_slist_node_t *p_ne
 }
 
 // @brief 在p_node节点后插入一个新的节点
-static inline void htd_slist_insert(htd_slist_node_t *p_node, htd_slist_node_t *p_new_node)
+__STATIC_INLINE void htd_slist_insert(htd_slist_node_t *p_node, htd_slist_node_t *p_new_node)
 {
     p_new_node->next = p_node->next;
     p_node->next = p_new_node;
 }
 
 // @brief 统计单链表节点个数
-static inline unsigned int htd_slist_len(const htd_slist_t *p_slist)
+__STATIC_INLINE unsigned int htd_slist_len(const htd_slist_t *p_slist)
 {
     unsigned int len = 0;
     const htd_slist_t *list = p_slist->next;
@@ -55,7 +55,7 @@ static inline unsigned int htd_slist_len(const htd_slist_t *p_slist)
 }
 
 // @brief 从单链表中移除一个节点
-static inline htd_slist_t *htd_slist_remove(htd_slist_t *p_slist, htd_slist_t *p_remove_node)
+__STATIC_INLINE htd_slist_t *htd_slist_remove(htd_slist_t *p_slist, htd_slist_t *p_remove_node)
 {
     // 查找节点前一个节点
     htd_slist_node_t *p_node = p_slist;
@@ -70,7 +70,7 @@ static inline htd_slist_t *htd_slist_remove(htd_slist_t *p_slist, htd_slist_t *p
 }
 
 // @brief 节点替换，返回替换掉的节点指针
-static inline htd_slist_t* htd_slist_replace(htd_slist_t *p_slist, htd_slist_t *p_replace_node, 
+__STATIC_INLINE htd_slist_t* htd_slist_replace(htd_slist_t *p_slist, htd_slist_t *p_replace_node, 
                                                       bool (*compare_func)(htd_slist_t *p_node1, htd_slist_t *p_node2))
 {
     htd_slist_node_t *p_replace;
@@ -88,13 +88,13 @@ static inline htd_slist_t* htd_slist_replace(htd_slist_t *p_slist, htd_slist_t *
 }
 
 // @brief 第一个节点
-static inline htd_slist_t *htd_slist_first(htd_slist_t *p_slist)
+__STATIC_INLINE htd_slist_t *htd_slist_first(htd_slist_t *p_slist)
 {
     return p_slist->next;
 }
 
 // @brief 最后一个节点
-static inline htd_slist_t *htd_slist_tail(htd_slist_t *p_slist)
+__STATIC_INLINE htd_slist_t *htd_slist_tail(htd_slist_t *p_slist)
 {
     while (p_slist->next) {
         p_slist = p_slist->next;
@@ -103,13 +103,13 @@ static inline htd_slist_t *htd_slist_tail(htd_slist_t *p_slist)
 }
 
 // @brief 某个节点下一个节点
-static inline htd_slist_t *htd_slist_next(htd_slist_t *p_node)
+__STATIC_INLINE htd_slist_t *htd_slist_next(htd_slist_t *p_node)
 {
     return p_node->next;
 }
 
 // @brief 判断链表是否为空
-static inline int htd_slist_is_empty(htd_slist_t *p_slist)
+__STATIC_INLINE int htd_slist_is_empty(htd_slist_t *p_slist)
 {
     return p_slist->next == NULL;
 }

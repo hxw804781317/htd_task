@@ -53,7 +53,6 @@ typedef struct dhara_nand {
     
     bool (*is_bad_handle)(dhara_block_t block_id);
     void (*mark_bad_handle)(dhara_block_t block_id);
-    
     int32_t (*block_erase_handle)(uint32_t block_id);
     int32_t (*page_write_handle)(uint32_t page_id, const uint8_t* p_data, uint32_t data_len);
     int32_t (*page_read_handle)(uint32_t page_id, uint32_t offset, uint8_t* p_data, uint32_t data_len);

@@ -1,5 +1,7 @@
 // Copyright (c) 2026 Daven <804781317@qq.com>
 // SPDX-License-Identifier: MIT
+#define DEBUG_LVL   4
+#define DEBUG_TAG              "fatfs.nor"
 #include <htd_vfs_process.h>
 
 #if defined(HTD_VFS_USING_NORFLASH_DEV) && defined(HTD_VFS_USING_ELM_FATFS) && defined(HTD_USING_NORFLASH)
@@ -14,7 +16,7 @@ static int32_t fatfs_norflash_read(const elm_fatfs_dev_t* p_dev, uint8_t *buff, 
     int32_t buff_len = p_dev->sector_size * count;
     int32_t ret = vfs_norflash_read(addr, buff, buff_len);      // norflash 驱动接口
     if (buff_len != ret) {
-        htd_print("disk read failed. ret=%d, buff_len=%d\n", ret, buff_len);
+        print_error("disk read failed. ret=%d, buff_len=%d", ret, buff_len);
         return RES_ERROR;
     }
     return 0;
@@ -29,7 +31,7 @@ static int32_t fatfs_norflash_write(const elm_fatfs_dev_t* p_dev, const uint8_t 
     vfs_norflash_erase(addr, p_dev->sector_size * p_dev->erase_sector_count);
     int32_t ret = vfs_norflash_write(addr, buff, buff_len);     // norflash 驱动接口
     if (buff_len != ret) {
-        htd_print("disk write failed. ret=%d, buff_len=%d\n", ret, buff_len);
+        print_error("disk write failed. ret=%d, buff_len=%d", ret, buff_len);
         return RES_ERROR;
     }
     return 0;

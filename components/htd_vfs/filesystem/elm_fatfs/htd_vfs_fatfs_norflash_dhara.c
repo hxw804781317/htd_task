@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Daven <804781317@qq.com>
 // SPDX-License-Identifier: MIT
 //#define DEBUG_LVL   4
-#define DEBUG_TAG              "fatfs.nor"
+#define DEBUG_TAG              "fatfs.nor_dhara"
 #include <htd_vfs_process.h>
 
 #if defined(HTD_VFS_USING_LIB_DHARA) && defined(HTD_VFS_USING_ELM_FATFS) && defined(HTD_VFS_USING_NORFLASH_DEV) && defined(HTD_USING_NORFLASH)
@@ -61,10 +61,8 @@ static void fatfs_norflash_dhara_destroy(const elm_fatfs_dev_t* p_fatfs_dev)
     if (p_fatfs_dev == NULL) {
         return;
     }
-    
     // 处理 p_fatfs_dev->p_user_data
     //struct dhara_map* p_dhara = (struct dhara_map*)p_fatfs_dev->p_user_data;
-    
     htd_free(p_fatfs_dev);
 }
 
@@ -72,8 +70,7 @@ static void fatfs_norflash_dhara_destroy(const elm_fatfs_dev_t* p_fatfs_dev)
 int32_t norflash_page_read(uint32_t page_id, uint32_t offset, uint8_t* p_data, uint32_t data_len)
 {
     print_debug("read. page_id=%d, offset=%d, data_len=%d", page_id, offset, data_len);
-    uint32_t start_addr = 0; //vfs_norflash_phy_saddr_get();
-    uint32_t addr = start_addr + NORFLASH_PAGE_SIZE * page_id;
+    uint32_t addr = NORFLASH_PAGE_SIZE * page_id;
     return vfs_norflash_read(addr + offset, p_data, data_len);
 }
 
@@ -81,18 +78,16 @@ int32_t norflash_page_read(uint32_t page_id, uint32_t offset, uint8_t* p_data, u
 int32_t norflash_page_write(uint32_t page_id, const uint8_t* p_data, uint32_t data_len)
 {
     print_debug("write. page_id=%d, data_len=%d", page_id, data_len);
-    uint32_t start_addr = 0; //vfs_norflash_phy_saddr_get();
-    uint32_t addr = start_addr + NORFLASH_PAGE_SIZE * page_id;
+    uint32_t addr = NORFLASH_PAGE_SIZE * page_id;
     return vfs_norflash_write(addr, p_data, data_len);
 }
 
 // @brief 擦除一块数据, block_id 为绝对序列号
 int32_t norflash_block_erase(uint32_t block_id)
 {
-    uint32_t start_addr = 0; //vfs_norflash_phy_saddr_get();
     uint32_t block_size = vfs_norflash_erase_unit_get();
     print_debug("erase. block_id=%d, page_id=%d", block_id, block_id * (block_size / NORFLASH_PAGE_SIZE));
-    uint32_t addr = start_addr + block_size * block_id;
+    uint32_t addr = block_size * block_id;
     return vfs_norflash_erase(addr, block_size);
 }
 

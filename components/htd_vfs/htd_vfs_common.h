@@ -28,14 +28,17 @@ extern "C" {
 #ifndef VFS_PATH_MAX
     #define VFS_PATH_MAX            256
 #endif
+#ifndef __STATIC_INLINE
+    #define __STATIC_INLINE         static inline
+#endif
 #ifndef ARRAY_COUNT
-    #define ARRAY_COUNT(X)              (sizeof(X) / sizeof(X[0]))
+    #define ARRAY_COUNT(X)          (sizeof(X) / sizeof(X[0]))
 #endif
 #ifndef ALIGN_DOWN
-    #define ALIGN_DOWN(n, align)        ((n) & ~((align) - 1))
+    #define ALIGN_DOWN(n, align)    ((n) & ~((align) - 1))
 #endif 
 #ifndef ALIGN_UP
-    #define ALIGN_UP(n, align)          (((n) + (align) - 1) & ~((align) - 1))
+    #define ALIGN_UP(n, align)      (((n) + (align) - 1) & ~((align) - 1))
 #endif 
 
 // 文件类型

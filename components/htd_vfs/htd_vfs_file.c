@@ -115,7 +115,7 @@ static htd_vfs_fd_t* file_open(const char *p_path, int flags)
     htd_vfs_t *p_vfs = htd_vfs_find(p_fullpath);
     if (p_vfs == NULL) {
         htd_free(p_fullpath); 
-        htd_print("fs was not found.\r\n");
+        print_error("fs was not found.");
         return NULL;
     }
 
@@ -147,7 +147,7 @@ static htd_vfs_fd_t* file_open(const char *p_path, int flags)
     if (p_vfs->f_open) {
         if (p_vfs->f_open(p_fd) < 0) {
             vfs_fd_free(p_fd);
-            htd_print("vfs open failed.\r\n");
+            print_error("vfs open failed.");
             return NULL;
         }
     }
@@ -510,7 +510,7 @@ int htd_vfs_file_stat(const char *path, htd_vfs_stat_t *p_info)
 
     htd_vfs_t* p_vfs = htd_vfs_find(p_fullpath);
     if (p_vfs == NULL) {
-        htd_print("has not found filesystem. %s.\r\n", p_fullpath);
+        print_error("has not found filesystem. %s.", p_fullpath);
         htd_free(p_fullpath);
         return -ERROR_CODE_NOT_SUPPORTED; 
     }
@@ -650,7 +650,7 @@ void htd_vfs_file_cat(const char *p_filename)
     // 打开文件
     htd_vfs_fd_t* p_fd = htd_vfs_fopen(p_filename, "r");
     if (p_fd == NULL) {
-        htd_print("Open %s failed\r\n", p_filename);
+        print_error("Open %s failed.", p_filename);
         return;
     }
 
@@ -688,16 +688,13 @@ static void file_copy(const char *p_spath, const char *p_dpath)
 {
     const uint32_t buff_len = 4096;
     uint8_t* p_buff = (uint8_t *)htd_malloc(buff_len);
-    if (p_buff == NULL) {
-        htd_print("out of memory\r\n");
-        return;
-    }
+    ASSERT(p_buff);
 
     // 打开源文件
     htd_vfs_fd_t *p_sfd = htd_vfs_fopen(p_spath, "r");
     if (NULL == p_sfd) {
         htd_free(p_buff);
-        htd_print("Read %s failed\r\n", p_spath);
+        print_error("Read %s failed.", p_spath);
         return;
     }
     
@@ -706,7 +703,7 @@ static void file_copy(const char *p_spath, const char *p_dpath)
     if (NULL == p_dfd) {
         htd_free(p_buff);
         htd_vfs_fclose(p_sfd);
-        htd_print("Write %s failed\r\n", p_dpath);
+        print_error("Write %s failed.", p_dpath);
         return;
     }
 
@@ -718,7 +715,7 @@ static void file_copy(const char *p_spath, const char *p_dpath)
         }
         int length = htd_vfs_fwrite(p_dfd, p_buff, read_bytes);
         if (length != read_bytes) {
-            htd_print("Write file data failed, errno=%d\r\n", length);
+            print_error("Write file data failed, errno=%d.", length);
             break;
         }
     }
@@ -734,7 +731,7 @@ static void dir_copy(const char *src, const char *dst)
 {
     int fd = htd_vfs_file_open(src, O_DIRECTORY);
     if (fd < 0) {
-        htd_print("open %s failed\r\n", src);
+        print_error("open %s failed.", src);
         return ;
     }
 
@@ -757,7 +754,7 @@ static void dir_copy(const char *src, const char *dst)
         ASSERT(dst_entry_full);
         htd_memset(&stat, 0, sizeof(htd_vfs_stat_t));
         if (htd_vfs_file_stat(src_entry_full, &stat) != 0) {
-            htd_print("open file: %s failed\r\n", dirent.d_name);
+            print_error("open file: %s failed.", dirent.d_name);
             continue;
         }
         if (S_ISDIR(stat.st_mode)) {
@@ -787,7 +784,7 @@ void htd_vfs_copy(const char *src, const char *dst)
 
     htd_vfs_stat_t stat;
     if (htd_vfs_file_stat(src, &stat) < 0) {
-        htd_print("copy failed, bad %s\r\n", src);
+        print_error("copy failed, bad %s.", src);
         return;
     }
 
@@ -810,7 +807,7 @@ void htd_vfs_copy(const char *src, const char *dst)
 
     //检查类型是否一致
     if ((flag & FLAG_SRC_IS_DIR) && (flag & FLAG_DST_IS_FILE)) {
-        htd_print("cp faild, cp dir to file is not permitted!\r\n");
+        print_error("cp faild, cp dir to file is not permitted!\r\n");
         return ;
     }
 
@@ -892,7 +889,7 @@ void htd_vfs_rmdir_rf(const char* p_path)
     
     p_dir = opendir(p_path);
     if (NULL == p_dir) {
-        htd_print("open dir failed. path=%s\r\n", p_path);
+        print_error("open dir failed. path=%s.", p_path);
         htd_vfs_file_unlink(p_path);
         return;
     }
@@ -982,7 +979,7 @@ htd_vfs_dirent_t *htd_vfs_dir_read(DIR *p_dir)
 int htd_vfs_dir_change(const char *path)
 {
     if (path == NULL) {
-        htd_print("%s\r\n", htd_vfs_work_dir_get());
+        print_error("%s.", htd_vfs_work_dir_get());
         return 0;
     }
     if (htd_strlen(path) > VFS_PATH_MAX) {
@@ -998,7 +995,7 @@ int htd_vfs_dir_change(const char *path)
     DIR *p_dir = htd_vfs_dir_open(p_fullpath);
     if (p_dir == NULL) {
         htd_free(p_fullpath);
-        htd_print("open dir(%s) failed.\r\n", p_fullpath);
+        print_error("open dir(%s) failed.", p_fullpath);
         return -1;
     }
     closedir(p_dir);

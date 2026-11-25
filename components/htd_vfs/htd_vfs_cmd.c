@@ -1,5 +1,7 @@
 // Copyright (c) 2026 Daven <804781317@qq.com>
 // SPDX-License-Identifier: MIT
+#define DEBUG_LVL 4
+#define DEBUG_TAG              "vfs.cmd"
 #include "htd_vfs_process.h"
 
 #if defined(HTD_CONSOLE_ENABLE)
@@ -21,7 +23,7 @@ CONSOLE_CMD_EXPORT(vfs_cmd_ls, ls);
 void vfs_cmd_touch(int argc, char** argv)
 {
     if (argc < 2) {
-        htd_print("ex. %s file\n", argv[0]);
+        htd_print("ex. %s file.\r\n", argv[0]);
         return;
     }
 
@@ -35,7 +37,7 @@ void vfs_cmd_touch(int argc, char** argv)
     // 创建文件
     int fid = htd_vfs_file_open(argv[1], O_CREAT|O_RDWR|O_BINARY);   /*O_TRUNC*/
     if (fid < 0) {
-        htd_print("create file failed. %s\n", argv[1]);
+        htd_print("create file failed. %s\r\n", argv[1]);
         return ;
     }
     htd_vfs_file_close(fid);
@@ -46,8 +48,8 @@ CONSOLE_CMD_EXPORT(vfs_cmd_touch, touch);
 static int vfs_cmd_cp(int argc, char **argv)
 {
     if (argc != 3) {
-        htd_print("Usage: cp SOURCE DEST\n");
-        htd_print("Copy SOURCE to DEST.\n");
+        htd_print("Usage: cp SOURCE DEST\r\n");
+        htd_print("Copy SOURCE to DEST.\r\n");
     } else {
         htd_vfs_copy(argv[1], argv[2]);
     }
@@ -59,8 +61,8 @@ CONSOLE_CMD_EXPORT(vfs_cmd_cp, cp);
 static int vfs_cmd_mv(int argc, char **argv)
 {
     if (argc != 3) {
-        htd_print("Usage: mv SOURCE DEST\n");
-        htd_print("Rename SOURCE to DEST, or move SOURCE(s) to DIRECTORY.\n");
+        htd_print("Usage: mv SOURCE DEST\r\n");
+        htd_print("Rename SOURCE to DEST, or move SOURCE(s) to DIRECTORY.\r\n");
     } else {
         char *dest = NULL;
         htd_print("%s => %s\n", argv[1], argv[2]);
@@ -104,7 +106,7 @@ CONSOLE_CMD_EXPORT(vfs_cmd_mv, mv);
 static int vfs_cmd_cat(int argc, char **argv)
 {
     if (argc != 2) {
-        htd_print("Usage: cat [FILE]...\n");
+        htd_print("Usage: cat [FILE]...\r\n");
         return 0;
     } 
     htd_vfs_file_cat(argv[1]);
@@ -116,7 +118,7 @@ CONSOLE_CMD_EXPORT(vfs_cmd_cat, cat);
 static int vfs_cmd_rm(int argc, char **argv)
 {
     if (argc == 1) {
-        htd_print("Usage: rm option(s) FILE...\n");
+        htd_print("Usage: rm option(s) FILE...\r\n");
         return 0;
     } else if (argc == 2) {
         htd_vfs_file_unlink(argv[1]);
@@ -134,10 +136,10 @@ CONSOLE_CMD_EXPORT(vfs_cmd_rm, rm);
 static int vfs_cmd_cd(int argc, char **argv)
 {
     if (argc == 1) {
-        htd_print("%s\n", htd_vfs_work_dir_get());
+        htd_print("%s\r\n", htd_vfs_work_dir_get());
     } else if (argc == 2) {
         if (chdir(argv[1]) != 0) {
-            htd_print("No such directory: %s\n", argv[1]);
+            htd_print("No such directory: %s\r\n", argv[1]);
         }
     }
     return 0;
@@ -147,7 +149,7 @@ CONSOLE_CMD_EXPORT(vfs_cmd_cd, cd);
 // @brief 控制台命令 pwd
 static int vfs_cmd_pwd(int argc, char **argv)
 {
-    htd_print("%s\n", htd_vfs_work_dir_get());
+    htd_print("%s\r\n", htd_vfs_work_dir_get());
     return 0;
 }
 CONSOLE_CMD_EXPORT(vfs_cmd_pwd, pwd);
@@ -156,8 +158,8 @@ CONSOLE_CMD_EXPORT(vfs_cmd_pwd, pwd);
 static int vfs_cmd_mkdir(int argc, char **argv)
 {
     if (argc == 1) {
-        htd_print("Usage: mkdir [OPTION] DIRECTORY\n");
-        htd_print("Create the DIRECTORY, if they do not already exist.\n");
+        htd_print("Usage: mkdir [OPTION] DIRECTORY\r\n");
+        htd_print("Create the DIRECTORY, if they do not already exist.\r\n");
     } else if (argc == 2) {
         htd_vfs_mkdir(argv[1]);
     } else {
@@ -183,11 +185,11 @@ static int vfs_cmd_mkfs(int argc, char **argv)
             result = htd_vfs_mkfs(type, NULL);
         }
     } else {
-        htd_print("Usage: mkfs [-t type]\n");
+        htd_print("Usage: mkfs [-t type]\r\n");
         return 0;
     }
     if (result != ERROR_CODE_SUCCESS) {
-        htd_print("mkfs failed, result=%d\n", result);
+        htd_print("mkfs failed, result=%d\r\n", result);
     }
     return 0;
 }
@@ -197,8 +199,8 @@ CONSOLE_CMD_EXPORT(vfs_cmd_mkfs, mkfs);
 static int vfs_cmd_mount(int argc, char **argv)
 {
     if (argc == 1) {
-        htd_print("filesystem  device  mountpoint\n");
-        htd_print("----------  ------  ----------\n");
+        htd_print("filesystem  device  mountpoint\r\n");
+        htd_print("----------  ------  ----------\r\n");
         htd_vfs_t *p_iter = NULL;
         while (1) {
             p_iter = htd_vfs_query(p_iter);
@@ -216,14 +218,14 @@ static int vfs_cmd_mount(int argc, char **argv)
         
         htd_print("mount %s onto %s ... ", fs_type, path);
         if (htd_vfs_mount(fs_type, path, NULL, false) == 0) {
-            htd_print("succeed!\n");
+            htd_print("succeed!\r\n");
             return 0;
         } else {
-            htd_print("failed!\n");
+            htd_print("failed!\r\n");
             return -1;
         }
     } else {
-        htd_print("Usage: mount <device> <mountpoint> <fstype>.\n");
+        htd_print("Usage: mount <device> <mountpoint> <fstype>.\r\n");
         return -1;
     }
 }
@@ -234,16 +236,16 @@ static int vfs_cmd_umount(int argc, char **argv)
 {
     char *path = argv[1];
     if (argc != 2) {
-        htd_print("Usage: unmount <mountpoint>.\n");
+        htd_print("Usage: unmount <mountpoint>.\r\n");
         return -1;
     }
 
     htd_print("unmount %s ... ", path);
     if (htd_vfs_unmount(path) < 0) {
-        htd_print("failed!\n");
+        htd_print("failed!\r\n");
         return -1;
     } else {
-        htd_print("succeed!\n");
+        htd_print("succeed!\r\n");
         return 0;
     }
 }
@@ -256,7 +258,7 @@ static int vfs_cmd_df(int argc, char **argv)
         htd_vfs_df("/");
     } else {
         if ((htd_strcmp(argv[1], "--help") == 0) || (htd_strcmp(argv[1], "-h") == 0)) {
-            htd_print("df [path]\n");
+            htd_print("df [path]\r\n");
         } else {
             htd_vfs_df(argv[1]);
         }
@@ -276,10 +278,10 @@ static int vfs_cmd_echo(int argc, char **argv)
             htd_vfs_file_write(fd, argv[1], htd_strlen(argv[1]));
             htd_vfs_file_close(fd);
         } else {
-            htd_print("open file:%s failed!\n", argv[2]);
+            htd_print("open file:%s failed!\r\n", argv[2]);
         }
     } else {
-        htd_print("Usage: echo \"string\" [filename]\n");
+        htd_print("Usage: echo \"string\" [filename]\r\n");
     }
     return 0;
 }
@@ -296,7 +298,7 @@ static int vfs_cmd_tail(int argc, char **argv)
     uint32_t start_line = 0;
 
     if (argc < 2) {
-        htd_print("Usage: tail [-n numbers] <filename>\n");
+        htd_print("Usage: tail [-n numbers] <filename>\r\n");
         return -1;
     }
     
@@ -311,13 +313,13 @@ static int vfs_cmd_tail(int argc, char **argv)
         }
         file_name = argv[3];
     } else {
-        htd_print("Usage: tail [-n numbers] <filename>\n");
+        htd_print("Usage: tail [-n numbers] <filename>\r\n");
         return -1;
     }
 
     htd_vfs_fd_t* p_fd = htd_vfs_fopen(file_name, "r");
     if (NULL != p_fd) {
-        htd_print("File doesn't exist\n");
+        htd_print("File doesn't exist.\r\n");
         return -1;
     }
 
@@ -330,24 +332,24 @@ static int vfs_cmd_tail(int argc, char **argv)
             total_lines++;
         }
     }
-    htd_print("\nTotal Number of lines:%d\n", total_lines);
+    htd_print("\nTotal Number of lines:%d\r\n", total_lines);
 
     if (start_line != 0) {
         if (total_lines >= start_line) {
             required_lines = total_lines - start_line + 1;
         } else {
-            htd_print("\nError:Required lines are more than total number of lines\n");
+            htd_print("\nError:Required lines are more than total number of lines.\r\n");
             htd_vfs_fclose(p_fd);
             return -ERROR_CODE_FAILED;
         }
     }
 
     if (required_lines > total_lines) {
-        htd_print("\nError:Required lines are more than total number of lines\n");
+        htd_print("\nError:Required lines are more than total number of lines.\r\n");
         htd_vfs_fclose(p_fd);
         return -ERROR_CODE_FAILED;
     }
-    htd_print("Required Number of lines:%d\n", required_lines);
+    htd_print("Required Number of lines:%d.\r\n", required_lines);
 
     target_line = total_lines - required_lines;
     htd_vfs_fseek(p_fd, 0, SEEK_SET);

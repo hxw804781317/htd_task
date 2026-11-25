@@ -1,5 +1,7 @@
 // Copyright (c) 2026 Daven <804781317@qq.com>
 // SPDX-License-Identifier: MIT
+//#define DEBUG_LVL   4
+#define DEBUG_TAG              "fatfs.sdcard"
 #include <htd_vfs_process.h>
 
 #if defined(HTD_VFS_USING_SDCARD_DEV) && defined(HTD_VFS_USING_ELM_FATFS) && defined(HTD_USING_SDCARD)
@@ -12,17 +14,17 @@
 static int32_t fatfs_sdcard_read(const elm_fatfs_dev_t* p_dev, uint8_t *buff, uint32_t sector, uint32_t count)
 {
     sector += p_dev->phy_addr;
-    if (ERROR_CODE_SUCCESS == htd_dev_sdcard_block_read((sdcard_handle_t)p_dev->p_user_data, sector, buff, count)) {
+    if (vfs_sdcard_read(p_dev->p_user_data, buff, sector, count) > 0) {
         return RES_OK;
     }
     return RES_ERROR;
 }
 
 // @brief 写扇区数据
-static int32_t fatfs_sdcard_write(const elm_fatfs_dev_t* p_dev, const uint8_t *buff, uint32_t sector, uint32_t block_count)
+static int32_t fatfs_sdcard_write(const elm_fatfs_dev_t* p_dev, const uint8_t *buff, uint32_t sector, uint32_t count)
 {
     sector += p_dev->phy_addr;
-    if (ERROR_CODE_SUCCESS == htd_dev_sdcard_block_write((sdcard_handle_t)p_dev->p_user_data, sector, buff, block_count)) {
+    if (vfs_sdcard_write(p_dev->p_user_data, buff, sector, count) > 0) {
         return RES_OK;
     }
     return RES_ERROR;
@@ -38,9 +40,8 @@ static int32_t fatfs_sdcard_sync(const elm_fatfs_dev_t* p_dev)
 static void fatfs_sdcard_destroy(const elm_fatfs_dev_t* p_fatfs_dev)
 {
     if (p_fatfs_dev) {
-        sdcard_handle_t sdcard_handle = (sdcard_handle_t)p_fatfs_dev->p_user_data;
-        if (sdcard_handle) {
-            htd_dev_sdcard_close(sdcard_handle);
+        if (p_fatfs_dev->p_user_data) {
+            vfs_sdcard_close(p_fatfs_dev->p_user_data);
         }
         htd_free(p_fatfs_dev);
     }
@@ -49,25 +50,24 @@ static void fatfs_sdcard_destroy(const elm_fatfs_dev_t* p_fatfs_dev)
 // @brief 创建 sdcard 文件系统设备
 elm_fatfs_dev_t* vfs_fatfs_sdcard_create(uint8_t disk_idx, uint32_t block_idx, uint32_t block_count)
 {
-    sdcard_handle_t sdcard_handle = htd_dev_sdcard_open();
+    void* sdcard_handle = vfs_sdcard_open();
     if (sdcard_handle == NULL) {
         return NULL;
     }
-    dev_sdcard_info_t info;
-    if (ERROR_CODE_SUCCESS != htd_dev_sdcard_info_get(sdcard_handle, &info)) {
+
+    uint32_t sdcard_block_count, sdcard_block_size;
+    if (0 != vfs_sdcard_block_info_get(sdcard_handle, &sdcard_block_count, &sdcard_block_size)) {
         return NULL;
     }
-    htd_print("block_count=%u, block_size=%u, card_type=%u, card_class=%u, card_version=%u\r\n", info.block_count, info.block_size, info.card_type, info.card_class, info.card_version);
-    
-    if ((block_idx + block_count) > info.block_count) {
-        block_count = info.block_count - block_idx;
+    if ((block_idx + block_count) > sdcard_block_count) {
+        block_count = sdcard_block_count - block_idx;
     }
     
     elm_fatfs_dev_t* p_fatfs_dev = (elm_fatfs_dev_t*)htd_malloc(sizeof(elm_fatfs_dev_t));
     ASSERT(p_fatfs_dev);
     htd_memset(p_fatfs_dev, 0, sizeof(elm_fatfs_dev_t));
     p_fatfs_dev->disk_idx = disk_idx;
-    p_fatfs_dev->sector_size = info.block_size;
+    p_fatfs_dev->sector_size = sdcard_block_size;
     p_fatfs_dev->sector_count = block_count;
     p_fatfs_dev->erase_sector_count = 1;
     p_fatfs_dev->phy_addr = block_idx;

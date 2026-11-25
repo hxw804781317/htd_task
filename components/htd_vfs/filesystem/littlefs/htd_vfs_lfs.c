@@ -1,5 +1,7 @@
 // Copyright (c) 2026 Daven <804781317@qq.com>
 // SPDX-License-Identifier: MIT
+#define DEBUG_LVL   4
+#define DEBUG_TAG              "vfs.lfs"
 #include <htd_vfs_lfs.h>
 
 // 适合 norflash
@@ -152,7 +154,7 @@ int vfs_lfs_mount(htd_vfs_t *p_vfs, const void *data)
     lfs_user_data_t* p_user_data = (lfs_user_data_t*)(p_cfg + 1);
     lfs_config_init(p_cfg, p_dev, p_user_data);
     p_user_data->lock = vfs_mutex_lock_create("lfs");
-    VFS_ASSERT(p_user_data->lock);
+    ASSERT(p_user_data->lock);
 
     int32_t ret = lfs_mount(p_lfs, p_cfg);
     if (ret != 0) {
@@ -169,9 +171,9 @@ int vfs_lfs_mount(htd_vfs_t *p_vfs, const void *data)
 int vfs_lfs_unmount(htd_vfs_t *p_vfs)
 {
     lfs_t* p_lfs = (lfs_t*)p_vfs->p_fs_dev;
-    VFS_ASSERT(p_lfs);
+    ASSERT(p_lfs);
     lfs_user_data_t* p_user_data = (lfs_user_data_t*)p_lfs->cfg->context;
-    VFS_ASSERT(p_user_data);
+    ASSERT(p_user_data);
     
     int32_t ret = lfs_unmount(p_lfs);
     vfs_mutex_lock_destroy(p_user_data->lock);
@@ -196,7 +198,7 @@ int vfs_lfs_mk(htd_vfs_t *p_vfs, const void* p_param)
         lfs_user_data_t* p_user_data = (lfs_user_data_t*)(p_cfg + 1);
         lfs_config_init(p_cfg, (lfs_dev_t*)p_param, p_user_data);
         p_user_data->lock = vfs_mutex_lock_create("lfs");
-        VFS_ASSERT(p_user_data->lock);
+        ASSERT(p_user_data->lock);
         ret = lfs_format(p_lfs, p_cfg);
         vfs_mutex_lock_destroy(p_user_data->lock);
         htd_free(p_lfs);
@@ -210,7 +212,7 @@ int vfs_lfs_mk(htd_vfs_t *p_vfs, const void* p_param)
 int vfs_lfs_statfs(htd_vfs_t *p_vfs, htd_vfs_statfs_t *p_buff)
 {
     lfs_t* p_lfs = (lfs_t*)p_vfs->p_fs_dev;
-    VFS_ASSERT(p_lfs);
+    ASSERT(p_lfs);
     // 填充信息
     uint32_t used_size = lfs_fs_size(p_lfs);
     p_buff->f_blocks = p_lfs->cfg->block_count;
@@ -233,7 +235,7 @@ ssize_t vfs_lfs_read(htd_vfs_fd_t *p_fd, void *p_buff, size_t buff_len)
     }
     
     lfs_file_t *p_file = (lfs_file_t*)p_fd->data;
-    VFS_ASSERT(p_file);
+    ASSERT(p_file);
     return lfs_file_read((lfs_t*)p_fd->p_vfs->p_fs_dev, p_file, p_buff, buff_len);
 }
 
@@ -245,7 +247,7 @@ ssize_t vfs_lfs_write(htd_vfs_fd_t *p_fd, const void *p_buff, size_t buff_len)
     }
 
     lfs_file_t *p_file = (lfs_file_t*)p_fd->data;
-    VFS_ASSERT(p_file);
+    ASSERT(p_file);
     return lfs_file_write((lfs_t*)p_fd->p_vfs->p_fs_dev, p_file, p_buff, buff_len);
 }
 
@@ -256,7 +258,7 @@ int vfs_lfs_flush(htd_vfs_fd_t *p_fd)
         return -ERROR_CODE_INVALID_STATE;
     }
     lfs_file_t *p_file = (lfs_file_t*)p_fd->data;
-    VFS_ASSERT(p_file);
+    ASSERT(p_file);
     return lfs_file_sync((lfs_t*)p_fd->p_vfs->p_fs_dev, p_file);
 }
 
@@ -268,7 +270,7 @@ htd_vfs_off_t vfs_lfs_lseek(htd_vfs_fd_t *p_fd, htd_vfs_off_t offset)
     }
 
     lfs_file_t *p_file = (lfs_file_t*)p_fd->data;
-    VFS_ASSERT(p_file);
+    ASSERT(p_file);
     return lfs_file_seek((lfs_t*)p_fd->p_vfs->p_fs_dev, p_file, offset, LFS_SEEK_SET);
 }
 
@@ -278,11 +280,11 @@ int vfs_lfs_close(htd_vfs_fd_t *p_fd)
     int32_t ret;
     if (p_fd->type == FT_DIRECTORY) {
         lfs_dir_t* p_dir = (lfs_dir_t*)p_fd->data;
-        VFS_ASSERT(p_dir);
+        ASSERT(p_dir);
         ret = lfs_dir_close((lfs_t*)p_fd->p_vfs->p_fs_dev, p_dir);
     } else {
         lfs_file_t *p_file = (lfs_file_t*)p_fd->data;
-        VFS_ASSERT(p_file);
+        ASSERT(p_file);
         ret = lfs_file_close((lfs_t*)p_fd->p_vfs->p_fs_dev, p_file);
     }
     return ret;
@@ -388,7 +390,7 @@ int vfs_lfs_getdents(htd_vfs_fd_t *p_fd, htd_vfs_dirent_t *p_entry)
 
     lfs_t* p_lfs = (lfs_t*)p_fd->p_vfs->p_fs_dev;
     lfs_dir_t *p_dir = (lfs_dir_t *)(p_fd->data);
-    VFS_ASSERT(p_dir);
+    ASSERT(p_dir);
 
     int32_t ret;
     struct lfs_info file_info;

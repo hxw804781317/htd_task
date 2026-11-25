@@ -1,5 +1,7 @@
 // Copyright (c) 2026 Daven <804781317@qq.com>
 // SPDX-License-Identifier: MIT
+//#define DEBUG_LVL   4
+#define DEBUG_TAG              "vfs.simu"
 #include <htd_vfs_port.h>
 
 #if defined(HTD_VFS_ENABLE) && defined(_WIN32)
@@ -38,14 +40,14 @@ static int win32_errcode_result_get(DWORD res)
         {ERROR_CODE_BUSY, ERROR_PATH_BUSY },
         {ERROR_CODE_INVALID_PARAM, ERROR_ACCESS_DENIED },
     };
-    htd_print("error. res=%d\n", res);
+    print_error("error. res=%d", res);
     ASSERT(0);
     for (int i=0; i<ARRAY_COUNT(errcode_table); i++) {
         if (errcode_table[i].win32err == (res & 0xFFFF)) {
             return (0 - (int)errcode_table[i].dfserr);
         }
     }
-    htd_print("win32 error not supported: res=%d\n", res);
+    print_error("win32 error not supported: res=%d", res);
     return -1;
 }
 
@@ -128,7 +130,7 @@ int vfs_win32_open(htd_vfs_fd_t *p_fd)
             if (! win32_dir_is_exist(p_filepath)) {
                 res = CreateDirectory(p_filepath, NULL);
                 if (res == 0) {
-                    htd_print("create dir failed. p_filepath=%s\n", p_filepath);
+                    print_error("create dir failed. p_filepath=%s", p_filepath);
                     htd_free(p_filepath);
                     ASSERT(0);
                     return win32_errcode_result_get(GetLastError());
@@ -171,7 +173,7 @@ int vfs_win32_open(htd_vfs_fd_t *p_fd)
     p_filepath = win32_dirpath_dup(p_fd->path);
     HANDLE file_handle = CreateFile(p_filepath, GENERIC_READ|GENERIC_WRITE, 0, NULL, create_type, FILE_ATTRIBUTE_NORMAL, NULL);
     if (file_handle == INVALID_HANDLE_VALUE) {
-        htd_print("create file failed. filepath=%s\n", p_filepath);
+        print_error("create file failed. filepath=%s", p_filepath);
         htd_free(p_filepath);
         ASSERT(0);
         return win32_errcode_result_get(GetLastError());
@@ -223,7 +225,7 @@ ssize_t vfs_win32_read(htd_vfs_fd_t *p_fd, void *p_buff, size_t buff_size)
     HANDLE file_handle = (HANDLE)(p_fd->data);
     SetFilePointer(file_handle, p_fd->pos, NULL, FILE_BEGIN);
     if (!ReadFile(file_handle, p_buff, buff_size, &read_len, NULL)) {
-        htd_print("buff_size=%d, pos=%u, size=%u, read_len=%u\n", buff_size, p_fd->pos, p_fd->size, read_len);
+        print_error("buff_size=%d, pos=%u, size=%u, read_len=%u", buff_size, p_fd->pos, p_fd->size, read_len);
         ASSERT(0);
         return win32_errcode_result_get(GetLastError());
     }
@@ -281,7 +283,7 @@ int vfs_win32_getdents(htd_vfs_fd_t *p_fd, htd_vfs_dirent_t *p_entry)
             if (result == ERROR_NO_MORE_FILES) {
                 return 0;
             } 
-            htd_print("findnext failed. result=%d, ret=%d\r\n", result, ret);
+            print_error("findnext failed. result=%d, ret=%d", result, ret);
             return win32_errcode_result_get(result);
         }
     } else {
@@ -303,10 +305,7 @@ int vfs_win32_getdents(htd_vfs_fd_t *p_fd, htd_vfs_dirent_t *p_entry)
 int vfs_win32_unlink(htd_vfs_t *p_vfs, const char *p_path)
 {
     char *p_filepath = win32_dirpath_dup(p_path);
-    if (p_filepath == NULL) {
-        htd_print("out of memory.\n");
-        return -ERROR_CODE_NO_MEM;
-    }
+    ASSERT(p_filepath);
 
     do {
         int32_t result = GetFileAttributes(p_filepath);
@@ -336,17 +335,10 @@ int vfs_win32_unlink(htd_vfs_t *p_vfs, const char *p_path)
 int vfs_win32_rename(htd_vfs_t *p_vfs, const char *p_old_path, const char *p_new_path)
 {
     char* p_ofp = win32_dirpath_dup(p_old_path);
-    if (p_ofp == NULL) {
-        htd_print("out of memory.\n");
-        return -ERROR_CODE_NO_MEM;
-    }
+    ASSERT(p_ofp);
     
     char* p_nfp = win32_dirpath_dup(p_new_path);
-    if (p_nfp == NULL) {
-        htd_print("out of memory.\n");
-        htd_free(p_ofp);
-        return -ERROR_CODE_NO_MEM;
-    }
+    ASSERT(p_nfp);
 
     int result = MoveFile(p_ofp, p_nfp);        // MoveFile 失败返回0
     htd_print("move file failed. result=%d, %s->%s\r\n", result, p_ofp, p_nfp);
@@ -364,10 +356,7 @@ int vfs_win32_rename(htd_vfs_t *p_vfs, const char *p_old_path, const char *p_new
 int vfs_win32_stat(htd_vfs_t *p_vfs, const char *p_path, htd_vfs_stat_t *p_info)
 {
     char *p_filepath = win32_dirpath_dup(p_path);
-    if (p_filepath == NULL) {
-        htd_print("out of memory.\n");
-        return -ERROR_CODE_NO_MEM;
-    }
+    ASSERT(p_filepath);
     
     WIN32_FIND_DATA file_info;
     HANDLE file_handle = FindFirstFile(p_filepath, &file_info);

@@ -1,5 +1,7 @@
 // Copyright (c) 2026 Daven <804781317@qq.com>
 // SPDX-License-Identifier: MIT
+#define DEBUG_LVL   4
+#define DEBUG_TAG              "vfs.posix"
 #include "htd_vfs_port.h"
 #include "htd_vfs_process.h"
 #include "htd_vfs_file.h"

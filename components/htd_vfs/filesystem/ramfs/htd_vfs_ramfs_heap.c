@@ -1,5 +1,7 @@
 // Copyright (c) 2026 Daven <804781317@qq.com>
 // SPDX-License-Identifier: MIT
+//#define DEBUG_LVL   4
+#define DEBUG_TAG              "ramfs.heap"
 #include <htd_vfs_process.h>
 #include <htd_vfs_file.h>
 #include <htd_vfs_ramfs.h>
@@ -167,7 +169,7 @@ void *ramfs_heap_realloc(void* p_mem, void *ptr, size_t newsize)
         // 重新申请内存
         void *p_new_ptr = (void *)ramfs_heap_malloc(p_mem, newsize);
         if (p_new_ptr != NULL) {
-            memcpy(p_new_ptr, ptr, oldsize);
+            htd_memcpy(p_new_ptr, ptr, oldsize);
             ramfs_heap_free(ptr);
         }
         return p_new_ptr;

@@ -1,9 +1,10 @@
 // Copyright (c) 2026 Daven <804781317@qq.com>
 // SPDX-License-Identifier: MIT
+#define DEBUG_LVL   4
+#define DEBUG_TAG              "vfs"
 #include "htd_vfs_port.h"
 #include "htd_vfs_process.h"
 #include "htd_vfs_file.h"
-#include "htd_vfs_slist.h"
 
 
 //////////////////////////////////////////////////////////////////////
@@ -41,7 +42,7 @@ void htd_vfs_unlock(void)
 int htd_vfs_init(void)
 {
     if (m_filesystem.is_init == 0xa5) {
-        htd_print("fs already init.\n");
+        print_error("fs already init.");
         return 0;
     }
 
@@ -211,15 +212,15 @@ int htd_vfs_mount(htd_vfs_type_t fs_type, const char *p_path, const void *fs_dev
         if (is_force == false || p_vfs->fs_mk == NULL) {
             break;
         }
-        htd_print("mkfs\r\n");
+        print_debug("mkfs");
         ret = p_vfs->fs_mk(p_vfs, fs_dev);
         if (ret != ERROR_CODE_SUCCESS) {
-            htd_print("mkfs failed. ret=%d\r\n", ret);
+            print_error("mkfs failed. ret=%d", ret);
             break;
         }
         ret = p_vfs->fs_mount(p_vfs, fs_dev);
         if (ret != ERROR_CODE_SUCCESS) {
-            htd_print("mount again failed. ret=%d\r\n", ret);
+            print_error("mount again failed. ret=%d", ret);
             break;
         }
     }while (0);
@@ -340,7 +341,7 @@ int htd_vfs_df(const char *path)
     htd_memset(&buffer, 0, sizeof(htd_vfs_statfs_t));
     result = htd_vfs_statfs(path ? path : NULL, &buffer);
     if (result != 0) {
-        htd_print("fs stat failed.\n");
+        print_error("fs stat failed.");
         return -ERROR_CODE_INVALID_STATE;
     }
 

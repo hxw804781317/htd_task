@@ -1,5 +1,7 @@
 // Copyright (c) 2026 Daven <804781317@qq.com>
 // SPDX-License-Identifier: MIT
+#define DEBUG_LVL   4
+#define DEBUG_TAG              "vfs.fatfs"
 #include <htd_vfs_fatfs.h>
 #if defined(HTD_VFS_ENABLE) && defined(HTD_VFS_USING_ELM_FATFS)
 #include <htd_vfs_process.h>
@@ -17,7 +19,7 @@ static int32_t vfs_fatfs_dev_register(const elm_fatfs_dev_t* p_dev)
     if (m_fatfs_dev[p_dev->disk_idx]) {
         return -1;
     }
-    htd_print("dev register. disk_idx=%d\r\n", p_dev->disk_idx);
+    print_debug("dev register. disk_idx=%d.", p_dev->disk_idx);
     m_fatfs_dev[p_dev->disk_idx] = p_dev;
     return 0;
 }
@@ -27,7 +29,7 @@ static int32_t vfs_fatfs_dev_unregister(uint8_t disk_idx, bool is_destroy)
 {
     ASSERT(disk_idx < ARRAY_COUNT(m_fatfs_dev));
     if (m_fatfs_dev[disk_idx]) {
-        htd_print("dev unregister. disk_idx=%d\r\n", disk_idx);
+        print_debug("dev unregister. disk_idx=%d", disk_idx);
         if (is_destroy) {
             if (m_fatfs_dev[disk_idx]->destroy_handle) {
                 m_fatfs_dev[disk_idx]->destroy_handle(m_fatfs_dev[disk_idx]);
@@ -113,17 +115,17 @@ static int vfs_fatfs_mount(htd_vfs_t *p_vfs, const void *data)
         if (ret == 0) {
             // 挂载成功
             p_vfs->p_fs_dev = p_fs_dev;
-            htd_print("fatfs mount success. %d, logic_path=%s\r\n", p_fs_dev->pdrv, logic_path);
+            print_warning("fatfs mount success. %d, logic_path=%s", p_fs_dev->pdrv, logic_path);
             f_closedir(&root);
             return 0;
         }
         
-        htd_print("opendir failed. root_path=%s, ret=%d\r\n", root_path, ret);
+        print_error("opendir failed. root_path=%s, ret=%d", root_path, ret);
         // 卸载掉
         f_mount(NULL, logic_path, 1);
     } 
     
-    htd_print("mount failed. ret=%d, logic_path=%s\r\n", ret, logic_path);
+    print_error("mount failed. ret=%d, logic_path=%s", ret, logic_path);
     vfs_fatfs_dev_unregister(p_dev->disk_idx, false);
     htd_free(p_fs_dev);
     return -ret;
@@ -167,11 +169,11 @@ static int vfs_fatfs_mk(htd_vfs_t *p_vfs, const void* p_param)
         FRESULT ret = f_mkfs(logic_path, &opt, p_work, FF_MAX_SS);
         htd_free(p_work), p_work = NULL;
         if (ret != FR_OK) {
-            htd_print("mkfs failed. ret=%d\r\n", ret);
+            print_error("mkfs failed. ret=%d.", ret);
             vfs_fatfs_dev_unregister(p_dev->disk_idx, false);
             return -ret;
         }
-        htd_print("mkfs success.\r\n");
+        print_warning("mkfs success.");
         return 0;
     }
 
@@ -181,7 +183,7 @@ static int vfs_fatfs_mk(htd_vfs_t *p_vfs, const void* p_param)
     htd_snprintf(logic_path, sizeof(logic_path), "%d:", p_fs_dev->pdrv);
     FRESULT ret = f_mkfs(logic_path, &opt, p_work, FF_MAX_SS);
     htd_free(p_work), p_work = NULL;
-    htd_print("logic_path=%s\r\n", logic_path);
+    print_debug("logic_path=%s\r\n", logic_path);
     return -ret;
 }
 
