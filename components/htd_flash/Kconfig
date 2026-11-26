@@ -1,0 +1,18 @@
+menuconfig HTD_FLASH_UTILITY_BOX_ENABLE
+    bool "flash ‌utility box enable"
+    default n
+    
+if HTD_FLASH_UTILITY_BOX_ENABLE
+    config HTD_FLASH_KV_ENABLE
+        bool "flash kv enable"
+        default n
+    config HTD_FLASH_BOX_ENABLE
+        bool "flash box enable"
+        default n
+    config HTD_FLASH_LOG_ENABLE
+        bool "flash log enable"
+        default n
+    config HTD_FLASH_VAR_ENABLE
+        bool "flash var enable"
+        default n
+endif

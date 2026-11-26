@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #ifndef _HTD_COMPONENTS_H_
 #define _HTD_COMPONENTS_H_
 
@@ -13,6 +15,19 @@ extern "C" {
 
 #ifdef HTD_VFS_ENABLE
     #include "htd_vfs_process.h"
+#endif
+
+#ifdef HTD_FLASH_KV_ENABLE
+    #include "htd_flash_kv.h"
+#endif
+#ifdef HTD_FLASH_BOX_ENABLE
+    #include "htd_flash_box.h"
+#endif
+#ifdef HTD_FLASH_LOG_ENABLE
+    #include "htd_flash_log.h"
+#endif
+#ifdef HTD_FLASH_VAR_ENABLE
+    #include "htd_flash_var.h"
 #endif
 
 #ifdef HTD_BOOT_ENABLE

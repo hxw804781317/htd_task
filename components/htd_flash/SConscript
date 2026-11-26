@@ -1,0 +1,14 @@
+import os
+from building import *
+
+# get current dir path
+cwd = GetCurrentDir()
+objs = []
+
+# init src and inc vars
+src = []
+inc = [cwd]
+
+src += Glob('./*.c')
+objs = DefineGroup('htd_flash', src, depend = ['HTD_FLASH_UTILITY_BOX_ENABLE'], CPPPATH = inc, LOCAL_CCFLAGS = '')
+Return('objs')
