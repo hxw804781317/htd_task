@@ -112,6 +112,15 @@ extern "C" {
     #define htd_free(p)                     free(p)
 #endif
 
+#ifndef print_debug
+    #define print_debug(...)
+#endif
+#ifndef print_warning
+    #define print_warning(...)
+#endif
+#ifndef print_error
+    #define print_error(...)
+#endif
 
 
 //////////////////////////////////////////////////////////////////////
@@ -143,32 +152,6 @@ extern "C" {
                                              0x7B, 0x91, 0xB9, 0xC7, 0xA5, 0x4F, 0xBA, 0x68, 0x94, 0xD5, 0xAD, 0x83, 0x2F, 0x9B, 0xA6, 0xDB,}
 #endif /*HTD_BOOT_SECP256R1_PRIVATE_KEY*/
 
-
-
-
-//////////////////////////////////////////////////////////////////////
-// 移植时，这里的宏要做适配
-#if (defined(DEBUG_LVL) && (DEBUG_LVL >= 1))
-    #define boot_error(fmt, ...)    do {   \
-        htd_print("\033[01;35m%s(%d):"fmt"\r\n\033[0;0m", DEBUG_TAG, __LINE__, ##__VA_ARGS__);  \
-    }while(0)
-#else
-    #define boot_error(fmt, ...)
-#endif
-#if (defined(DEBUG_LVL) && (DEBUG_LVL >= 2))
-    #define boot_warning(fmt, ...)    do {   \
-        htd_print("\033[0;36m%s(%d):"fmt"\r\n\033[0;0m", DEBUG_TAG, __LINE__, ##__VA_ARGS__);  \
-    }while(0)
-#else
-    #define boot_warning(fmt, ...)
-#endif
-#if (defined(DEBUG_LVL) && (DEBUG_LVL >= 3))
-    #define boot_debug(fmt, ...)   do { \
-        htd_print("\033[0;33m%s(%d):"fmt"\r\n\033[0;0m", DEBUG_TAG, __LINE__, ##__VA_ARGS__);  \
-    }while(0)
-#else
-    #define boot_debug(fmt, ...)
-#endif
 
 
 

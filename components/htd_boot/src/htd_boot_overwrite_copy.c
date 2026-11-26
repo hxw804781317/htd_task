@@ -51,14 +51,14 @@ void boot_overwrite(htd_boot_object_t* p_object)
     uint32_t swap_size = BOOT_MAX(p_object->fwA_size, p_object->fwB_size);
     p_object->addrB_src = p_object->p_env->bankB_addr;
     p_object->addrB_dst = p_object->p_env->bankA_addr;
-    boot_debug("fwA_size=%u, fwB_size=%u", p_object->fwA_size, p_object->fwB_size);
+    print_debug("fwA_size=%u, fwB_size=%u", p_object->fwA_size, p_object->fwB_size);
     
     // 进度恢复
     uint32_t offset = boot_config_offset_get();
     if (state == BOOT_STATE_SWAP) {
         p_object->addrB_src += offset;
         p_object->addrB_dst += offset;
-        boot_debug("addrB=0x%08x, addrB_dst=0x%08x", p_object->addrB_src, p_object->addrB_dst);
+        print_debug("addrB=0x%08x, addrB_dst=0x%08x", p_object->addrB_src, p_object->addrB_dst);
         swap_size -= offset;
     } else {
         offset = 0;

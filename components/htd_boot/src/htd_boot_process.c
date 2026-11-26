@@ -88,7 +88,7 @@ static htd_boot_object_t* boot_object_create(void)
 
     // 初始化配置信息
     if (!boot_config_init()) {
-        boot_error("boot config init failed.");
+        print_error("boot config init failed.");
         htd_free(p_object);
         ASSERT(0);
         return NULL;
@@ -114,8 +114,8 @@ static htd_boot_object_t* boot_object_create(void)
         p_object->fwA_size = image_hdr.fw_size;
         p_object->image_hdr_len = image_hdr.fw_hdr_size;
     }
-    boot_debug("slotA addr=0x%08x, slotB addr=0x%08x", p_env->bankA_addr, p_env->bankB_addr);
-    boot_debug("fw_size=0x%08x", image_hdr.fw_size);
+    print_debug("slotA addr=0x%08x, slotB addr=0x%08x", p_env->bankA_addr, p_env->bankB_addr);
+    print_debug("fw_size=0x%08x", image_hdr.fw_size);
     return p_object;
 }
 
@@ -125,7 +125,7 @@ static bool boot_image_fw_verify(htd_boot_object_t* p_object, boot_header_t* p_h
     // 计算哈希值
     uint32_t payload_addr = image_addr + (HTD_BOOT_VERIFY_CODE_OFFSET + sizeof(p_hdr->verify_code));
     uint32_t payload_len = p_hdr->fw_size - (HTD_BOOT_VERIFY_CODE_OFFSET + sizeof(p_hdr->verify_code));
-    boot_debug("image_addr=0x%08x, payload=0x%08x, payload_len=0x%08x, fw_size=%u", image_addr, payload_addr, payload_len, p_hdr->fw_size);
+    print_debug("image_addr=0x%08x, payload=0x%08x, payload_len=0x%08x, fw_size=%u", image_addr, payload_addr, payload_len, p_hdr->fw_size);
 
     uint32_t read_len;
     uint32_t data_len = sizeof(p_object->swap_data);
@@ -186,7 +186,7 @@ static bool boot_slotA_image_check(htd_boot_object_t *p_object)
     
     // 固件验证
     if (!boot_image_fw_verify(p_object, &image_hdr, p_object->p_flash_fwA, p_env->bankA_addr)) {
-        boot_error("imageA verify failed. bankA_addr=0x%08x", p_env->bankA_addr);
+        print_error("imageA verify failed. bankA_addr=0x%08x", p_env->bankA_addr);
         return false;
     }
     
@@ -210,11 +210,11 @@ static bool boot_slotB_image_check(htd_boot_object_t *p_object)
     if (image_hdr.magic != HTD_BOOT_MAGIC || image_hdr.fw_size > p_env->bankB_size) {
         return false;
     }
-    boot_debug("fw download addr: 0x%08x", p_object->fwB_download_addr);
+    print_debug("fw download addr: 0x%08x", p_object->fwB_download_addr);
     
     // 固件验证
     if (!boot_image_fw_verify(p_object, &image_hdr, p_object->p_flash_fwB, p_object->fwB_download_addr)) {
-        boot_error("image verify failed. fwb_download_addr=0x%08x", p_object->fwB_download_addr);
+        print_error("image verify failed. fwb_download_addr=0x%08x", p_object->fwB_download_addr);
         return false;
     }
     p_object->fwB_size = image_hdr.fw_size;
@@ -222,10 +222,10 @@ static bool boot_slotB_image_check(htd_boot_object_t *p_object)
     // 版本号, 只有大于才升级
     uint32_t ver = (image_hdr.ver_major<<24)|(image_hdr.ver_minor<<16)|(image_hdr.ver_revision<<8)|image_hdr.ver_reserve;
     if (ver <= p_object->version) {
-        boot_error("version check failed. ver=0x%08x->0x%08x", p_object->version, ver);
+        print_error("version check failed. ver=0x%08x->0x%08x", p_object->version, ver);
         return false;
     }
-    boot_warning("update version: 0x%08x->0x%08x. update_type=%d", p_object->version, ver, image_hdr.update_type);
+    print_warning("update version: 0x%08x->0x%08x. update_type=%d", p_object->version, ver, image_hdr.update_type);
     
     // 设置升级方式
     boot_config_update_type_set(image_hdr.update_type);
@@ -269,7 +269,7 @@ bool boot_image_info_reset_in_rollback(htd_boot_object_t *p_object)
     }
     // 固件验证
     if (!boot_image_fw_verify(p_object, &image_hdr, p_object->p_flash_fwB, p_env->bankB_addr)) {
-        boot_error("image verify failed. bankB_addr=0x%08x", p_env->bankB_addr);
+        print_error("image verify failed. bankB_addr=0x%08x", p_env->bankB_addr);
         return false;
     }
     
@@ -285,10 +285,10 @@ static void boot_image_download_finish_opt(htd_boot_object_t *p_object)
 {
     p_object->fwB_download_addr = boot_slotB_find_download_addr(p_object);
     if (!boot_slotB_image_check(p_object)) {
-        boot_error("ImageB check failed.");
+        print_error("ImageB check failed.");
         return;
     }
-    boot_warning("ImageB check succuss. start swap. fwB_size=%u", p_object->fwB_size);
+    print_warning("ImageB check succuss. start swap. fwB_size=%u", p_object->fwB_size);
     
     // 全量升级
     boot_update_type_t update_type = boot_config_update_type_get();
@@ -310,7 +310,7 @@ static void boot_image_download_finish_opt(htd_boot_object_t *p_object)
         if (boot_slotB_image_check(p_object)) {
             boot_overwrite(p_object);
         } else {
-            boot_error("ImageB check failed.");
+            print_error("ImageB check failed.");
         }
         return;
     } 
@@ -330,7 +330,7 @@ bool htd_boot_process(uint32_t* program_addr)
     bool ret = false;
     bool is_verify = true;
     boot_state_t boot_state = boot_config_state_get();
-    boot_warning("boot_state=%d", boot_state);
+    print_warning("boot_state=%d", boot_state);
     switch (boot_state) {
         case BOOT_STATE_DOWNLOAD_FINISH: {
             ret = true;
@@ -392,9 +392,9 @@ bool htd_boot_process(uint32_t* program_addr)
     
     if (ret) {
         if (boot_slotA_image_check(p_object)) {
-            boot_warning("imageA check success. version=0x%08x", p_object->version);
+            print_warning("imageA check success. version=0x%08x", p_object->version);
             if (program_addr) {
-                boot_debug("bankA_addr=0x%08x, image_hdr_len=%d", p_object->p_env->bankA_addr, p_object->image_hdr_len);
+                print_debug("bankA_addr=0x%08x, image_hdr_len=%d", p_object->p_env->bankA_addr, p_object->image_hdr_len);
                 *program_addr = p_object->p_env->bankA_addr + p_object->image_hdr_len;
             }
             // 写入固件错误标记，程序运行起来后，写入 OK 标记
@@ -407,11 +407,11 @@ bool htd_boot_process(uint32_t* program_addr)
                 boot_config_offset_state_set(boot_config_offset_get() + 1, boot_state);
             }
         } else {
-            boot_warning("imageA check failed. fwA_size=%u", p_object->fwA_size);
+            print_warning("imageA check failed. fwA_size=%u", p_object->fwA_size);
             ret = false;
         }
     } else {
-        boot_error("boot_state=%d", boot_state);
+        print_error("boot_state=%d", boot_state);
     }
     
     boot_object_destroy(p_object);
@@ -479,7 +479,7 @@ static int32_t ymodem_evt_notify(ymodem_evt_t evt, const uint8_t* p_param, uint3
     if (evt == YMODEM_EVT_START) {
         uint32_t filesize = 0;
         const char* p_filename = htd_ymodem_fileinfo_get(p_param, param_len, &filesize);
-        boot_debug("filename=%s, filesize=%u", p_filename, filesize);
+        print_debug("filename=%s, filesize=%u", p_filename, filesize);
         const char* p_postfix = strchr(p_filename, '.');
         htd_boot_env_t* p_env = htd_boot_env_info_get();
     #if defined(HTD_BOOT_IN_BOOTLOADER)
@@ -487,7 +487,7 @@ static int32_t ymodem_evt_notify(ymodem_evt_t evt, const uint8_t* p_param, uint3
             if (filesize > p_env->bankA_size) {
                 return -1;
             }
-            boot_warning("bankA_addr=0x%08x, bankA_size=0x%08x", p_env->bankA_addr, p_env->bankA_size);
+            print_warning("bankA_addr=0x%08x, bankA_size=0x%08x", p_env->bankA_addr, p_env->bankA_size);
             // 写到A区
             m_download_addr = p_env->bankA_addr;
             m_ymodem_flash = boot_flash_handle_get(m_download_addr);
@@ -502,7 +502,7 @@ static int32_t ymodem_evt_notify(ymodem_evt_t evt, const uint8_t* p_param, uint3
             }
             // 写到B区
             m_download_addr = htd_boot_full_download_addr_get();
-            boot_warning("ota. m_download_addr=0x%08x", m_download_addr);
+            print_warning("ota. m_download_addr=0x%08x", m_download_addr);
             m_ymodem_flash = boot_flash_handle_get(m_download_addr);
             m_ymodem_ctx->update_type = BOOT_UPDATE_TYPE_FULL;
             return 0;
@@ -513,7 +513,7 @@ static int32_t ymodem_evt_notify(ymodem_evt_t evt, const uint8_t* p_param, uint3
                 return -1;
             }
             m_download_addr = htd_boot_lz_download_addr_get(filesize);
-            boot_warning("ota flz. m_download_addr=0x%08x", m_download_addr);
+            print_warning("ota flz. m_download_addr=0x%08x", m_download_addr);
             m_ymodem_flash = boot_flash_handle_get(m_download_addr);
             m_ymodem_ctx->update_type = BOOT_UPDATE_TYPE_COMPRESS_FASTLZ;
             return 0;
@@ -524,7 +524,7 @@ static int32_t ymodem_evt_notify(ymodem_evt_t evt, const uint8_t* p_param, uint3
                 return -1;
             }
             m_download_addr = htd_boot_lz_download_addr_get(filesize);
-            boot_warning("ota qlz. m_download_addr=0x%08x", m_download_addr);
+            print_warning("ota qlz. m_download_addr=0x%08x", m_download_addr);
             m_ymodem_flash = boot_flash_handle_get(m_download_addr);
             m_ymodem_ctx->update_type = BOOT_UPDATE_TYPE_COMPRESS_QUICKLZ;
             return 0;
@@ -607,7 +607,7 @@ static uint8_t* boot_compress_quicklz(const uint8_t* p_data, uint32_t data_len, 
     ASSERT(state_compress);
     htd_memset(state_compress, 0, sizeof(qlz_state_compress));
 
-    boot_debug("[qlz]compress start : ");
+    print_debug("[qlz]compress start : ");
     uint32_t data_size = data_len;
     char* p_ptr = (char*)p_out;
     uint32_t block_size = BOOT_DECOMPRESS_BUFFER_SIZE;
@@ -624,7 +624,7 @@ static uint8_t* boot_compress_quicklz(const uint8_t* p_data, uint32_t data_len, 
         p_ptr += compress_len + sizeof(uint32_t);
     }
     compress_len = p_ptr - p_out;
-    boot_debug("[qlz]compressed %d bytes into %d bytes, compression ratio is %d%!", data_len, compress_len, (compress_len * 100) / data_len);
+    print_debug("[qlz]compressed %d bytes into %d bytes, compression ratio is %d%!", data_len, compress_len, (compress_len * 100) / data_len);
     htd_free(state_compress);
 
     if (out_len) {
@@ -641,7 +641,7 @@ static uint8_t* boot_compress_fastlz(const uint8_t* p_data, uint32_t data_len, u
     ASSERT(p_out);
     htd_memset(p_out, 0, data_len);
 
-    boot_debug("[flz]compress start: ");
+    print_debug("[flz]compress start: ");
     uint32_t data_size = data_len;
     char* p_ptr = (char*)p_out;
     uint32_t block_size = BOOT_DECOMPRESS_BUFFER_SIZE;
@@ -658,7 +658,7 @@ static uint8_t* boot_compress_fastlz(const uint8_t* p_data, uint32_t data_len, u
         p_ptr += compress_len + sizeof(uint32_t);
     }
     compress_len = p_ptr - p_out;
-    boot_debug("[qlz]compressed %d bytes into %d bytes, compression ratio is %d%!", data_len, compress_len, (compress_len * 100) / data_len);
+    print_debug("[qlz]compressed %d bytes into %d bytes, compression ratio is %d%!", data_len, compress_len, (compress_len * 100) / data_len);
     
     if (out_len) {
         *out_len = compress_len;
@@ -700,7 +700,7 @@ void htd_boot_fw_compress_make(boot_update_type_t update_type)
     boot_flash_erase(p_flash, p_env->bankA_addr, fw_size+4096);
     boot_flash_write(p_flash, p_env->bankA_addr, (uint8_t*)fw_head, sizeof(boot_firmware_header_t)+fw_size);
     htd_free(fw_head);
-    boot_debug("ImageA addr: 0x%08x, fw_size=0x%08x", p_env->bankA_addr, fw_size);
+    print_debug("ImageA addr: 0x%08x, fw_size=0x%08x", p_env->bankA_addr, fw_size);
     
     // p_env->slotB_addr 这里写版本B，数据内容全为B
     fw_size = 34*1024 + 120;
@@ -756,7 +756,7 @@ void htd_boot_fw_compress_make(boot_update_type_t update_type)
     boot_flash_write(p_flash, p_env->bankB_addr+temp+sizeof(boot_header_t), p_compress_data, compress_data_len);
     htd_free(fw_head);
     htd_free(p_compress_data);
-    boot_debug("ImageB addr: 0x%08x. fw_size=0x%08x", p_env->bankB_addr+temp, p_hdr->fw_size);
+    print_debug("ImageB addr: 0x%08x. fw_size=0x%08x", p_env->bankB_addr+temp, p_hdr->fw_size);
 
     // 写配置信息
     boot_state_update_in_application(update_type, BOOT_STATE_DOWNLOAD_FINISH);
@@ -796,7 +796,7 @@ void htd_boot_fw_full_make(void)
     boot_flash_erase(p_flash, p_env->bankA_addr, fw_size+4096);
     boot_flash_write(p_flash, p_env->bankA_addr, (uint8_t*)fw_head, sizeof(boot_firmware_header_t)+fw_size);
     htd_free(fw_head);
-    boot_debug("ImageA addr: 0x%08x, fw_size=0x%08x", p_env->bankA_addr, fw_size);
+    print_debug("ImageA addr: 0x%08x, fw_size=0x%08x", p_env->bankA_addr, fw_size);
     
     // p_env->slotB_addr 这里写版本B，数据内容全为B
     fw_size = 34*1024 + 120;
@@ -827,7 +827,7 @@ void htd_boot_fw_full_make(void)
     boot_flash_erase(p_flash, p_env->bankB_addr, fw_size+temp+4096);
     boot_flash_write(p_flash, p_env->bankB_addr+temp, (uint8_t*)fw_head, sizeof(boot_firmware_header_t)+fw_size);
     htd_free(fw_head);
-    boot_debug("ImageB addr: 0x%08x. fw_size=0x%08x", p_env->bankB_addr+temp, fw_size+sizeof(boot_firmware_header_t));
+    print_debug("ImageB addr: 0x%08x. fw_size=0x%08x", p_env->bankB_addr+temp, fw_size+sizeof(boot_firmware_header_t));
 
     // 写配置信息
     boot_state_update_in_application(BOOT_UPDATE_TYPE_FULL, BOOT_STATE_DOWNLOAD_FINISH);

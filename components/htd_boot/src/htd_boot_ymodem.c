@@ -81,23 +81,23 @@ static int32_t ymodem_handshake(ymodem_ctx_t* p_ctx, uint32_t timeout_ms)
     // 读取数据
     uint32_t recv_len = ymodem_data_read(p_ctx, p_ctx->recv_data, data_sz);
     if (recv_len != data_sz) {
-        boot_error("data size error.");
+        print_error("data size error.");
         return YMODEM_ERR_DATA_SIZE;
     }
     // 首包：数据检查, 包头和包头反码
     if (p_ctx->recv_data[0] != 0 || p_ctx->recv_data[1] != 0xFF) {
-        boot_error("seq error. %02x,%02x", p_ctx->recv_data[0], p_ctx->recv_data[1]);
+        print_error("seq error. %02x,%02x", p_ctx->recv_data[0], p_ctx->recv_data[1]);
         return -YMODEM_ERR_SEQ;
     }
     uint16_t recv_crc = (uint16_t)(p_ctx->recv_data[data_sz-2] << 8) | p_ctx->recv_data[data_sz-1];
     if (recv_crc != htd_ymodem_crc16(&p_ctx->recv_data[2], data_sz-4)) {
-        boot_error("handshake crc error. 0x%04x, data_sz=%d", recv_crc, data_sz);
+        print_error("handshake crc error. 0x%04x, data_sz=%d", recv_crc, data_sz);
         return YMODEM_ERR_CRC;
     }
 
     // 通知应用
     if (p_ctx->evt_notify_handle) {
-        boot_debug("seq: 0x%02x", p_ctx->recv_data[0]);
+        print_debug("seq: 0x%02x", p_ctx->recv_data[0]);
         if (p_ctx->evt_notify_handle(YMODEM_EVT_START, &p_ctx->recv_data[2], data_sz-4) != 0) {
             return YMODEM_ERR_CANCEL;
         }
@@ -117,7 +117,7 @@ static int32_t ymodem_request_data(ymodem_ctx_t *p_ctx, uint32_t data_sz, ymodem
     const uint32_t recv_size = 2 + data_sz + 2;
     uint32_t recv_len = ymodem_data_read(p_ctx, p_ctx->recv_data, recv_size);
     if (recv_len != recv_size) {
-        boot_error("data size error.");
+        print_error("data size error.");
         return YMODEM_ERR_DATA_SIZE;
     }
 
@@ -130,17 +130,17 @@ static int32_t ymodem_request_data(ymodem_ctx_t *p_ctx, uint32_t data_sz, ymodem
 
     // 检查数据
     if ((p_ctx->recv_data[0] + p_ctx->recv_data[1]) != 0xFF) {
-        boot_error("seq error. %02x,%02x", p_ctx->recv_data[0], p_ctx->recv_data[1]);
+        print_error("seq error. %02x,%02x", p_ctx->recv_data[0], p_ctx->recv_data[1]);
         return -YMODEM_ERR_SEQ;
     }
     uint16_t recv_crc = (uint16_t)(p_ctx->recv_data[recv_size-2] << 8) | p_ctx->recv_data[recv_size-1];
     if (recv_crc != htd_ymodem_crc16(&p_ctx->recv_data[2], data_sz)) {
-        boot_error("crc error.");
+        print_error("crc error.");
         return YMODEM_ERR_CRC;
     }
     // 通告接收到数据
     if (p_ctx->evt_notify_handle) {
-        boot_debug("seq: 0x%02x", p_ctx->recv_data[0]);
+        print_debug("seq: 0x%02x", p_ctx->recv_data[0]);
         if (0 == p_ctx->evt_notify_handle(YMODEM_EVT_RECV_DATA, &p_ctx->recv_data[2], data_sz)) {
             *cmd = YMODEM_CMD_ACK;
         } else {
@@ -165,7 +165,7 @@ static int32_t ymodem_cmd_translate(ymodem_ctx_t *p_ctx, uint32_t timeout_ms)
     } else if (cmd == YMODEM_CMD_STX) {     // 
         data_sz = 1024;
     } else {
-        boot_error("cmd error.");
+        print_error("cmd error.");
         return YMODEM_ERR_CMD;           // 
     }
     
@@ -178,7 +178,7 @@ static int32_t ymodem_cmd_translate(ymodem_ctx_t *p_ctx, uint32_t timeout_ms)
         while (data_sz--) {
             ymodem_write_byte(p_ctx, YMODEM_CMD_CAN);
         }
-        boot_warning("cancel.");
+        print_warning("cancel.");
         p_ctx->state = YMODEM_STATE_NONE;
         return YMODEM_ERR_CANCEL;
     }
@@ -194,7 +194,7 @@ static int32_t ymodem_cmd_finishing(ymodem_ctx_t *p_ctx, uint32_t timeout_ms)
     ymodem_write_byte(p_ctx, YMODEM_CMD_NAK);
     ymodem_cmd_t cmd = ymodem_cmd_read(p_ctx, timeout_ms);
     if (cmd != YMODEM_CMD_EOT) {
-        boot_error("cmd error. cmd=0x%02x", cmd);
+        print_error("cmd error. cmd=0x%02x", cmd);
         return YMODEM_ERR_CMD;
     }
     ymodem_write_byte(p_ctx, YMODEM_CMD_ACK);
@@ -204,30 +204,30 @@ static int32_t ymodem_cmd_finishing(ymodem_ctx_t *p_ctx, uint32_t timeout_ms)
     ymodem_write_byte(p_ctx, YMODEM_CMD_C);
     cmd = ymodem_cmd_read(p_ctx, timeout_ms);
     if (cmd != YMODEM_CMD_SOH) {
-        boot_error("cmd error. cmd=0x%02x", cmd);
+        print_error("cmd error. cmd=0x%02x", cmd);
         return YMODEM_ERR_CMD;
     }
     
     data_sz = YMODEM_SOH_PKG_LEN - 1;
     uint32_t recv_len = ymodem_data_read(p_ctx, p_ctx->recv_data, data_sz);
     if (recv_len != data_sz) {
-        boot_error("data size error. %d->%d", data_sz, recv_len);
+        print_error("data size error. %d->%d", data_sz, recv_len);
         return YMODEM_ERR_DATA_SIZE;
     }
     // 检查数据
     if (p_ctx->recv_data[0] != 0 || p_ctx->recv_data[1] != 0xFF) {
-        boot_error("seq error. 0x%02x, 0x%02x", p_ctx->recv_data[0], p_ctx->recv_data[1]);
+        print_error("seq error. 0x%02x, 0x%02x", p_ctx->recv_data[0], p_ctx->recv_data[1]);
         return -YMODEM_ERR_SEQ;
     }
     uint16_t recv_crc = (uint16_t)(p_ctx->recv_data[data_sz-2] << 8) | p_ctx->recv_data[data_sz-1];
     if (recv_crc != htd_ymodem_crc16(&p_ctx->recv_data[2], data_sz-4)) {
-        boot_error("crc error.");
+        print_error("crc error.");
         return YMODEM_ERR_CRC;
     }
     // 传送下一个文件, 此时为起始帧
     if (p_ctx->recv_data[2] != 0) {
         if (p_ctx->evt_notify_handle) {
-            boot_debug("seq: 0x%02x", p_ctx->recv_data[0]);
+            print_debug("seq: 0x%02x", p_ctx->recv_data[0]);
             if (p_ctx->evt_notify_handle(YMODEM_EVT_START, &p_ctx->recv_data[2], data_sz-4) != 0) {
                 return YMODEM_ERR_CANCEL;
             }

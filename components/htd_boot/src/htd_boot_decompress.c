@@ -62,7 +62,7 @@ bool boot_decompress_quicklz(htd_boot_object_t* p_object)
     ASSERT(p_decompress);
     htd_memset(p_decompress, 0, sizeof(qlz_state_decompress));
 
-    boot_debug("[qlz]decompress start: fwB_download_addr=0x%08x, rd_offset=%u", p_object->fwB_download_addr, rd_offset);
+    print_debug("[qlz]decompress start: fwB_download_addr=0x%08x, rd_offset=%u", p_object->fwB_download_addr, rd_offset);
     uint32_t opt_size;
     while (rd_offset < p_object->fwB_size) {
         // 读取块头部大小
@@ -76,7 +76,7 @@ bool boot_decompress_quicklz(htd_boot_object_t* p_object)
             return false;
         }
         // 读取数据块
-        boot_debug("rd_offset=%d, opt_size=0x%08x", rd_offset, opt_size);
+        print_debug("rd_offset=%d, opt_size=0x%08x", rd_offset, opt_size);
         htd_memset(rd_buff, 0, BOOT_COMPRESS_BUFFER_SIZE + BOOT_COMPRESS_BUFFER_PADDING);
         boot_flash_read(p_object->p_flash_fwB, p_object->addrB_src, rd_buff, opt_size);
         rd_offset += opt_size;
@@ -86,7 +86,7 @@ bool boot_decompress_quicklz(htd_boot_object_t* p_object)
         htd_memset(de_buff, 0, BOOT_DECOMPRESS_BUFFER_SIZE);
         opt_size = qlz_decompress((const char *)rd_buff, de_buff, p_decompress);
         boot_flash_erase(p_flash, p_object->addrB_dst, opt_size);
-        boot_debug("wr_offset=0x%08x", wr_offset);
+        print_debug("wr_offset=0x%08x", wr_offset);
         boot_flash_write(p_flash, p_object->addrB_dst, de_buff, opt_size);
         wr_offset += opt_size;
         p_object->addrB_dst += opt_size;
@@ -136,12 +136,12 @@ bool boot_decompress_fastlz(htd_boot_object_t* p_object)
     uint8_t *rd_buff = (uint8_t*)htd_malloc(BOOT_COMPRESS_BUFFER_SIZE + BOOT_COMPRESS_BUFFER_PADDING);
     ASSERT(rd_buff);
 
-    boot_debug("[flz]decompress start: rd_offset=%u, fwB_size=%u, fwB_download_addr=0x%08x", rd_offset, p_object->fwB_size, p_object->fwB_download_addr);
+    print_debug("[flz]decompress start: rd_offset=%u, fwB_size=%u, fwB_download_addr=0x%08x", rd_offset, p_object->fwB_size, p_object->fwB_download_addr);
     uint32_t opt_size;
     while (rd_offset < p_object->fwB_size) {
         // 读取块头部大小
         boot_flash_read(p_object->p_flash_fwB, p_object->addrB_src, (uint8_t*)&opt_size, sizeof(uint32_t));
-        boot_debug("rd_offset=0x%08x, wr_offset=0x%08x, opt_size=0x%08x", rd_offset, wr_offset, opt_size);
+        print_debug("rd_offset=0x%08x, wr_offset=0x%08x, opt_size=0x%08x", rd_offset, wr_offset, opt_size);
         p_object->addrB_src += sizeof(uint32_t);
         rd_offset += sizeof(uint32_t);
         if (opt_size > BOOT_COMPRESS_BUFFER_SIZE + BOOT_COMPRESS_BUFFER_PADDING) {

@@ -74,7 +74,7 @@ static uint32_t swap_progress_recover(htd_boot_object_t * p_object)
     p_object->addrA_src += page_len;
     p_object->addrA_dst += page_len;
     // B->A 继续操作
-    boot_debug("B->A: 0x%08x->0x%08x", p_object->addrB_src, p_object->addrB_dst);
+    print_debug("B->A: 0x%08x->0x%08x", p_object->addrB_src, p_object->addrB_dst);
     return swap_onepage_b2a(p_object, page_len);
 }
 
@@ -83,11 +83,11 @@ static uint32_t swap_one_page(htd_boot_object_t * p_object, uint32_t offset)
 {
     uint32_t page_len = boot_flash_erase_unit_get(p_object->p_flash_fwA, p_object->addrA_src);
     // A->B
-    boot_debug("A->B: 0x%08x->0x%08x", p_object->addrA_src, p_object->addrA_dst);
+    print_debug("A->B: 0x%08x->0x%08x", p_object->addrA_src, p_object->addrA_dst);
     swap_onepage_a2b(p_object, page_len);
     boot_config_offset_state_set(offset, BOOT_STATE_SWAP_A2B);
     // B->A
-    boot_debug("B->A: 0x%08x->0x%08x", p_object->addrB_src, p_object->addrB_dst);
+    print_debug("B->A: 0x%08x->0x%08x", p_object->addrB_src, p_object->addrB_dst);
     return swap_onepage_b2a(p_object, page_len);
 }
 
@@ -115,7 +115,7 @@ void boot_overwrite(htd_boot_object_t* p_object)
         p_object->addrB_src += offset;
         p_object->addrA_dst += offset;
         p_object->addrB_dst += offset;
-        boot_debug("addrA=0x%08x, addrB=0x%08x", p_object->addrA_src, p_object->addrB_src);
+        print_debug("addrA=0x%08x, addrB=0x%08x", p_object->addrA_src, p_object->addrB_src);
         if (state == BOOT_STATE_SWAP_A2B) {
             offset += swap_progress_recover(p_object);
             boot_config_offset_state_set(offset, BOOT_STATE_SWAP);
@@ -124,7 +124,7 @@ void boot_overwrite(htd_boot_object_t* p_object)
     } else {
         offset = 0;
     } 
-    boot_debug("fwA_size=%u, fwB_size=%u, swap_size=%u", p_object->fwA_size, p_object->fwB_size, swap_size);
+    print_debug("fwA_size=%u, fwB_size=%u, swap_size=%u", p_object->fwA_size, p_object->fwB_size, swap_size);
     
     // 交换数据
     uint32_t buff_len;
@@ -163,7 +163,7 @@ void boot_rollback(htd_boot_object_t* p_object)
     } else {
         offset = 0;
     }
-    boot_warning("--->start rollback. fwB_size=0x%08x", p_object->fwB_size);
+    print_warning("--->start rollback. fwB_size=0x%08x", p_object->fwB_size);
     
     // 回滚
     uint32_t buff_len;

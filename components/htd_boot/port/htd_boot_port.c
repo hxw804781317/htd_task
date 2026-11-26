@@ -115,7 +115,7 @@ const boot_flash_handle_t* boot_flash_handle_get(uint32_t addr)
     }
 #endif
 
-    boot_error("addr=0x%08x", addr);
+    print_error("addr=0x%08x", addr);
     ASSERT(0);
     return NULL;
 }
@@ -163,7 +163,7 @@ uint32_t boot_flash_erase_unit_get(const boot_flash_handle_t* p_flash, uint32_t 
 boot_serial_t boot_serial_open(void)
 {
     // 波特率探测，探测不到返回NULL
-    boot_warning("open serial. name=%s(%d)", HTD_BOOT_SERIAL_NAME, HTD_BOOT_SERIAL_BAUDRATE);
+    print_warning("open serial. name=%s(%d)", HTD_BOOT_SERIAL_NAME, HTD_BOOT_SERIAL_BAUDRATE);
     static const htd_serial_param_t param = HTD_SERIAL_CONFIG_DEF(HTD_BOOT_SERIAL_TX_PINNUM, HTD_BOOT_SERIAL_RX_PINNUM, HTD_BOOT_SERIAL_BAUDRATE, NULL);
     return htd_serial_open(HTD_BOOT_SERIAL_NAME, &param);
 }
