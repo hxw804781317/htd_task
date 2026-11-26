@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #ifndef _HTD_DEV_NORFLASH_H_
 #define _HTD_DEV_NORFLASH_H_
 
@@ -12,14 +14,35 @@ extern "C" {
 #endif /*__cplusplus*/
 
 
+
+//////////////////////////////////////////////////////////////////////
+// norflash 绝对地址
+#ifndef NORFLASH_MAP_START_ADDR
+    #ifdef HTD_NORFLASH_START_ADDR
+        #define NORFLASH_MAP_START_ADDR     HTD_NORFLASH_START_ADDR
+    #else
+        #define NORFLASH_MAP_START_ADDR     0x12000000
+    #endif
+#endif
+// norflash 容量, 实际以读取到的参数为准
+#ifndef NORFLASH_MAP_CAPACITY
+    #ifdef HTD_NORFLASH_CAPACITY
+        #define NORFLASH_MAP_CAPACITY       HTD_NORFLASH_CAPACITY
+    #else
+        #define NORFLASH_MAP_CAPACITY       (32*1024*1024)
+    #endif
+#endif
+
+
+
+//////////////////////////////////////////////////////////////////////
 #define NORFLASH_CMD_NONE           0
 #define NORFLASH_CMD_SECTOR_ERASE   1   // @norflash_erase_param_t
-#define NORFLASH_CMD_ADDR_GET       2   // @norflash_addr_param_t
-#define NORFLASH_CMD_SIZE_GET       3   // @uint32_t
-#define NORFLASH_CMD_POWER_DOWN     5   // 
-#define NORFLASH_CMD_WAKE_UP        6   // 
-#define NORFLASH_CMD_CLOSE          7
-#define NORFLASH_CMD_SHOW_INFO      8   // 
+#define NORFLASH_CMD_SIZE_GET       2   // @uint32_t
+#define NORFLASH_CMD_POWER_DOWN     3   // 
+#define NORFLASH_CMD_WAKE_UP        4   // 
+#define NORFLASH_CMD_CLOSE          5
+#define NORFLASH_CMD_SHOW_INFO      6   // 
 typedef uint32_t norflash_cmd_t;
 
 typedef struct {
@@ -28,13 +51,7 @@ typedef struct {
 } norflash_erase_param_t;
 
 typedef struct {
-    uint32_t phy_saddr;
-    uint32_t phy_eaddr;             
-}norflash_addr_param_t;
-
-typedef struct {
     const char* p_name;
-    uint32_t phy_saddr;
     uint32_t erase_unit;            // 每次擦除单位，单位字节
     uint32_t page_size;             // 页大小
     uint32_t capacity;              // flash 容量，单位字节; 超过16M(0x1000000)使用4字节地址

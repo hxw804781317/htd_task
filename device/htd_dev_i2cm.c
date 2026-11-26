@@ -19,7 +19,7 @@ static const i2cm_dev_t* htd_i2cm_dev_find(const char* p_name)
     while (p_item) {
         p_dev = (i2cm_dev_t*)p_item;
         if (p_dev->magic == HTD_I2CM_DEV_MAGIC) {
-            if (memcmp(p_name, p_dev->p_name, name_len) == 0) {
+            if (htd_memcmp(p_name, p_dev->p_name, name_len) == 0) {
                 return p_dev;
             }
         }

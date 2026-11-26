@@ -184,35 +184,35 @@ static int aes_cmd(int argc, char **argv)
 
     print_hex("AES-key:", p_key, 16);
     print_hex("origin", p_data, 10);
-    if (memcmp(argv[1], "zeropadding", 12) == 0) {
+    if (htd_memcmp(argv[1], "zeropadding", 12) == 0) {
         htd_aes128_ecb_zeropadding_encrypt(p_data, 10, p_key, out, &out_len);
         print_hex("zeropadding", out, out_len);
         buff_len = htd_aes128_ecb_zeropadding_decrypt(out, out_len, p_key, buff);
         print_hex("data", buff, buff_len);
         return 0;
     }
-    if (memcmp(argv[1], "pkc7padding", 12) == 0) {
+    if (htd_memcmp(argv[1], "pkc7padding", 12) == 0) {
         htd_aes128_ecb_pkc7padding_encrypt(p_data, 10, p_key, out, &out_len);
         print_hex("pkc7padding", out, out_len);
         buff_len = htd_aes128_ecb_pkc7padding_decrypt(out, out_len, p_key, buff);
         print_hex("data", buff, buff_len);
         return 0;
     }
-    if (memcmp(argv[1], "pkc5padding", 12) == 0) {
+    if (htd_memcmp(argv[1], "pkc5padding", 12) == 0) {
         htd_aes128_ecb_pkc5padding_encrypt(p_data, 10, p_key, out, &out_len);
         print_hex("pkc5padding", out, out_len);
         buff_len = htd_aes128_ecb_pkc5padding_decrypt(out, out_len, p_key, buff);
         print_hex("data", buff, buff_len);
         return 0;
     }
-    if (memcmp(argv[1], "iso10126", 9) == 0) {
+    if (htd_memcmp(argv[1], "iso10126", 9) == 0) {
         htd_aes128_ecb_iso10126_encrypt(p_data, 10, p_key, out, &out_len);
         print_hex("iso10126", out, out_len);
         buff_len = htd_aes128_ecb_iso10126_decrypt(out, out_len, p_key, buff);
         print_hex("data", buff, buff_len);
         return 0;
     }
-    if (memcmp(argv[1], "ansix923", 9) == 0) {
+    if (htd_memcmp(argv[1], "ansix923", 9) == 0) {
         htd_aes128_ecb_ansix923_encrypt(p_data, 10, p_key, out, &out_len);
         print_hex("ansix923", out, out_len);
         buff_len = htd_aes128_ecb_ansix923_decrypt(out, out_len, p_key, buff);

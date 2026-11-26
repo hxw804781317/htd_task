@@ -1,5 +1,6 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #if 0
-
 // #define __ENABLE_DEBUG__
 #define DEBUG_TAG "sdrv.lqbp001mb"
 

@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #define DEBUG_LVL               2       // 1:error; 2:warning; 3:debug; 4:log
 #define DEBUG_TAG               "nor.win32"
 #include "htd_dev_norflash.h"
@@ -9,8 +11,6 @@
 // 模拟一块16M的 norflash
 #define NORFLASH_FILE_PATH                  "/norflash.bin"
 #define NORFLASH_PROGRAM_COUNT              100000
-#define NORFLASH_START_ADDR                 0x12000000
-#define NORFLASH_SIZE                       (16*1024*1024)
 #define NORFLASH_ERASE_UNIT                 4096
 #define NORFLASH_PAGE_SIZE                  4096
 static int32_t m_norflash_fd = -1;
@@ -48,7 +48,7 @@ static int32_t norflash_file_close(void)
 static int32_t norflash_program_count_update(int32_t fd, uint32_t addr, bool is_update)
 {
     // 将地址重置到页首
-    addr -= NORFLASH_START_ADDR;
+    addr -= NORFLASH_MAP_START_ADDR;
     int32_t offset = addr / (NORFLASH_ERASE_UNIT) * (NORFLASH_ERASE_UNIT + sizeof(norflash_page_head_t));
     int32_t ret = lseek(fd, offset, SEEK_SET);
     ASSERT(offset == ret);
@@ -90,7 +90,7 @@ static int32_t norflash_simulator_write(uint32_t addr, const uint8_t* p_data, ui
     ASSERT(fd > 0);
     norflash_program_count_update(fd, addr, false);
 
-    uint32_t addr1 = norflash_addr_reset(addr - NORFLASH_START_ADDR);
+    uint32_t addr1 = norflash_addr_reset(addr - NORFLASH_MAP_START_ADDR);
     uint32_t offset = addr1;
     int32_t ret = lseek(fd, offset, SEEK_SET);
     ASSERT(offset == ret);
@@ -137,7 +137,7 @@ static int32_t norflash_simulator_write(uint32_t addr, const uint8_t* p_data, ui
         }
         ret = read(fd, buff, buff_len);
         ASSERT(buff_len == ret);
-        if (memcmp(p_data, buff, buff_len)) {
+        if (htd_memcmp(p_data, buff, buff_len)) {
             print_error("data write failed. buff_len=%d, compare_len=%d, addr1=0x%08x", buff_len, p_data-p_start, addr1);
             ASSERT(0);
         }
@@ -160,7 +160,7 @@ static int32_t norflash_simulator_read(uint32_t addr, uint8_t* p_data, uint32_t 
     int32_t fd = norflash_file_open();
     ASSERT(fd > 0);
     
-    uint32_t offset = norflash_addr_reset(addr - NORFLASH_START_ADDR);
+    uint32_t offset = norflash_addr_reset(addr - NORFLASH_MAP_START_ADDR);
     //print_warning("read. addr=0x%x, offset=0x%x, data_len=%d", addr, offset, data_len);
     int32_t ret = lseek(fd, offset, SEEK_SET);
     //print_debug("addr=0x%08x, offset=%d, ret=%d", addr, offset, ret);
@@ -184,7 +184,7 @@ static int32_t norflash_simulator_erase(uint32_t addr)
     
     norflash_program_count_update(fd, addr, true);
     
-    uint32_t offset = norflash_addr_reset(addr - NORFLASH_START_ADDR);
+    uint32_t offset = norflash_addr_reset(addr - NORFLASH_MAP_START_ADDR);
     print_warning("erase. addr=0x%x, offset=0x%x", addr, offset);
     int32_t ret = lseek(fd, offset, SEEK_SET);
     ASSERT(offset == ret);
@@ -214,7 +214,7 @@ static void norflash_simulator_info_show(void)
     uint32_t total_cnt = 0;
     int32_t max_cnt = 0, min_cnt = 0x7fffffff;
     uint32_t offset = 0;
-    while (offset < NORFLASH_SIZE) {
+    while (offset < NORFLASH_MAP_CAPACITY) {
         lseek(fd, offset, SEEK_SET);
         htd_memset(&page_head, 0, sizeof(page_head));
         read(fd, &page_head, sizeof(page_head));
@@ -245,16 +245,6 @@ static int32_t norflash_simulator_ctrl(norflash_cmd_t cmd, void* p_param, uint32
             page_size += NORFLASH_ERASE_UNIT;
             addr += NORFLASH_ERASE_UNIT;
         }
-    } else if (cmd == NORFLASH_CMD_ADDR_GET) {
-        ASSERT(p_param);
-        norflash_addr_param_t* p_info = (norflash_addr_param_t*)p_param;
-        p_info->phy_saddr = NORFLASH_START_ADDR;
-        p_info->phy_eaddr = NORFLASH_START_ADDR + NORFLASH_SIZE;
-        return sizeof(norflash_addr_param_t);
-    } else if (cmd == NORFLASH_CMD_SIZE_GET) {
-        ASSERT(p_param);
-        *(uint32_t*)p_param = NORFLASH_SIZE;
-        return sizeof(uint32_t);
     } else if (cmd == NORFLASH_CMD_SHOW_INFO) {
         norflash_simulator_info_show();
     }
@@ -264,7 +254,7 @@ static int32_t norflash_simulator_ctrl(norflash_cmd_t cmd, void* p_param, uint32
 // @brief 初始化, 创建一个对等大小的文件
 static int32_t norflash_simulator_init(void)
 {
-    uint32_t flash_size = NORFLASH_SIZE / NORFLASH_ERASE_UNIT * (NORFLASH_ERASE_UNIT + sizeof(norflash_page_head_t));
+    uint32_t flash_size = NORFLASH_MAP_CAPACITY / NORFLASH_ERASE_UNIT * (NORFLASH_ERASE_UNIT + sizeof(norflash_page_head_t));
     int32_t fd = norflash_file_open();
     ASSERT(fd > 0);
 
@@ -297,9 +287,9 @@ static int32_t norflash_simulator_register(void)
 {
     static const dev_norflash_t norflash_simulator = {
         .p_name = "simulator",
-        .phy_saddr = NORFLASH_START_ADDR,
         .erase_unit = NORFLASH_ERASE_UNIT,
         .page_size = NORFLASH_PAGE_SIZE,
+        .capacity = NORFLASH_MAP_CAPACITY,
         .write_handle = norflash_simulator_write,
         .read_handle = norflash_simulator_read,
         .ctrl_handle = norflash_simulator_ctrl,
@@ -310,5 +300,9 @@ static int32_t norflash_simulator_register(void)
 }
 DEVICE_INIT_FUNC_REGISTER(norflash_simulator_register);
 
+#include "htd_components.h"
+#if defined(HTD_FLASH_UTILITY_BOX_ENABLE)
+    HTD_FLASH_HANDLE_REGISTER(norflash_4k, NORFLASH_PAGE_SIZE, NORFLASH_ERASE_UNIT, htd_dev_norflash_read, htd_dev_norflash_write, htd_dev_norflash_erase, NULL);
+#endif
 #endif /*defined(HTD_VFS_ENABLE) && defined(_WIN32)*/
 

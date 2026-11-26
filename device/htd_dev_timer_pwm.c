@@ -219,7 +219,7 @@ static int pwm_cmd(int argc, char **argv)
     }
 
     // 打开
-    if (0 == memcmp(argv[1], "open", 5)) {
+    if (0 == htd_memcmp(argv[1], "open", 5)) {
         if (argc != 3) {
             print_error("Usage: %s open [tim_pwm1/tim_pwm2...]", argv[0]);
             return 0;
@@ -236,7 +236,7 @@ static int pwm_cmd(int argc, char **argv)
         return 0;
     } 
     // 关闭
-    if (0 == memcmp(argv[1], "close", 6)) {
+    if (0 == htd_memcmp(argv[1], "close", 6)) {
         if (m_pwm_handle) {
             htd_dev_pwm_close(m_pwm_handle);
             m_pwm_handle = NULL;
@@ -244,12 +244,12 @@ static int pwm_cmd(int argc, char **argv)
         return 0;
     } 
     // 启动
-    if (0 == memcmp(argv[1], "start", 6)) {
+    if (0 == htd_memcmp(argv[1], "start", 6)) {
         htd_tim_pwm_start_handle();
         return 0;
     }
     // 停止
-    if (0 == memcmp(argv[1], "stop", 5)) {
+    if (0 == htd_memcmp(argv[1], "stop", 5)) {
         if (m_pwm_handle) {
             htd_dev_pwm_stop(m_pwm_handle, 0xff);
         }

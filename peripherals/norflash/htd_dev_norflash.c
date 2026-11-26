@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #define DEBUG_LVL       4       // 1:error; 2:warning; 3:debug; 4:log
 #define DEBUG_TAG       "norflash"
 #include "htd_device.h"
@@ -26,11 +28,7 @@ int32_t htd_dev_norflash_register(const dev_norflash_t* p_norflash)
 {
     ASSERT(m_norflash_dev == NULL);
     ASSERT(p_norflash);
-    //ASSERT(p_norflash->phy_saddr < p_norflash->end_addr);
-    ASSERT((p_norflash->phy_saddr & (p_norflash->erase_unit - 1)) == 0);
-    //ASSERT((p_norflash->end_addr & (p_norflash->erase_unit - 1)) == 0);
-    ASSERT((p_norflash->phy_saddr & (p_norflash->page_size - 1)) == 0);
-    //ASSERT((p_norflash->end_addr & (p_norflash->page_size - 1)) == 0);
+    ASSERT((NORFLASH_MAP_START_ADDR & (p_norflash->erase_unit - 1)) == 0);
     ASSERT(p_norflash->read_handle);
     ASSERT(p_norflash->write_handle);
     ASSERT(p_norflash->ctrl_handle);
@@ -51,7 +49,7 @@ void htd_dev_norflash_show(void)
     }
     norflash_enable(true);
     print_log("norflash dev: %s", m_norflash_dev->p_name);
-    print_log("\tphy_saddr: 0x%08x", m_norflash_dev->phy_saddr);
+    print_log("\tphy_saddr: 0x%08x", NORFLASH_MAP_START_ADDR);
     print_log("\terase_unit=%d, page_size=%d", m_norflash_dev->erase_unit, m_norflash_dev->page_size);
     m_norflash_dev->ctrl_handle(NORFLASH_CMD_SHOW_INFO, NULL, 0);
     norflash_enable(false);
@@ -213,7 +211,7 @@ uint32_t htd_dev_norflash_page_read(uint32_t page_idx, uint8_t* p_data, uint32_t
 
     norflash_enable(true);
     uint32_t read_len = m_norflash_dev->erase_unit;
-    uint32_t addr = m_norflash_dev->phy_saddr + page_idx * m_norflash_dev->erase_unit;
+    uint32_t addr = NORFLASH_MAP_START_ADDR + page_idx * m_norflash_dev->erase_unit;
 
     uint8_t* p_start = p_data;
     while (data_len) {
@@ -237,7 +235,7 @@ uint32_t htd_dev_norflash_page_write(uint32_t page_idx, const uint8_t* p_data, u
     
     norflash_enable(true);
     uint32_t write_len = m_norflash_dev->erase_unit;
-    uint32_t addr = m_norflash_dev->phy_saddr + page_idx * m_norflash_dev->erase_unit;
+    uint32_t addr = NORFLASH_MAP_START_ADDR + page_idx * m_norflash_dev->erase_unit;
     
     norflash_erase_param_t param;
     const uint8_t* p_start = p_data;
@@ -260,23 +258,14 @@ uint32_t htd_dev_norflash_page_write(uint32_t page_idx, const uint8_t* p_data, u
 // @brief 获取起始地址, 失败返回0xffffffff
 uint32_t htd_dev_norflash_phy_saddr_get(void)
 {
-    ASSERT(m_norflash_dev);
-    return m_norflash_dev->phy_saddr;
+    return NORFLASH_MAP_START_ADDR;
 }
 
 // @brief 获取结束地址, 失败返回0xffffffff
 uint32_t htd_dev_norflash_phy_eaddr_get(void)
 {
-    ASSERT(m_norflash_dev);
-    uint32_t addr = 0xffffffff;
-    norflash_addr_param_t param;
-    
-    norflash_enable(true);
-    if (sizeof(param) == m_norflash_dev->ctrl_handle(NORFLASH_CMD_ADDR_GET, &param, sizeof(param))) {
-        addr = param.phy_eaddr;
-    }
-    norflash_enable(false);
-    return addr;
+    uint32_t capacity = htd_dev_norflash_size_get();
+    return NORFLASH_MAP_START_ADDR + capacity;
 }
 
 // @brief 获取大小
@@ -310,7 +299,7 @@ uint32_t htd_dev_norflash_page_size_get(void)
 // @brief 初始化
 int32_t htd_dev_norflash_init(void)
 {
-    ASSERT(m_norflash_dev);
+    ASSERT(m_norflash_dev);     // 必须先运行 htd_dev_norflash_register 注册设备
     norflash_dev_lock_init();
     return m_norflash_dev->init_handle();
 }
@@ -322,7 +311,6 @@ int32_t htd_dev_norflash_uninit(void)
     
     return 0;
 }
-
 
 //////////////////////////////////////////////////////////////////////
 #if defined(HTD_CONSOLE_ENABLE) && (DEBUG_LVL > 0) && 0
@@ -371,9 +359,9 @@ static int cmd_norflash(int argc, char **argv)
         return 0;
     }
     
-    if (memcmp(argv[1], "show", 5) == 0) {
+    if (htd_memcmp(argv[1], "show", 5) == 0) {
         htd_dev_norflash_show();
-    } else if (memcmp(argv[1], "test", 5) == 0) {
+    } else if (htd_memcmp(argv[1], "test", 5) == 0) {
         norflash_test();
     } else {
         print_error("Usage: %s show/test", argv[0]);

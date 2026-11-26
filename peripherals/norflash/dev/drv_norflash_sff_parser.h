@@ -1,7 +1,5 @@
-/*
- * Copyright (c) 2018 Daven <804781317@qq.com>
- * All rights reserved
- */
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #ifndef _DRV_NORFLASH_SFF_PARSER_H_        // (serials flash fit)
 #define _DRV_NORFLASH_SFF_PARSER_H_
 
@@ -22,7 +20,7 @@ extern "C" {
     #define ARRAY_COUNT(X)              (sizeof(X) / sizeof(X[0]))
 #endif
 #ifndef __BIT
-    #define __BIT(x)                      (1uL<<(x)) 
+    #define __BIT(x)                    (1uL<<(x)) 
 #endif
 
 // spi 交互句柄；p_rbuff 不为空且 rbuff_len 不为0，返回读取到的数据长度, 否则返回写入p_wbuff的数据长度

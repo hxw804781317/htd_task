@@ -37,7 +37,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.;..\..\..;..\..\..\components;..\..\..\components\htd_console;..\..\..\components\htd_vfs;..\..\..\components\htd_vfs\filesystem\elm_fatfs;..\..\..\components\htd_vfs\filesystem\fs_win32_simulator;..\..\..\components\htd_vfs\filesystem\ramfs;..\..\..\components\htd_vfs\filesystem\romfs;..\..\..\components\htd_vfs\lib;..\..\..\components\htd_vfs\lib\dhara;..\..\..\components\htd_vfs\lib\dhara\dhara;..\..\..\components\htd_vfs\lib\fatfs_elm;..\..\..\device;..\..\..\device\drv_win32;..\..\..\external;..\..\..\external\SDL2-2.0.7;..\..\..\peripherals;..\..\..\peripherals\norflash;..\..\..\peripherals\norflash\dev;..\..\..\task;..\..\..\task\common;..\..\..\task\memheap;applications;board;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\..;..\..\..\components;..\..\..\components\htd_console;..\..\..\components\htd_flash;..\..\..\components\htd_vfs;..\..\..\components\htd_vfs\filesystem\elm_fatfs;..\..\..\components\htd_vfs\filesystem\fs_win32_simulator;..\..\..\components\htd_vfs\filesystem\ramfs;..\..\..\components\htd_vfs\filesystem\romfs;..\..\..\components\htd_vfs\lib;..\..\..\components\htd_vfs\lib\dhara;..\..\..\components\htd_vfs\lib\dhara\dhara;..\..\..\components\htd_vfs\lib\fatfs_elm;..\..\..\device;..\..\..\device\drv_win32;..\..\..\external;..\..\..\external\SDL2-2.0.7;..\..\..\peripherals;..\..\..\peripherals\norflash;..\..\..\peripherals\norflash\dev;..\..\..\task;..\..\..\task\common;..\..\..\task\memheap;applications;board;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;MSVC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -76,6 +76,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\components\htd_console\htd_console_port.c">
+      <ObjectFileName>$(IntDir)kernel\components\htd_console\</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="..\..\..\components\htd_console\htd_console_history.c">
       <ObjectFileName>$(IntDir)kernel\components\htd_console\</ObjectFileName>
     </ClCompile>
@@ -83,9 +86,6 @@
       <ObjectFileName>$(IntDir)kernel\components\htd_console\</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\..\..\components\htd_console\htd_console_process.c">
-      <ObjectFileName>$(IntDir)kernel\components\htd_console\</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\..\..\components\htd_console\htd_console_port.c">
       <ObjectFileName>$(IntDir)kernel\components\htd_console\</ObjectFileName>
     </ClCompile>
   </ItemGroup>
@@ -182,6 +182,23 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\components\htd_flash\htd_flash_common.c">
+      <ObjectFileName>$(IntDir)kernel\components\htd_flash\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\..\components\htd_flash\htd_flash_box.c">
+      <ObjectFileName>$(IntDir)kernel\components\htd_flash\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\..\components\htd_flash\htd_flash_log.c">
+      <ObjectFileName>$(IntDir)kernel\components\htd_flash\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\..\components\htd_flash\htd_flash_var.c">
+      <ObjectFileName>$(IntDir)kernel\components\htd_flash\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\..\components\htd_flash\htd_flash_kv.c">
+      <ObjectFileName>$(IntDir)kernel\components\htd_flash\</ObjectFileName>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="..\..\..\task\common\htd_base16.c">
       <ObjectFileName>$(IntDir)kernel\task\common\</ObjectFileName>
     </ClCompile>
@@ -270,17 +287,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\components\htd_vfs\lib\dhara\dhara\journal.c">
-      <ObjectFileName>$(IntDir)kernel\components\htd_vfs\lib\dhara\dhara\</ObjectFileName>
-    </ClCompile>
     <ClCompile Include="..\..\..\components\htd_vfs\lib\dhara\dhara\error.c">
       <ObjectFileName>$(IntDir)kernel\components\htd_vfs\lib\dhara\dhara\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\components\htd_vfs\lib\dhara\dhara\map.c">
+    <ClCompile Include="..\..\..\components\htd_vfs\lib\dhara\dhara\journal.c">
       <ObjectFileName>$(IntDir)kernel\components\htd_vfs\lib\dhara\dhara\</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\..\..\components\htd_vfs\lib\dhara\dhara_port.c">
       <ObjectFileName>$(IntDir)kernel\components\htd_vfs\lib\dhara\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\..\components\htd_vfs\lib\dhara\dhara\map.c">
+      <ObjectFileName>$(IntDir)kernel\components\htd_vfs\lib\dhara\dhara\</ObjectFileName>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -328,6 +345,13 @@
     <ClInclude Include="..\..\..\components\htd_console\htd_console_process.h" />
     <ClInclude Include="..\..\..\components\htd_console\htd_console_section.h" />
     <ClInclude Include="..\..\..\components\htd_console\htd_console_slist.h" />
+    <ClInclude Include="..\..\..\components\htd_flash\htd_flash_box.h" />
+    <ClInclude Include="..\..\..\components\htd_flash\htd_flash_common.h" />
+    <ClInclude Include="..\..\..\components\htd_flash\htd_flash_kv.h" />
+    <ClInclude Include="..\..\..\components\htd_flash\htd_flash_log.h" />
+    <ClInclude Include="..\..\..\components\htd_flash\htd_flash_port.h" />
+    <ClInclude Include="..\..\..\components\htd_flash\htd_flash_section.h" />
+    <ClInclude Include="..\..\..\components\htd_flash\htd_flash_var.h" />
     <ClInclude Include="..\..\..\components\htd_vfs\filesystem\elm_fatfs\htd_vfs_fatfs.h" />
     <ClInclude Include="..\..\..\components\htd_vfs\filesystem\ramfs\htd_vfs_ramfs.h" />
     <ClInclude Include="..\..\..\components\htd_vfs\filesystem\ramfs\htd_vfs_ramfs_heap.h" />

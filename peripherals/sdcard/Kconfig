@@ -1,40 +1,41 @@
 menuconfig HTD_USING_SDCARD
     bool "Enable sd-card"
     default n
-    if HTD_USING_SDCARD
-        config HTD_SDCARD_BUS_NAME
-            string "sd-card bus name"
-            default "sdio1"
-        config HTD_SDCARD_POWER_PIN
-            int "sd-card power pin number"
-            default -1
-        config HTD_SDCARD_POWER_PIN_ACTIVE_HIGH
-            bool "power pin is high(power on)."
-            depends on (HTD_SDCARD_POWER_PIN >= 0)
-            default y
-        config HTD_SDCARD_DETECT_PIN
-            int "sd-card detect pin number"
-            default -1
-        config HTD_SDCARD_DETECT_PIN_PLUG_HIGH
-            bool "detect pin is high(plug-in)."
-            depends on (HTD_SDCARD_DETECT_PIN >= 0)
-            default n
-        config HTD_SDCARD_PIN_CMD
-            int "sd-card cmd pin number."
-            default -1
-        config HTD_SDCARD_PIN_SCK
-            int "sd-card sck pin number."
-            default -1
-        config HTD_SDCARD_PIN_D0
-            int "sd-card d0 pin number."
-            default -1
-        config HTD_SDCARD_PIN_D1
-            int "sd-card d1 pin number."
-            default -1
-        config HTD_SDCARD_PIN_D2
-            int "sd-card d2 pin number."
-            default -1
-        config HTD_SDCARD_PIN_D3
-            int "sd-card d3 pin number."
-            default -1
-    endif
+
+if HTD_USING_SDCARD
+	config HTD_SDCARD_BUS_NAME
+		string "sd-card bus name"
+		default "sdio1"
+	config HTD_SDCARD_POWER_PIN
+		int "sd-card power pin number"
+		default -1
+	config HTD_SDCARD_POWER_PIN_ACTIVE_HIGH
+		bool "power pin is high(power on)."
+		depends on (HTD_SDCARD_POWER_PIN >= 0)
+		default y
+	config HTD_SDCARD_DETECT_PIN
+		int "sd-card detect pin number"
+		default -1
+	config HTD_SDCARD_DETECT_PIN_PLUG_HIGH
+		bool "detect pin is high(plug-in)."
+		depends on (HTD_SDCARD_DETECT_PIN >= 0)
+		default n
+	config HTD_SDCARD_PIN_CMD
+		int "sd-card cmd pin number."
+		default -1
+	config HTD_SDCARD_PIN_SCK
+		int "sd-card sck pin number."
+		default -1
+	config HTD_SDCARD_PIN_D0
+		int "sd-card d0 pin number."
+		default -1
+	config HTD_SDCARD_PIN_D1
+		int "sd-card d1 pin number."
+		default -1
+	config HTD_SDCARD_PIN_D2
+		int "sd-card d2 pin number."
+		default -1
+	config HTD_SDCARD_PIN_D3
+		int "sd-card d3 pin number."
+		default -1
+endif

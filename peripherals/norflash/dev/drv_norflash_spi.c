@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #define DEBUG_LVL               4       // 1:error; 2:warning; 3:debug; 4:log
 #define DEBUG_TAG               "norflash"
 #include "htd_device.h"
@@ -269,7 +271,7 @@ static void drv_norflash_info_show(void)
 {
 #if defined(DEBUG_LVL) && (DEBUG_LVL > 1)
     print_warning("norflash name: %s, bus_name=%s", m_norflash.p_name, m_bus_handle->p_dev->p_name);
-    print_warning("phy_saddr=0x%08x, erase_unit=%d", m_norflash.phy_saddr, m_norflash.erase_unit);
+    print_warning("phy_saddr=0x%08x, erase_unit=%d", NORFLASH_MAP_START_ADDR, m_norflash.erase_unit);
     print_warning("page_size=%d, capacity=0x%08x", m_norflash.page_size, m_norflash.capacity);
     print_warning("mf_id=0x%02x, type_id=0x%02x", m_norflash.mf_id, m_norflash.type_id);
     print_warning("erase_cmd=0x%02x, write_unit=%d", m_norflash.erase_cmd, m_norflash.write_unit);
@@ -282,13 +284,6 @@ static int32_t drv_norflash_ctrl(norflash_cmd_t cmd, void* p_param, uint32_t par
     if (cmd == NORFLASH_CMD_SECTOR_ERASE) {
         norflash_erase_param_t* p_info = (norflash_erase_param_t*)p_param;
         drv_norflash_erase(p_info->addr, p_info->size);
-        
-    } else if (cmd == NORFLASH_CMD_ADDR_GET) {
-        ASSERT(p_param);
-        norflash_addr_param_t* p_info = (norflash_addr_param_t*)p_param;
-        p_info->phy_saddr = m_norflash.phy_saddr;
-        p_info->phy_eaddr = m_norflash.phy_saddr + m_norflash.capacity;
-        return sizeof(norflash_addr_param_t);
         
     } else if (cmd == NORFLASH_CMD_SIZE_GET) {
         ASSERT(p_param);
@@ -382,7 +377,6 @@ static int32_t drv_norflash_register(void)
 {
     htd_memset(&m_norflash, 0, sizeof(dev_norflash_t));
     m_norflash.p_name = "norflash_spi";
-    m_norflash.phy_saddr = 0x64000000;      // FIXME: 这里需要根据实际配置
     m_norflash.erase_unit = 4096;
     m_norflash.page_size = 256;
     m_norflash.write_cmd = 0x03;

@@ -1,7 +1,5 @@
-/*
- * Copyright (c) 2018 Daven <804781317@qq.com>
- * All rights reserved
- */
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #define DEBUG_LVL       2       // 1:error; 2:warning; 3:debug; 4:log
 #define DEBUG_TAG       "sff"
 #include "htd_device.h"

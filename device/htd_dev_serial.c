@@ -144,7 +144,7 @@ static int serial_cmd(int argc, char **argv)
         return 0;
     }
     
-    if (0 == memcmp(argv[1], "open", 5)) {
+    if (0 == htd_memcmp(argv[1], "open", 5)) {
         if (argc != 3) {
             print_error("Usage: %s open [uart1/uart2...]", argv[0]);
             return 0;
@@ -166,7 +166,7 @@ static int serial_cmd(int argc, char **argv)
     } 
     
     // 关闭
-    if (0 == memcmp(argv[1], "close", 6)) {
+    if (0 == htd_memcmp(argv[1], "close", 6)) {
         if (m_serial_test_handle) {
             htd_serial_close(m_serial_test_handle);
             m_serial_test_handle = NULL;
@@ -174,7 +174,7 @@ static int serial_cmd(int argc, char **argv)
         return 0;
     } 
     
-    if (0 == memcmp(argv[1], "show", 5)) {
+    if (0 == htd_memcmp(argv[1], "show", 5)) {
         if (m_serial_test_handle) {
             htd_serial_ctrl(m_serial_test_handle, HTD_SERIAL_CMD_DUMP, NULL, 0);
         }

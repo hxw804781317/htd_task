@@ -132,6 +132,7 @@ void htd_memheap_sram_dump(void)
 
 //////////////////////////////////////////////////////////////////////
 #if defined(_WIN32) && defined(HTD_CONSOLE_ENABLE) && DEBUG_LVL > 0 
+#include "htd_device.h"
 #include "htd_console_process.h"
 
 static void htd_heap_test(void)
@@ -151,7 +152,7 @@ static void htd_heap_test(void)
     uint32_t size;
     void* p_table[8];
     for (i=0; i<ARRAY_COUNT(p_table); ++i) {
-        size = 1 + rand() % (2*1024);
+        size = 1 + htd_rng_val_get() % (2*1024);
         print_warning("malloc. idx=%d. size=%d", i, size);
         p_table[i] = htd_memheap_sram_malloc(size, __FUNCTION__);
         if (p_table[i]) {
@@ -162,12 +163,12 @@ static void htd_heap_test(void)
     // 随机释放一个，并重新申请
     uint32_t idx;
     for (i=0; i<1000000; ++i) {
-        idx = rand() % ARRAY_COUNT(p_table);
+        idx = htd_rng_val_get() % ARRAY_COUNT(p_table);
         if (p_table[idx]) {
             if (idx & 0x01) {
                 print_warning("free. idx=%d. 0x%p", idx, p_table[idx]);
                 htd_memheap_sram_free(p_table[idx]);
-                size = 1 + rand() % (2*1024);
+                size = 1 + htd_rng_val_get() % (2*1024);
                 print_warning("malloc. idx=%d. size=%d", idx, size);
                 p_table[idx] = htd_memheap_sram_malloc(size, __FUNCTION__);
                 if (p_table[idx] == NULL) {
@@ -176,7 +177,7 @@ static void htd_heap_test(void)
                     continue;
                 }
             } else {
-                size = 1 + rand() % (2*1024);
+                size = 1 + htd_rng_val_get() % (2*1024);
                 print_warning("realloc. idx=%d, size=%d", idx, size);
                 p_table[idx] = htd_memheap_sram_realloc(p_table[idx], size, __FUNCTION__);
                 if (p_table[idx] == NULL) {
@@ -202,7 +203,7 @@ static int cmd_heap(int argc, char **argv)
         print_error("Usage: %s test", argv[0]);
         return 0;
     }
-    if (memcmp(argv[1], "test", 5) == 0) {
+    if (htd_memcmp(argv[1], "test", 5) == 0) {
         htd_heap_test();
     } else {
         print_error("Usage: %s test", argv[0]);

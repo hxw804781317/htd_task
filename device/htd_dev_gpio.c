@@ -145,12 +145,12 @@ static pin_num_t pin_name2num(const char* pin_name)
     uint32_t i;
     const char* name_table[] = {"PA", "PB", "PC", "PD", "PE", "PF", "PG"};
     for (i=0; i<ARRAY_COUNT(name_table); ++i) {
-        if (0 == memcmp(pin_name, name_table[i], 2)) {
+        if (0 == htd_memcmp(pin_name, name_table[i], 2)) {
             break;
         }
     }
     if (i >= ARRAY_COUNT(name_table)) {
-        if (memcmp(pin_name, "PZ", 2) == 0) {
+        if (htd_memcmp(pin_name, "PZ", 2) == 0) {
             i = 11;
         } else {
             return PIN_NUM_INVALID;
@@ -188,7 +188,7 @@ static int pin_cmd(int argc, char **argv)
     pin_num_t pin_num;
 
     // 配置引脚类型
-    if (memcmp(argv[1], "mode", 5) == 0) {
+    if (htd_memcmp(argv[1], "mode", 5) == 0) {
         if (argc != 4) {
             print_error("pin mode #pin_num <PIN MODE VALUES>");
             return -1;
@@ -223,7 +223,7 @@ static int pin_cmd(int argc, char **argv)
     }
 
     // 设置引脚电平
-    if (memcmp(argv[1], "write", 6) == 0) {
+    if (htd_memcmp(argv[1], "write", 6) == 0) {
         if (argc != 4) {
             print_error("pin write #pin_num 1/0");
             return -1;
@@ -236,7 +236,7 @@ static int pin_cmd(int argc, char **argv)
     }
 
     // 读取引脚电平
-    if (memcmp(argv[1], "read", 5) == 0) {
+    if (htd_memcmp(argv[1], "read", 5) == 0) {
         if (argc != 3) {
             print_error("pin read #pin_num");
             return -1;
@@ -248,7 +248,7 @@ static int pin_cmd(int argc, char **argv)
     }
 
     // 查看引脚序号
-    if (memcmp(argv[1], "number", 7) == 0) {
+    if (htd_memcmp(argv[1], "number", 7) == 0) {
         if (argc != 3) {
             print_error("pin number PA01~PD15");
             return -1;
@@ -263,7 +263,7 @@ static int pin_cmd(int argc, char **argv)
     }
 
     // 查看引脚寄存器值
-    if (memcmp(argv[1], "show", 5) == 0) {
+    if (htd_memcmp(argv[1], "show", 5) == 0) {
         if (argc != 3) {
             print_error("pin show #pin_num");
             return -1;
@@ -274,7 +274,7 @@ static int pin_cmd(int argc, char **argv)
     }
 
     // 显示注册的中断函数
-    if (memcmp(argv[1], "int_show", 9) == 0) {
+    if (htd_memcmp(argv[1], "int_show", 9) == 0) {
         htd_pin_int_func_show();
         return 0;
     }

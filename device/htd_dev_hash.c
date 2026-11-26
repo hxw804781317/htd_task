@@ -413,13 +413,13 @@ static int hash_cmd(int argc, char **argv)
         return 0;
     }
 
-    if (memcmp(argv[1], "sha256", 7) == 0) {
+    if (htd_memcmp(argv[1], "sha256", 7) == 0) {
         sha256_test_handle();
-    } else if (memcmp(argv[1], "sha1", 5) == 0) {
+    } else if (htd_memcmp(argv[1], "sha1", 5) == 0) {
         sha1_test_handle();
-    } else if (memcmp(argv[1], "md5", 4) == 0) {
+    } else if (htd_memcmp(argv[1], "md5", 4) == 0) {
         md5_test_handle();
-    } else if (memcmp(argv[1], "sha224", 7) == 0) {
+    } else if (htd_memcmp(argv[1], "sha224", 7) == 0) {
 
     } else {
         print_error("Usage: %s sha256/sha1/sha224/md5", argv[0]);

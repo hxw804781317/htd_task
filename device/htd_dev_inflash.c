@@ -194,15 +194,15 @@ static int inflash_cmd(int argc, char **argv)
         print_error("Usage: %s show/test", argv[0]);
         return 0;
     }
-    if (0 == memcmp(argv[1], "show", 5)) {
+    if (0 == htd_memcmp(argv[1], "show", 5)) {
         htd_inflash_info_show();
         return 0;
     }
-    if (0 == memcmp(argv[1], "test", 5)) {
+    if (0 == htd_memcmp(argv[1], "test", 5)) {
         inflash_test_handle();
         return 0;
     }
-    if (0 == memcmp(argv[1], "dump", 5)) {
+    if (0 == htd_memcmp(argv[1], "dump", 5)) {
         if (argc != 4) {
             print_error("Usage: %s dump [addr] [size]");
             return -1;

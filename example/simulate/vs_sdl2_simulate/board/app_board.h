@@ -14,3 +14,4 @@ int app_board_init(void);
 }
 #endif /*__cplusplus*/
 #endif /*__APP_BOARD_H__*/
+

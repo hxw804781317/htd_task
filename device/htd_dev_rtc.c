@@ -256,13 +256,13 @@ static int rtc_cmd(int argc, char **argv)
         return 0;
     }
     
-    if (memcmp(argv[1], "show", 5) == 0) {
+    if (htd_memcmp(argv[1], "show", 5) == 0) {
         htd_rtc_info_show();
         return 0;
     } 
 
     // 设置时间
-    if (memcmp(argv[1], "set", 4) == 0) {
+    if (htd_memcmp(argv[1], "set", 4) == 0) {
         if (argc < 8) {
             print_error("usage: %s set year month day hour mintue second", argv[0]);
             return 0;

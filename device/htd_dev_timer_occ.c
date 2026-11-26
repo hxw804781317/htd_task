@@ -181,7 +181,7 @@ static int occ_cmd(int argc, char **argv)
     }
 
     // 打开
-    if (0 == memcmp(argv[1], "open", 5)) {
+    if (0 == htd_memcmp(argv[1], "open", 5)) {
         if (argc != 3) {
             print_error("Usage: %s open [occ1/occ2...]", argv[0]);
             return 0;
@@ -194,7 +194,7 @@ static int occ_cmd(int argc, char **argv)
         return 0;
     } 
     // 关闭
-    if (0 == memcmp(argv[1], "close", 6)) {
+    if (0 == htd_memcmp(argv[1], "close", 6)) {
         if (m_occ_handle) {
             htd_dev_occ_close(m_occ_handle);
             m_occ_handle = NULL;
@@ -202,12 +202,12 @@ static int occ_cmd(int argc, char **argv)
         return 0;
     } 
     // 启动
-    if (0 == memcmp(argv[1], "start", 6)) {
+    if (0 == htd_memcmp(argv[1], "start", 6)) {
         htd_tim_occ_start_handle();
         return 0;
     }
     // 停止
-    if (0 == memcmp(argv[1], "stop", 5)) {
+    if (0 == htd_memcmp(argv[1], "stop", 5)) {
         if (m_occ_handle) {
             htd_dev_occ_stop(m_occ_handle);
         }
