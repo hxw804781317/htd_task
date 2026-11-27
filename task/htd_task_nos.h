@@ -77,36 +77,16 @@ void htd_sem_reset(htd_sem_t* sem);
 
 /////////////////////////////////信号量锁/////////////////////////////////////
 typedef htd_sem_t htd_sem_lock_t;
-// @brief 初始化信号量的锁
-__STATIC_INLINE bool htd_sem_lock_init(htd_sem_lock_t* p_sem_lock, const char* p_name)
-{
-    return htd_sem_init(p_sem_lock, p_name, 1, 1) == 0 ? true : false;
-}
-// @brief 剥离信号量的锁
-__STATIC_INLINE int32_t htd_sem_lock_deinit(htd_sem_lock_t *p_sem_lock)
-{
-    return htd_sem_deinit(p_sem_lock);
-}
+
 // @brief 创建信号量锁
-__STATIC_INLINE htd_sem_lock_t* htd_sem_lock_create(const char* p_name)
-{
-    return htd_sem_create(p_name, 1, 1);
-}
+htd_sem_lock_t* htd_sem_lock_create(const char* p_name);
 // @brief 销毁信号量锁
-__STATIC_INLINE void htd_sem_lock_destroy(htd_sem_lock_t* p_sem_lock)
-{
-    htd_sem_destroy(p_sem_lock);
-}
+void htd_sem_lock_destroy(htd_sem_lock_t* p_sem_lock);
 // @brief 加锁(-1)
-__STATIC_INLINE void htd_sem_lock(htd_sem_lock_t* p_sem_lock)
-{
-    htd_sem_take(p_sem_lock, 0xffffffff);
-}
+void htd_sem_lock(htd_sem_lock_t* p_sem_lock);
 // @brief 解锁(+1)
-__STATIC_INLINE void htd_sem_unlock(htd_sem_lock_t* p_sem_lock)
-{
-    htd_sem_give(p_sem_lock);
-}
+void htd_sem_unlock(htd_sem_lock_t* p_sem_lock);
+
 
 
 
@@ -115,10 +95,6 @@ __STATIC_INLINE void htd_sem_unlock(htd_sem_lock_t* p_sem_lock)
 typedef struct {
     volatile uint32_t val;
 } htd_mutex_lock_t;
-// @brief 初始化互斥锁
-bool htd_mutex_lock_init(htd_mutex_lock_t* p_lock, const char* p_name);
-// @brief 去初始化互斥锁
-int32_t htd_mutex_lock_deinit(htd_mutex_lock_t* p_lock);
 // @brief 创建互斥锁
 htd_mutex_lock_t* htd_mutex_lock_create(const char* p_name);
 // @brief 销毁锁

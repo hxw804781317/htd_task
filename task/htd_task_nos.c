@@ -31,56 +31,6 @@ void htd_task_step_tick(uint32_t sleep_ms)
 }
 
 
-/////////////////////////////////互斥锁/////////////////////////////////////
-static htd_mutex_lock_t m_mutex_lock;
-// @brief 初始化互斥锁
-bool htd_mutex_lock_init(htd_mutex_lock_t* p_lock, const char* p_name)
-{
-    ASSERT(p_lock);
-    p_lock->val = 0;
-    return true;
-}
-// @brief 去初始化互斥锁
-int32_t htd_mutex_lock_deinit(htd_mutex_lock_t* p_lock)
-{
-    p_lock->val = 0;
-    return 0;
-}
-// @brief 创建互斥锁
-htd_mutex_lock_t* htd_mutex_lock_create(const char* p_name)
-{   
-    m_mutex_lock.val = 0;
-    return &m_mutex_lock;
-}
-// @brief 销毁锁
-void htd_mutex_lock_destroy(htd_mutex_lock_t* p_lock)
-{
-    m_mutex_lock.val = 0;
-}
-// @brief 加锁
-void htd_mutex_lock(htd_mutex_lock_t* p_lock)
-{
-    uint32_t i = 0;
-    while (p_lock->val) {
-        htd_delay_us(100);
-        i++;
-        if (i >= 10*1000) {
-            print_warning("mutex locking...");
-            i = 0;
-        }
-    }
-    p_lock->val++;
-}
-// @brief 解锁
-void htd_mutex_unlock(htd_mutex_lock_t* p_lock)
-{
-    if (p_lock->val > 0) {
-        p_lock->val--;
-    }
-}
-
-
-
 /////////////////////////////////信号量/////////////////////////////////////
 // @brief 创建信号量
 htd_sem_t* htd_sem_create(const char* p_name, uint32_t init_count, uint32_t max_count)
@@ -158,6 +108,96 @@ void htd_sem_reset(htd_sem_t* sem)
     ASSERT(sem);
     sem->init_count = 0;
 }
+
+
+
+/////////////////////////////////信号量锁/////////////////////////////////////
+// @brief 初始化信号量的锁
+bool htd_sem_lock_init(htd_sem_lock_t* p_sem_lock, const char* p_name)
+{
+    return htd_sem_init(p_sem_lock, p_name, 1, 1) == 0 ? true : false;
+}
+
+// @brief 剥离信号量的锁
+int32_t htd_sem_lock_deinit(htd_sem_lock_t *p_sem_lock)
+{
+    return htd_sem_deinit(p_sem_lock);
+}
+
+// @brief 创建信号量锁
+htd_sem_lock_t* htd_sem_lock_create(const char* p_name)
+{
+    return htd_sem_create(p_name, 1, 1);
+}
+
+// @brief 销毁信号量锁
+void htd_sem_lock_destroy(htd_sem_lock_t* p_sem_lock)
+{
+    htd_sem_destroy(p_sem_lock);
+}
+
+// @brief 加锁(-1)
+void htd_sem_lock(htd_sem_lock_t* p_sem_lock)
+{
+    htd_sem_take(p_sem_lock, 0xffffffff);
+}
+
+// @brief 解锁(+1)
+void htd_sem_unlock(htd_sem_lock_t* p_sem_lock)
+{
+    htd_sem_give(p_sem_lock);
+}
+
+
+
+/////////////////////////////////互斥锁/////////////////////////////////////
+// @brief 初始化互斥锁
+bool htd_mutex_lock_init(htd_mutex_lock_t* p_lock, const char* p_name)
+{
+    ASSERT(p_lock);
+    p_lock->val = 0;
+    return true;
+}
+// @brief 去初始化互斥锁
+int32_t htd_mutex_lock_deinit(htd_mutex_lock_t* p_lock)
+{
+    p_lock->val = 0;
+    return 0;
+}
+// @brief 创建互斥锁
+htd_mutex_lock_t* htd_mutex_lock_create(const char* p_name)
+{   
+    m_mutex_lock.val = 0;
+    return &m_mutex_lock;
+}
+// @brief 销毁锁
+void htd_mutex_lock_destroy(htd_mutex_lock_t* p_lock)
+{
+    m_mutex_lock.val = 0;
+}
+// @brief 加锁
+void htd_mutex_lock(htd_mutex_lock_t* p_lock)
+{
+    uint32_t i = 0;
+    while (p_lock->val) {
+        htd_delay_us(100);
+        i++;
+        if (i >= 10*1000) {
+            print_warning("mutex locking...");
+            i = 0;
+        }
+    }
+    p_lock->val++;
+}
+// @brief 解锁
+void htd_mutex_unlock(htd_mutex_lock_t* p_lock)
+{
+    if (p_lock->val > 0) {
+        p_lock->val--;
+    }
+}
+
+
 
 #endif 
 

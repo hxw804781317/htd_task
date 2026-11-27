@@ -24,18 +24,13 @@ extern "C" {
 
 
 // 打印接口
-#if defined(HTD_VER_RELEASE)
-    #define htd_print(fmt, ...) 
-    #define gui_kprint(fmt, ...)
-#elif defined(HTD_CONSOLE_ENABLE)
-    extern int32_t htd_console_print(const char *fmt, ...);
-    #define htd_print(fmt, ...)                 htd_console_print(fmt, ##__VA_ARGS__)
-    #define gui_kprint(fmt, ...)                htd_console_print(fmt, ##__VA_ARGS__)
+#if defined(HTD_CONSOLE_ENABLE)
+    extern int32_t htd_print(const char *fmt, ...);
+    #define gui_kprint(fmt, ...)                htd_print(fmt, ##__VA_ARGS__)
 #elif defined(HTD_LIB_USE_SEGGER_RTT)
     // @brief segger-rtt 打印输出
-    int32_t htd_segger_rtt_print(const char *fmt, ...); 
-    #define htd_print(fmt, ...)                 htd_segger_rtt_print(fmt, ##__VA_ARGS__)
-    #define gui_kprint(fmt, ...)                htd_segger_rtt_print(fmt, ##__VA_ARGS__)
+    int32_t htd_print(const char *fmt, ...); 
+    #define gui_kprint(fmt, ...)                htd_print(fmt, ##__VA_ARGS__)
 #else 
     #define htd_print(fmt, ...)                 printf(fmt, ##__VA_ARGS__)
     #define gui_kprint(fmt, ...)                printf(fmt, ##__VA_ARGS__)

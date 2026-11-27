@@ -134,12 +134,11 @@ void htd_timer_restart(void *handle, unsigned int ms)
     p_timer->flag = SDL2_TIMER_FLAG;
 }
 // @brief 暂停定时器
-// @return 成功返回0，失败返回-1
 void htd_timer_stop(void *handle)
 {
     sdl2_timer_t* p_timer = (sdl2_timer_t*)handle;
     p_timer->flag = 0;
-    return SDL_RemoveTimer(p_timer->id) ? 0 : -1;
+    SDL_RemoveTimer(p_timer->id);
 }
 // @brief 删除定时器
 void htd_timer_delete(void* handle)
@@ -158,6 +157,90 @@ void* htd_timer_param_get(void* param)
 {
     return param;
 }
+
+
+/////////////////////////////////信号量/////////////////////////////////////
+// @brief 创建信号量
+htd_sem_t* htd_sem_create(const char* p_name, uint32_t init_count, uint32_t max_count)
+{
+    return (htd_sem_t*)SDL_CreateSemaphore(init_count);
+}
+// @brief 删除信号量
+bool htd_sem_destroy(htd_sem_t* sem)
+{
+    SDL_DestroySemaphore(sem);
+    return 1;
+}
+// @brief 查看信号量(减一); 
+bool htd_sem_take(htd_sem_t* sem, uint32_t wait_ms)
+{
+    return 0 == SDL_SemWaitTimeout(sem, wait_ms);
+}
+// @brief 设置信号量(加一)
+bool htd_sem_give(htd_sem_t* sem)
+{
+    return SDL_SemPost(sem) == 0;
+}
+// @brief 设置信号量(加-)
+bool htd_sem_give_fisr(htd_sem_t* sem)
+{
+    return htd_sem_give(sem);
+}
+// @brief 重置信号量，信号量重置为0
+void htd_sem_reset(htd_sem_t* sem)
+{
+    while (SDL_SemTryWait(sem) == 0);
+}
+
+
+
+/////////////////////////////////信号量锁/////////////////////////////////////
+// @brief 创建信号量锁
+htd_sem_lock_t* htd_sem_lock_create(const char* p_name)
+{
+    return (htd_sem_lock_t*)SDL_CreateSemaphore(1);
+}
+// @brief 销毁信号量锁
+void htd_sem_lock_destroy(htd_sem_lock_t* p_sem_lock)
+{
+    SDL_DestroySemaphore(p_sem_lock);
+}
+// @brief 加锁(-1)
+void htd_sem_lock(htd_sem_lock_t* p_sem_lock)
+{
+    SDL_SemWait(p_sem_lock);
+}
+// @brief 解锁(+1)
+void htd_sem_unlock(htd_sem_lock_t* p_sem_lock)
+{
+    SDL_SemPost(p_sem_lock);
+}
+
+
+
+/////////////////////////////////互斥锁/////////////////////////////////////
+// @brief 创建互斥锁
+htd_mutex_lock_t* htd_mutex_lock_create(const char* p_name)
+{
+    return (htd_mutex_lock_t*)SDL_CreateMutex();
+}
+// @brief 销毁锁
+void htd_mutex_lock_destroy(htd_mutex_lock_t* p_lock)
+{
+    SDL_DestroyMutex(p_lock);
+}
+// @brief 加锁
+void htd_mutex_lock(htd_mutex_lock_t* p_lock)
+{
+    SDL_LockMutex(p_lock);
+}
+// @brief 解锁
+void htd_mutex_unlock(htd_mutex_lock_t* p_lock)
+{
+    SDL_UnlockMutex(p_lock);
+}
+
+
 
 
 

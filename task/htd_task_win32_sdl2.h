@@ -91,63 +91,33 @@ void* htd_timer_param_get(void* param);
 typedef SDL_sem htd_sem_t;
 
 // @brief 创建信号量
-__STATIC_INLINE htd_sem_t* htd_sem_create(const char* p_name, uint32_t init_count, uint32_t max_count)
-{
-    return (htd_sem_t*)SDL_CreateSemaphore(init_count);
-}
+htd_sem_t* htd_sem_create(const char* p_name, uint32_t init_count, uint32_t max_count);
 // @brief 删除信号量
-__STATIC_INLINE bool htd_sem_destroy(htd_sem_t* sem)
-{
-    SDL_DestroySemaphore(sem);
-    return 1;
-}
+bool htd_sem_destroy(htd_sem_t* sem);
 // @brief 查看信号量(减一); 
-__STATIC_INLINE bool htd_sem_take(htd_sem_t* sem, uint32_t wait_ms)
-{
-    return 0 == SDL_SemWaitTimeout(sem, wait_ms);
-}
+bool htd_sem_take(htd_sem_t* sem, uint32_t wait_ms);
 // @brief 设置信号量(加一)
-__STATIC_INLINE bool htd_sem_give(htd_sem_t* sem)
-{
-    return SDL_SemPost(sem) == 0;
-}
+bool htd_sem_give(htd_sem_t* sem);
 // @brief 设置信号量(加-)
-__STATIC_INLINE bool htd_sem_give_fisr(htd_sem_t* sem)
-{
-    return htd_sem_give(sem);
-}
+bool htd_sem_give_fisr(htd_sem_t* sem);
 // @brief 重置信号量，信号量重置为0
-__STATIC_INLINE void htd_sem_reset(htd_sem_t* sem)
-{
-    while (SDL_SemTryWait(sem) == 0);
-}
+void htd_sem_reset(htd_sem_t* sem);
+
 
 
 
 /////////////////////////////////信号量锁/////////////////////////////////////
 typedef SDL_sem htd_sem_lock_t;
 
-
 // @brief 创建信号量锁
-__STATIC_INLINE htd_sem_lock_t* htd_sem_lock_create(const char* p_name)
-{
-    return (htd_sem_lock_t*)SDL_CreateSemaphore(1);
-}
+htd_sem_lock_t* htd_sem_lock_create(const char* p_name);
 // @brief 销毁信号量锁
-__STATIC_INLINE void htd_sem_lock_destroy(htd_sem_lock_t* p_sem_lock)
-{
-    SDL_DestroySemaphore(p_sem_lock);
-}
+void htd_sem_lock_destroy(htd_sem_lock_t* p_sem_lock);
 // @brief 加锁(-1)
-__STATIC_INLINE void htd_sem_lock(htd_sem_lock_t* p_sem_lock)
-{
-    SDL_SemWait(p_sem_lock);
-}
+void htd_sem_lock(htd_sem_lock_t* p_sem_lock);
 // @brief 解锁(+1)
-__STATIC_INLINE void htd_sem_unlock(htd_sem_lock_t* p_sem_lock)
-{
-    SDL_SemPost(p_sem_lock);
-}
+void htd_sem_unlock(htd_sem_lock_t* p_sem_lock);
+
 
 
 
@@ -155,25 +125,14 @@ __STATIC_INLINE void htd_sem_unlock(htd_sem_lock_t* p_sem_lock)
 typedef SDL_mutex htd_mutex_lock_t;
 
 // @brief 创建互斥锁
-__STATIC_INLINE htd_mutex_lock_t* htd_mutex_lock_create(const char* p_name)
-{
-    return (htd_mutex_lock_t*)SDL_CreateMutex();
-}
+htd_mutex_lock_t* htd_mutex_lock_create(const char* p_name);
 // @brief 销毁锁
-__STATIC_INLINE void htd_mutex_lock_destroy(htd_mutex_lock_t* p_lock)
-{
-    SDL_DestroyMutex(p_lock);
-}
+void htd_mutex_lock_destroy(htd_mutex_lock_t* p_lock);
 // @brief 加锁
-__STATIC_INLINE void htd_mutex_lock(htd_mutex_lock_t* p_lock)
-{
-    SDL_LockMutex(p_lock);
-}
+void htd_mutex_lock(htd_mutex_lock_t* p_lock);
 // @brief 解锁
-__STATIC_INLINE void htd_mutex_unlock(htd_mutex_lock_t* p_lock)
-{
-    SDL_UnlockMutex(p_lock);
-}
+void htd_mutex_unlock(htd_mutex_lock_t* p_lock);
+
 
 
 

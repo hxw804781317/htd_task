@@ -76,6 +76,26 @@ typedef struct {
     htd_timer_ctrl_t* timer_id;
 } timer_param_t;
 
+// @brief 创建定时器
+// @return 成功返回定时器操作句柄，失败返回NULL
+void* htd_timer_create(const char* name, unsigned int ms, bool is_repeat, void (*timer_handler_cb)(void*), void* param);
+// @brief 销毁定时器
+void htd_timer_destroy(void* handle);
+// @brief 启动定时器
+// @return 成功返回0，失败返回-1
+int htd_timer_start(void *handle);
+// @brief 重启定时器
+void htd_timer_restart(void *handle, unsigned int ms);
+// @brief 暂停定时器
+// @return 成功返回0，失败返回-1
+void htd_timer_stop(void *handle);
+// @brief 删除定时器
+void htd_timer_delete(void* handle);
+// @brief 判断定时器是否激活
+bool htd_timer_is_active(void* handle);
+// @brief 获取软件定时器参数
+// @param param 为定时器回调函数的参数
+void* htd_timer_param_get(void* param);
 
 
 /**
@@ -93,185 +113,51 @@ void freertos_timer_register(TimerHandle_t handle);
 void freertos_timer_unregister(TimerHandle_t handle);
 
 
-// @brief 创建定时器
-// @return 成功返回定时器操作句柄，失败返回NULL
-void* htd_timer_create(const char* name, unsigned int ms, bool is_repeat, void (*timer_handler_cb)(void*), void* param);
-// @brief 销毁定时器
-void htd_timer_destroy(void* handle);
-
-
-// @brief 启动定时器
-// @return 成功返回0，失败返回-1
-__STATIC_INLINE int htd_timer_start(void *handle)
-{
-    if (xTimerStart((htd_timer_ctrl_t*)handle, 0)) {
-        return 0;
-    }
-    return -1;
-}
-// @brief 重启定时器
-__STATIC_INLINE void htd_timer_restart(void *handle, unsigned int ms)
-{
-    xTimerStart((htd_timer_ctrl_t*)handle, ms2tick(ms));
-}
-// @brief 暂停定时器
-// @return 成功返回0，失败返回-1
-__STATIC_INLINE void htd_timer_stop(void *handle)
-{
-    xTimerStop((htd_timer_ctrl_t*)handle, 0);
-}
-// @brief 删除定时器
-__STATIC_INLINE void htd_timer_delete(void* handle)
-{
-    htd_timer_destroy(handle);
-}
-// @brief 判断定时器是否激活
-__STATIC_INLINE bool htd_timer_is_active(void* handle)
-{
-    return xTimerIsTimerActive((htd_timer_ctrl_t*)handle);
-    //return false;
-}
-// @brief 获取软件定时器参数
-// @param param 为定时器回调函数的参数
-__STATIC_INLINE void* htd_timer_param_get(void* param)
-{
-    return param;
-}
-
-
 
 
 
 /////////////////////////////////信号量/////////////////////////////////////
 typedef StaticSemaphore_t htd_sem_t;
-
-// @brief 初始化信号量
-__STATIC_INLINE int32_t htd_sem_init(htd_sem_t * sem, const char * p_name, uint32_t init_count, uint32_t max_count)
-{
-    htd_sem_t* p_ptr = (htd_sem_t*)xSemaphoreCreateBinaryStatic(sem);
-    return ((p_ptr != NULL && p_ptr == sem) ? true : false);
-}
-// @brief 去初始化信号量
-__STATIC_INLINE int32_t htd_sem_deinit(htd_sem_t * sem)
-{
-    vSemaphoreDelete(sem);
-    return 0;
-}
 // @brief 创建信号量
-__STATIC_INLINE htd_sem_t* htd_sem_create(const char* p_name, uint32_t init_count, uint32_t max_count)
-{
-    //return (htd_sem_t*)xSemaphoreCreateCounting(max_count, init_count);
-    return (htd_sem_t*)xSemaphoreCreateBinary();
-}
+htd_sem_t* htd_sem_create(const char* p_name, uint32_t init_count, uint32_t max_count);
 // @brief 删除信号量
-__STATIC_INLINE bool htd_sem_destroy(htd_sem_t* sem)
-{
-    vSemaphoreDelete(sem);
-    return 1;
-}
+bool htd_sem_destroy(htd_sem_t* sem);
 // @brief 查看信号量(减一); 
-__STATIC_INLINE bool htd_sem_take(htd_sem_t* sem, uint32_t wait_ms)
-{
-    wait_ms = ((wait_ms == 0xffffffff) ? portMAX_DELAY : pdMS_TO_TICKS(wait_ms));
-    return xSemaphoreTake((QueueHandle_t)sem, wait_ms);
-}
+bool htd_sem_take(htd_sem_t* sem, uint32_t wait_ms);
 // @brief 设置信号量(加一)
-__STATIC_INLINE bool htd_sem_give(htd_sem_t* sem)
-{
-    return xSemaphoreGive((QueueHandle_t)sem);
-}
+bool htd_sem_give(htd_sem_t* sem);
 // @brief 设置信号量(加-)
-__STATIC_INLINE bool htd_sem_give_fisr(htd_sem_t* sem)
-{
-    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-    // 从中断中释放信号量
-    if (xSemaphoreGiveFromISR((QueueHandle_t)sem, &xHigherPriorityTaskWoken) == pdTRUE) {
-        // 如果释放信号量导致一个高优先级任务就绪，则请求上下文切换
-        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-    }
-    return true;
-}
+bool htd_sem_give_fisr(htd_sem_t* sem);
 // @brief 重置信号量
-__STATIC_INLINE void htd_sem_reset(htd_sem_t* sem)
-{
-    while (xSemaphoreTake((QueueHandle_t)sem, 0) == pdTRUE);
-}
+void htd_sem_reset(htd_sem_t* sem);
+
 
 
 
 /////////////////////////////////信号量锁/////////////////////////////////////
 typedef StaticSemaphore_t htd_sem_lock_t;
-
-// @brief 初始化信号量的锁
-__STATIC_INLINE bool htd_sem_lock_init(htd_sem_lock_t* p_sem_lock, const char* p_name)
-{
-    htd_sem_lock_t* p_ptr = (htd_sem_lock_t*)xSemaphoreCreateMutexStatic(p_sem_lock);
-    return ((p_ptr != NULL && p_ptr == p_sem_lock) ? true : false);
-}
-// @brief 剥离信号量的锁
-__STATIC_INLINE int32_t htd_sem_lock_deinit(htd_sem_lock_t *p_sem_lock)
-{
-    vSemaphoreDelete(p_sem_lock);
-    return 0;
-}
 // @brief 创建信号量锁
-__STATIC_INLINE htd_sem_lock_t* htd_sem_lock_create(const char* p_name)
-{
-    return (htd_sem_lock_t*)xSemaphoreCreateMutex();
-}
+htd_sem_lock_t* htd_sem_lock_create(const char* p_name);
 // @brief 销毁信号量锁
-__STATIC_INLINE void htd_sem_lock_destroy(htd_sem_lock_t* p_sem_lock)
-{
-    vSemaphoreDelete(p_sem_lock);
-}
+void htd_sem_lock_destroy(htd_sem_lock_t* p_sem_lock);
 // @brief 加锁(-1)
-__STATIC_INLINE void htd_sem_lock(htd_sem_lock_t* p_sem_lock)
-{
-    xSemaphoreTake((QueueHandle_t)p_sem_lock, portMAX_DELAY);
-}
+void htd_sem_lock(htd_sem_lock_t* p_sem_lock);
 // @brief 解锁(+1)
-__STATIC_INLINE void htd_sem_unlock(htd_sem_lock_t* p_sem_lock)
-{
-    xSemaphoreGive((QueueHandle_t)p_sem_lock);
-}
+void htd_sem_unlock(htd_sem_lock_t* p_sem_lock);
+
 
 
 
 /////////////////////////////////互斥锁/////////////////////////////////////
 typedef StaticSemaphore_t htd_mutex_lock_t;
-// @brief 初始化互斥锁
-__STATIC_INLINE bool htd_mutex_lock_init(htd_mutex_lock_t* p_lock, const char* p_name)
-{
-    htd_mutex_lock_t* p_ptr = (htd_mutex_lock_t*)xSemaphoreCreateMutexStatic(p_lock);
-    return ((p_ptr != NULL && p_ptr == p_lock) ? true : false);
-}
-// @brief 去初始化互斥锁
-__STATIC_INLINE int32_t htd_mutex_lock_deinit(htd_mutex_lock_t* p_lock)
-{
-    vSemaphoreDelete(p_lock);
-    return 0;
-}
 // @brief 创建互斥锁
-__STATIC_INLINE htd_mutex_lock_t* htd_mutex_lock_create(const char* p_name)
-{
-    return (htd_mutex_lock_t*)xSemaphoreCreateMutex();
-}
+htd_mutex_lock_t* htd_mutex_lock_create(const char* p_name);
 // @brief 销毁锁
-__STATIC_INLINE void htd_mutex_lock_destroy(htd_mutex_lock_t* p_lock)
-{
-    vSemaphoreDelete(p_lock);
-}
+void htd_mutex_lock_destroy(htd_mutex_lock_t* p_lock);
 // @brief 加锁
-__STATIC_INLINE void htd_mutex_lock(htd_mutex_lock_t* p_lock)
-{
-    int32_t ret = xSemaphoreTake((QueueHandle_t)p_lock, portMAX_DELAY);
-    ASSERT(ret == pdTRUE);
-}
+void htd_mutex_lock(htd_mutex_lock_t* p_lock);
 // @brief 解锁
-__STATIC_INLINE void htd_mutex_unlock(htd_mutex_lock_t* p_lock)
-{
-    xSemaphoreGive((QueueHandle_t)p_lock);
-}
+void htd_mutex_unlock(htd_mutex_lock_t* p_lock);
 
 
 

@@ -103,7 +103,7 @@ static void segger_rtt_write_handle(void const * p_user_ctx, char const * p_str,
 }
 
 // @brief segger-rtt 打印输出
-int32_t htd_segger_rtt_print(const char *fmt, ...)
+int32_t htd_print(const char *fmt, ...)
 {
     uint32_t buff_len;
     char buff[64];

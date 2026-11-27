@@ -195,8 +195,6 @@ def PrepareBuilding(env, root_directory, tag='v'):
         win32_spawn = Win32Spawn()
         win32_spawn.env = env
         env['SPAWN'] = win32_spawn.spawn
-
-    if env['PLATFORM'] == 'win32':
         os.environ['PATH'] = config.EXEC_PATH + ";" + os.environ['PATH']
     else:
         os.environ['PATH'] = config.EXEC_PATH + ":" + os.environ['PATH']
@@ -272,7 +270,7 @@ def PrepareBuilding(env, root_directory, tag='v'):
             LINKCOMSTR = 'LINK $TARGET'
         )
     # fix the linker for C++
-    if GetDepend('RT_USING_CPLUSPLUS'):
+    if GetDepend('HTD_USING_CPLUSPLUS'):
         if env['LINK'].find('gcc') != -1:
             env['LINK'] = env['LINK'].replace('gcc', 'g++')
 
