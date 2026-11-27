@@ -8,9 +8,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif /*__cplusplus*/
+
 #if defined(HTD_VFS_USING_POSIX)
-
-
 // @brief 打开函数，成功返回文件描述符，失败返回-1
 int open(const char *filepath, int flags, ...);
 // @brief 创建函数，成功返回文件描述符，失败返回-1

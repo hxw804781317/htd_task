@@ -1,0 +1,25 @@
+from building import *
+import os
+
+cwd = GetCurrentDir()
+objs = []
+
+inc = [cwd]
+inc_file = os.path.join(cwd, 'bsp_inc.txt')
+if os.path.isfile(inc_file):
+    with open(inc_file, 'r', encoding='utf-8') as f:
+        inc += [line.strip() for line in f
+                if line.strip() and not line.strip().startswith('#')]
+else:
+    print('warning: %s not found, run scons again' % inc_file)
+
+src = []
+src += Glob('./*.c')
+objs = DefineGroup('Applications', src, depend = [''], CPPPATH = inc)
+
+list = os.listdir(cwd)
+for d in list:
+    path = os.path.join(cwd, d)
+    if os.path.isfile(os.path.join(path, 'SConscript')):
+        objs = objs + SConscript(os.path.join(d, 'SConscript'))
+Return('objs')

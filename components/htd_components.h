@@ -9,6 +9,10 @@
 extern "C" {
 #endif /*__cplusplus*/
 
+#ifdef HTD_ELFDL_ENABLE
+    #include "htd_elfdl_process.h"
+#endif
+
 #ifdef HTD_CONSOLE_ENABLE
     #include "htd_console_process.h"
 #endif

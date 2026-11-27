@@ -5,4 +5,5 @@ menu "components config"
     rsource "./htd_led/Kconfig"
     rsource "./htd_flash/Kconfig"
     rsource "./htd_vfs/Kconfig"
+	rsource "./htd_elfdl/Kconfig"
 endmenu

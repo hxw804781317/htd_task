@@ -213,10 +213,13 @@ extern "C" {
 #else
     typedef int32_t htd_vfs_off_t;
 #endif
-#ifndef ARCH_CPU_64BIT
-    typedef int32_t ssize_t;
-#else
-    typedef int64_t ssize_t;
+
+#if !defined(__GNUC__)
+    #ifndef ARCH_CPU_64BIT
+        typedef int32_t ssize_t;
+    #else
+        typedef int64_t ssize_t;
+    #endif
 #endif
 
 typedef uint32_t vfs_addr_t;

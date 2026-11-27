@@ -1,0 +1,17 @@
+menuconfig HTD_ELFDL_ENABLE
+    bool "elf dynamic load enable."
+    select HTD_VFS_ENABLE
+    default n
+    
+if HTD_ELFDL_ENABLE 
+    choice
+        prompt "select load mode"
+            default ELFDL_LOAD_IN_SIMULATE
+        config ELFDL_LOAD_IN_SIMULATE
+            bool "Load Simulate"
+        config ELFDL_LOAD_IN_RAM
+            bool "Load RAM."
+        config ELFDL_LOAD_IN_XIP
+            bool "Load XIP."
+    endchoice
+endif

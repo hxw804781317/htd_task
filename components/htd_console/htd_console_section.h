@@ -124,10 +124,10 @@ extern "C" {
 
 #elif defined(_MSC_VER)
     #define HTD_SECTION_DEF(section_name, data_type)                                \
-        HTD_SECTION(STRINGIFY(CONCAT_2(section_name,$0)))                           \
-        data_type CONCAT_2(section_name, _start);                                   \
-        HTD_SECTION(STRINGIFY(CONCAT_2(section_name,$2)))                           \
-        data_type CONCAT_2(section_name, _end)
+        HTD_SECTION(CONCAT_2(section_name,$0))                                      \
+        data_type CONCAT_2(section_name, _start) = {0};                             \
+        HTD_SECTION(CONCAT_2(section_name,$2))                                      \
+        data_type CONCAT_2(section_name, _end) = {0}
 #endif
 
 
@@ -138,7 +138,7 @@ extern "C" {
 #elif defined(__ICCARM__)
     #define HTD_SECTION_ITEM_REGISTER(section_name, section_var) __root section_var @ STRINGIFY(section_name)
 #elif defined(_MSC_VER)
-    #define HTD_SECTION_ITEM_REGISTER(section_name, section_var)  HTD_SECTION(STRINGIFY(CONCAT_2(section_name,$1)))  section_var
+    #define HTD_SECTION_ITEM_REGISTER(section_name, section_var)  HTD_SECTION(CONCAT_2(section_name,$1))  section_var
 #endif
 
 

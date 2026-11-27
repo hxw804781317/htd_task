@@ -1,0 +1,15 @@
+import os
+from building import *
+
+# get current dir path
+cwd = GetCurrentDir()
+objs = []
+
+# init src and inc vars
+src = []
+inc = [cwd]
+
+src += Glob('./*.c')
+src += Glob('./arch/*.c')
+objs = DefineGroup('htd_elfdl', src, depend = ['HTD_ELFDL_ENABLE'], CPPPATH = inc, LOCAL_CCFLAGS = '')         
+Return('objs')

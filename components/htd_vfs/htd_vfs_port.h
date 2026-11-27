@@ -3,7 +3,10 @@
 #ifndef _HTD_VFS_PORT_H_
 #define _HTD_VFS_PORT_H_
 
+// 外部头文件
 #include "htd_task.h"
+
+// 本地头文件
 #include "htd_vfs_common.h"
 #include "htd_vfs_section.h"
 #include "htd_vfs_slist.h"
@@ -49,10 +52,9 @@ extern "C" {
     #define htd_free(p)                 free(p)
 #endif 
 
+// @brief 对接外部打印接口
+extern int32_t htd_print(const char *fmt, ...);
 
-#ifndef htd_print
-    #define htd_print(fmt, ...)         do {printf(fmt, ##__VA_ARGS__);}while(0)
-#endif 
 #ifndef print_debug
     #define print_debug(...)            
 #endif
@@ -89,7 +91,6 @@ __STATIC_INLINE void vfs_mutex_unlock(vfs_mutex_lock_t* p_lock)
 {
     htd_mutex_unlock(p_lock);
 }
-
 
 
 

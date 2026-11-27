@@ -1,0 +1,24 @@
+import os
+import sys
+
+# 母工程目录(相对本工程根), 换母工程只改这一行
+BSP_ROOT = os.path.normpath(os.getcwd() + '/../../stm32xxx/stm32f411xx')
+
+# 根目录
+if os.getenv('OS_ROOT'):
+    OS_ROOT = os.getenv('OS_ROOT')
+else:
+    OS_ROOT = os.path.normpath(os.getcwd() + '/../../../')
+
+# 加载模块构建脚本
+sys.path = sys.path + [os.path.join(os.getcwd(), '..', 'tools')]
+from ua import BuildApplication, BuildLibrary, EnsureBspInc
+
+# 清空 SCons 默认探头, 避免把系统 gcc 探进来
+DefaultEnvironment(tools=[])
+# 先把母工程的头文件路径导出来(bsp_inc.txt 缺失或母工程有改动时自动跑)
+EnsureBspInc(BSP_ROOT)
+
+# 构建
+lib = os.path.basename(os.getcwd())
+BuildLibrary(lib + '.so', 'SConscript', BSP_ROOT)

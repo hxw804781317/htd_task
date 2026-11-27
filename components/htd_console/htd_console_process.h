@@ -88,11 +88,15 @@ typedef struct {
 int32_t htd_console_process_init(htd_csl_write_handle_t write_handle);
 // @brief 控制台输入字符函数
 void htd_console_process_loop(uint8_t ch);
+
+
 // @brief 控制台打印, 通过初始化输入的write_handle输出数据
-int32_t htd_console_print(const char *fmt, ...);
+int32_t htd_print(const char *fmt, ...);
 // @brief 控制台打印输出，返回打印的字符长度
 uint32_t htd_console_fprintf(char const *p_fmt, va_list *p_args);
 
+// 
+#define htd_console_print(fmt, ...)                htd_print(fmt, ##__VA_ARGS__)
 
 
 #ifdef __cplusplus
