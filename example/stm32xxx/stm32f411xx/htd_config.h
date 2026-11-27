@@ -44,7 +44,35 @@
 /* HTD_LED_SUPPORT_CHARLIE is not set */
 /* HTD_LED_SUPPORT_MATRIX is not set */
 /* HTD_LED_USE_HW_TIMER is not set */
+/* HTD_FLASH_UTILITY_BOX_ENABLE is not set */
+#define HTD_VFS_ENABLE 1
+/* HTD_VFS_USING_NORFLASH_DEV is not set */
+/* HTD_VFS_USING_NANDFLASH_DEV is not set */
+/* HTD_VFS_USING_SDCARD_DEV is not set */
+#define HTD_VFS_USING_POSIX 1
+#define HTD_VFS_FD_MAX 16
+/* HTD_VFS_USING_ROMFS is not set */
+/* HTD_VFS_USING_RAMFS is not set */
+/* HTD_VFS_USING_SPIFFS is not set */
+/* HTD_VFS_USING_ELM_FATFS is not set */
+/* HTD_VFS_USING_LITTLE_FS is not set */
+#define HTD_ELFDL_ENABLE 1
+#define ELFDL_LOAD_IN_SIMULATE 1
+/* ELFDL_LOAD_IN_RAM is not set */
+/* ELFDL_LOAD_IN_XIP is not set */
 /* end of components config */
+
+/* Hardware Drivers Config */
+/* HTD_USING_NANDFLASH is not set */
+/* HTD_USING_NORFLASH is not set */
+/* HTD_USING_EEPROM is not set */
+/* HTD_SENSOR_USING_BAROMETER is not set */
+/* HTD_SENSOR_USING_GSENSOR is not set */
+/* HTD_SENSOR_USING_6AXIS is not set */
+/* HTD_USING_PIXEL_LED is not set */
+/* HTD_USING_SDCARD is not set */
+/* HTD_USING_NETWORK_SENSOR is not set */
+/* end of Hardware Drivers Config */
 
 /* external config */
 /* HTD_LIB_USE_EASYTLV is not set */

@@ -2,5 +2,4 @@
 *.so
 *.edl
 *.txt
-__pycache__
-.sconsign.dblite
+*.mo

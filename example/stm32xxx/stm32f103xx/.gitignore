@@ -1,4 +1,3 @@
-__pycache__
 build
 Debug
 GPATH
@@ -25,5 +24,4 @@ cconfig.h
 /JLinkSettings.ini
 /JLinkLog.txt
 /bin
-/.sconsign.dblite
 /version.h

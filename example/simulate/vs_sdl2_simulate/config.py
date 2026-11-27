@@ -48,7 +48,8 @@ if BUILD == 'debug':
 else:
     CFLAGS += ' /MT'
     LFLAGS += ''
-CFLAGS += ' /Zi /Od /W 3 /WL /D_Win32'
+# /utf-8：源码按 UTF-8 解析、执行字符集也用 UTF-8
+CFLAGS += ' /Zi /Od /W 3 /WL /D_Win32 /utf-8'
 LFLAGS += ' /SUBSYSTEM:CONSOLE /MACHINE:X86 /INCREMENTAL:NO'
 CPATH = ''
 LPATH = ''

@@ -42,7 +42,6 @@ Backup*
 UpgradeLog*
 *.filters
 .vs
-__pycache__
 build
 .gdbinit
 disk

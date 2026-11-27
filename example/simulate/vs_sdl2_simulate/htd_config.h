@@ -67,6 +67,10 @@
 /* end of elm-chan's FatFs, Generic FAT Filesystem Module */
 
 /* HTD_VFS_USING_LITTLE_FS is not set */
+#define HTD_ELFDL_ENABLE 1
+#define ELFDL_LOAD_IN_SIMULATE 1
+/* ELFDL_LOAD_IN_RAM is not set */
+/* ELFDL_LOAD_IN_XIP is not set */
 /* end of components config */
 
 /* Hardware Drivers Config */

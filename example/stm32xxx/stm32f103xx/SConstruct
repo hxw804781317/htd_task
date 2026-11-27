@@ -21,6 +21,15 @@ except Exception as e:
 #固件名字
 TARGET = config.TARGET
 
+# 使用keil工具链进行构建时，不检测版本号
+import SCons.Tool.gcc as _scons_gcc
+def _htd_detect_version(env, cc):
+    if config.PLATFORM in ('armcc', 'armclang'):
+        return None
+    return _scons_gcc.detect_version(env, cc)
+_scons_gcc.detect_version = _htd_detect_version
+
+
 # 清空 SCons 默认自带工具链，避免系统 gcc 干扰
 DefaultEnvironment(tools=[]);
 # 创建编译环境对象`env`，编译器全部从`config.py`读取
