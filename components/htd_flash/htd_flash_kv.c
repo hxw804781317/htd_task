@@ -14,10 +14,13 @@ typedef struct {
     uint32_t len:12;            // 
     uint32_t index;             // 计数值，越大越新
 } flashkv_head_t;
-static const uint32_t m_flashkv_page_swap_tag = 0xb5a6a7a1;
-static const uint32_t m_flashkv_init_flag = 0x9f7e53c6;
+#define FLASHKV_ALIGN_UP(n, align)      (((n) + (align) - 1) & ~((align) - 1))
+#define FLASHKV_ALIGN(n)                FLASHKV_ALIGN_UP(n, sizeof(flashkv_head_t))
+static const uint32_t m_flashkv_page_swap_tag = 0xb5a6a7a5;
+static const uint32_t m_flashkv_init_flag = 0x9f7e53c7;
 static const uint16_t m_flashkv_invalid_key = 0xfff;
 static const uint16_t m_flashkv_invalid_addr = 0xffff;
+static const uint32_t m_flashkv_index_max = 0xfffffff8;
 
 
 //////////////////////////////////////////////////////////////////////
@@ -109,7 +112,7 @@ static int32_t htd_flashkv_write_data(flashkv_t* p_fkv, uint32_t addr, uint16_t 
     uint8_t* p_buff = NULL;
     int32_t buff_len;
 
-    p_buff = htd_malloc(ALIGN_UP(data_len, 4) + sizeof(flashkv_head_t));
+    p_buff = htd_malloc(FLASHKV_ALIGN(data_len) + sizeof(flashkv_head_t));
     ASSERT(p_buff);
     
     p_hdr = (flashkv_head_t*)p_buff;
@@ -122,7 +125,7 @@ static int32_t htd_flashkv_write_data(flashkv_t* p_fkv, uint32_t addr, uint16_t 
     if (p_data && data_len > 0) {
         p_hdr->checksum = flashkv_checksum_get(p_data, data_len);
         htd_memcpy(&p_buff[buff_len], p_data, data_len);
-        buff_len += ALIGN_UP(data_len, 4);
+        buff_len += FLASHKV_ALIGN(data_len);
     }
     // 写入数据
     ret = htd_flash_write(p_fkv->p_flash, addr, p_buff, buff_len);
@@ -206,7 +209,7 @@ void flashkv_gc_section(flashkv_t* p_fkv)
 
     const flash_handle_t* p_flash = p_fkv->p_flash;
     dst_addr = p_fkv->swap_addr;
-    dst_addr += (sizeof(flashkv_head_t) + 4);
+    dst_addr += (sizeof(flashkv_head_t) + FLASHKV_ALIGN(1));
     htd_flash_read(p_flash, p_fkv->swap_addr, p_hdr, sizeof(flashkv_head_t));
     swap_index = p_hdr->index;
 
@@ -229,7 +232,7 @@ void flashkv_gc_section(flashkv_t* p_fkv)
         // 读取头部信息和数据
         htd_memset(p_hdr, 0xff, sizeof(flashkv_head_t));
         htd_flash_read(p_flash, addr, p_hdr, sizeof(flashkv_head_t));
-        align_len = ALIGN_UP(p_hdr->len, 4);
+        align_len = FLASHKV_ALIGN(p_hdr->len);
         if (p_hdr->key != i) {
             print_error("gc: key=%d->%d", p_hdr->key, i);
             p_fkv->p_key_table[i] = m_flashkv_invalid_addr;            // 作废该条信息
@@ -363,7 +366,7 @@ uint32_t flashkv_swap_page_addr_find(flashkv_t* p_fkv, uint32_t data_start_addr)
         p_fkv->addr = p_fkv->p_cfg->start;
         p_fkv->swap_addr = p_fkv->p_cfg->start;
         flashkv_write_swap_page_flag(p_flash, 0, p_fkv->swap_addr);
-        p_fkv->addr = p_fkv->swap_addr + sizeof(flashkv_head_t) + 4;
+        p_fkv->addr = p_fkv->swap_addr + sizeof(flashkv_head_t) + FLASHKV_ALIGN(1);
         
         p_fkv->swap_addr = htd_flash_next_page_addr_get(p_fkv->p_cfg, p_flash, p_fkv->swap_addr);
         flashkv_write_swap_page_flag(p_flash, 1, p_fkv->swap_addr);
@@ -428,6 +431,7 @@ int32_t htd_flashkv_init(flashkv_t* p_fkv, const flash_config_t* p_cfg, key_tabl
             htd_memset(&hdr, 0xff, sizeof(flashkv_head_t));
             htd_flash_read(p_fkv->p_flash, start, &hdr, sizeof(flashkv_head_t));
             //print_debug("addr=%08x, len=%04d, key=%04d, index=%d, checksum=%d", start, hdr.len, hdr.key, hdr.index, hdr.checksum);
+            
             // 如果都是 0xff 说明已经结束
             if (htd_flash_mem_allof((uint8_t*)&hdr, 0xff, sizeof(flashkv_head_t))) {
                 print_warning("read finish. addr=%08x", start);
@@ -435,34 +439,43 @@ int32_t htd_flashkv_init(flashkv_t* p_fkv, const flash_config_t* p_cfg, key_tabl
             }
             
             //ASSERT(hdr.len <= FTL_KEY_VAL_MAX_LEN);     // 长度不能超过范围
-            if (hdr.len > FLASHKV_VAL_MAX_LEN) {
+            if (hdr.len > FLASHKV_VAL_MAX_LEN || hdr.index > m_flashkv_index_max) {
                 print_debug("len=%d->%d", hdr.len, FLASHKV_VAL_MAX_LEN);
-                start += sizeof(uint32_t);
+                start += FLASHKV_ALIGN(1);
                 p_fkv->addr = start;
                 continue;
             }
             
             // 跳过无效数据
-            align_len = ALIGN_UP(hdr.len, 4);
             if (hdr.key == m_flashkv_invalid_key) {
-                start += sizeof(flashkv_head_t);
+                start += FLASHKV_ALIGN(1);
                 p_fkv->addr = start;
-                print_warning("invalid data. align_len=%d", align_len);
+                print_warning("invalid data. ");
                 continue;
             }
             
+            // len==0 只有删除记录(checksum==0)才认
+            if (hdr.len == 0 && hdr.checksum != 0) {
+                print_warning("bad empty record. addr=%08x, key=%d, checksum=%02x", start, hdr.key, hdr.checksum);
+                start += FLASHKV_ALIGN(1);
+                p_fkv->addr = start;
+                continue;
+            }
+
             // 检验数据
+            align_len = FLASHKV_ALIGN(hdr.len);
             print_debug("align_len=%d, checksum=%d", align_len, hdr.checksum);
             if (align_len) {
                 htd_flash_read(p_fkv->p_flash, start + sizeof(flashkv_head_t), p_info, align_len);
                 checksum = flashkv_checksum_get(p_info, hdr.len);
                 if (hdr.checksum != checksum) {
                     print_warning("checksum failed. addr=%08x, key=%d, len=%d, checksum=%02x->%02x", start, hdr.key, hdr.len, hdr.checksum, checksum);
-                    start += 4;
+                    start += sizeof(flashkv_head_t) + align_len;
                     p_fkv->addr = start;
                     continue;
                 }
             }
+            
             // 记录内存地址
             if (hdr.key < p_fkv->key_count) {
                 print_debug("key=%03d, len=%3d, addr=%08x, index=%d->%d", hdr.key, hdr.len, start, hdr.index, index_table[hdr.key]);
@@ -471,6 +484,7 @@ int32_t htd_flashkv_init(flashkv_t* p_fkv, const flash_config_t* p_cfg, key_tabl
                     index_table[hdr.key] = hdr.index;
                 }
             }
+            
             //delay_ms(2);
             start += align_len + sizeof(flashkv_head_t);
             p_fkv->addr = start;
@@ -539,7 +553,7 @@ int32_t htd_flashkv_read(flashkv_t* p_fkv, uint16_t key, void* p_data, uint16_t 
         goto Return;
     }
     
-    align_len = ALIGN_UP(hdr.len, 4);
+    align_len = FLASHKV_ALIGN(hdr.len);
     if (align_len > FLASHKV_VAL_MAX_LEN) {
         ret = ERR_FLASH_INVALID_DATA;
         print_error("invalid data. align_len=%d->%d", align_len, FLASHKV_VAL_MAX_LEN);
@@ -635,7 +649,7 @@ int32_t htd_flashkv_write(flashkv_t* p_fkv, uint16_t key, const void* p_data, ui
 
     HTD_FLASH_MUTEX_LOCK(p_fkv->p_cfg);
     // 如果空间不够，进行碎片整理
-    align_len = ALIGN_UP(data_len, 4);
+    align_len = FLASHKV_ALIGN(data_len);
     int16_t page_count = flashkv_data_page_count_get(p_fkv->p_cfg, p_fkv->p_flash) - 1;
     while (page_count--) {
         if (flashkv_page_has_enough_space_to_write(p_fkv->p_flash, p_fkv->addr, align_len)) {
@@ -709,92 +723,6 @@ uint16_t htd_flashkv_nearest_key_find(flashkv_t* p_fkv, uint32_t addr, uint32_t*
     return index;
 }
 
-// @brief 碎片整理，将数据页的数据整理到交换页，再将数据转移回来
-void htd_flashkv_gc(flashkv_t* p_fkv)
-{
-    uint32_t remain_len;
-    uint32_t addr;
-    uint32_t dst_addr;
-    uint32_t i;
-    uint32_t swap_index;
-    uint32_t distance = 0;
-    flashkv_head_t *p_hdr;
-    uint8_t* p_info;
-    uint16_t align_len;
-
-    p_info = htd_malloc(sizeof(flashkv_head_t) + FLASHKV_VAL_MAX_LEN); 
-    ASSERT(p_info);
-    p_hdr = (flashkv_head_t*)p_info;
-
-    HTD_FLASH_MUTEX_LOCK(p_fkv->p_cfg);
-    const flash_handle_t* p_flash = p_fkv->p_flash;
-    dst_addr = p_fkv->swap_addr;
-    dst_addr += (sizeof(flashkv_head_t) + 4);
-    htd_flash_read(p_flash, p_fkv->swap_addr, p_hdr, sizeof(flashkv_head_t));
-    swap_index = p_hdr->index;
-
-    while (1) {
-        // 全整理，先整理最近的
-        i = htd_flashkv_nearest_key_find(p_fkv, p_fkv->swap_addr+p_flash->erase_unit-1, &distance);
-        if (i == m_flashkv_invalid_key) {
-            break;
-        }
-        
-        addr = flashkv_addr_decode(p_fkv->p_cfg->start, p_fkv->p_key_table[i]);
-        if (addr < p_fkv->p_cfg->start || addr > p_fkv->p_cfg->end) {
-            print_error("gc: addr=%08x, %08x->%08x", addr, p_fkv->p_cfg->start, p_fkv->p_cfg->end);
-            continue;
-        }
-        
-        // 读取头部信息和数据
-        htd_memset(p_hdr, 0xff, sizeof(flashkv_head_t));
-        htd_flash_read(p_flash, addr, p_hdr, sizeof(flashkv_head_t));
-        if (p_hdr->key != i) {
-            print_error("gc: key=%d->%d", p_hdr->key, i);
-            continue;
-        }
-        align_len = ALIGN_UP(p_hdr->len, 4);
-        if (align_len) {
-            htd_flash_read(p_flash, addr+sizeof(flashkv_head_t), &p_info[sizeof(flashkv_head_t)], align_len);
-        }
-        
-        // 判断dst_addr页是否足够写入
-        remain_len = flashkv_page_remain_len_get(p_flash, dst_addr);
-        if (IS_ERASE_ADDR(dst_addr, p_flash->erase_unit)) {
-           remain_len = 0;
-        }
-        if (remain_len < p_hdr->len + sizeof(flashkv_head_t)) {
-            if (remain_len >= sizeof(flashkv_head_t)) {
-                flashkv_write_invalid_data(p_fkv, dst_addr, remain_len - sizeof(flashkv_head_t));
-            }
-            // 擦除下一页
-            if (remain_len > 0) {
-                dst_addr = htd_flash_next_page_addr_get(p_fkv->p_cfg, p_flash, dst_addr);
-            }
-            htd_flash_erase(p_flash, dst_addr);
-            // 写入新的交换页序号
-            flashkv_write_swap_page_flag(p_flash, swap_index++, p_fkv->swap_addr);
-        }
-        
-        // 写入数据到新地址
-        print_debug("gc: gkey=%d, dst_addr=%08x, len=%d", i, dst_addr, p_hdr->len);
-        p_fkv->p_key_table[i] = flashkv_addr_encode(p_fkv->p_cfg->start, dst_addr);
-        htd_flash_write(p_flash, dst_addr, p_info, align_len+sizeof(flashkv_head_t));
-        dst_addr += (sizeof(flashkv_head_t) + align_len);
-    }
-    htd_free(p_info);
-
-    p_fkv->addr = dst_addr;
-    // 设置新的交换页地址
-    p_fkv->swap_addr = htd_flash_prev_page_addr_get(p_fkv->p_cfg, p_flash, p_fkv->swap_addr);
-    // 擦除新的交换页
-    htd_flash_erase(p_flash, p_fkv->swap_addr);
-    // 写入新的交换页序号
-    flashkv_write_swap_page_flag(p_flash, swap_index++, p_fkv->swap_addr);
-    htd_flash_sync(p_flash);
-    HTD_FLASH_MUTEX_UNLOCK(p_fkv->p_cfg);
-}
-
 // @brief 清除所有数据
 void htd_flashkv_clear(flashkv_t* p_fkv)
 {
@@ -812,7 +740,7 @@ void htd_flashkv_clear(flashkv_t* p_fkv)
     p_fkv->addr = p_fkv->p_cfg->start;
     p_fkv->swap_addr = p_fkv->p_cfg->start;
     flashkv_write_swap_page_flag(p_fkv->p_flash, 0, p_fkv->swap_addr);
-    p_fkv->addr = p_fkv->swap_addr + sizeof(flashkv_head_t) + 4;
+    p_fkv->addr = p_fkv->swap_addr + sizeof(flashkv_head_t) + FLASHKV_ALIGN(1);
     p_fkv->swap_addr = htd_flash_next_page_addr_get(p_fkv->p_cfg, p_fkv->p_flash, p_fkv->swap_addr);
     flashkv_write_swap_page_flag(p_fkv->p_flash, 1, p_fkv->swap_addr);
     // 其他页面全部作废
@@ -868,7 +796,7 @@ int32_t htd_flashkv_read_direct(flashkv_t* p_fkv, uint16_t key, void* p_data, ui
         print_error("it is a invalid data., rkey=%d->%d, addr=%08x", key, hdr.key, addr);
         return ERR_FLASH_INVALID_DATA;
     }
-    align_len = ALIGN_UP(hdr.len, 4);
+    align_len = FLASHKV_ALIGN(hdr.len);
     if (align_len > FLASHKV_VAL_MAX_LEN) {
         print_error("invalid data. align_len=%d->%d", align_len, FLASHKV_VAL_MAX_LEN);
         return ERR_FLASH_INVALID_DATA;

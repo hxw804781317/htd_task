@@ -23,6 +23,7 @@ typedef struct {
     uint16_t index;
     uint16_t var_len;                   // 最后参数大小
     uint32_t var_addr;                  // 最后写入的地址
+    uint32_t var_waddr;                 // 下次可写地址
     const flash_config_t* p_cfg;
     const flash_handle_t* p_flash;
 }flashvar_t;

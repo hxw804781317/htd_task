@@ -38,12 +38,12 @@ int32_t htd_flashkv_read(flashkv_t* p_fkv, uint16_t key, void* p_data, uint16_t 
 int32_t htd_flashkv_data_len_read(flashkv_t* p_fkv, uint16_t key);
 // @brief 写入数值
 int32_t htd_flashkv_write(flashkv_t* p_fkv, uint16_t key, const void* p_data, uint16_t data_len);
-// @brief 碎片整理
-void htd_flashkv_gc(flashkv_t* p_fkv);
 // @brief 清除所有数据
 void htd_flashkv_clear(flashkv_t* p_fkv);
 // @brief 删除某条数据
 void htd_flashkv_delete(flashkv_t* p_fkv, uint16_t key);
+
+
 // @brief 读取前面N个字节
 int32_t htd_flashkv_read_direct(flashkv_t* p_fkv, uint16_t key, void* p_data, uint16_t data_len);
 // @brief 获取存储的数据地址
