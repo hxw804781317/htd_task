@@ -1,0 +1,23 @@
+mainmenu "Configuration"
+config SOC_FAMILY_STM32
+    bool 
+    default n
+config SOC_SERIES_STM32F3
+    bool
+    default n
+config SOC_SERIES_STM32F303XX
+    bool
+    default n
+    
+config SOC_STM32F303XC
+    bool
+    select SOC_FAMILY_STM32
+    select SOC_SERIES_STM32F3
+    select SOC_SERIES_STM32F303XX
+    select ARCH_ARM_CORTEX_M4
+    select ARCH_ARM_CORTEX_FPU
+    default y
+
+rsource "../../../Kconfig"
+rsource "../../../mcu_sdk/stm32fxxx/stm32f303.Kconfig"
+
