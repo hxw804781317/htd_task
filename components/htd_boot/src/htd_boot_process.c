@@ -864,21 +864,21 @@ int boot_cmd(int argc, char **argv)
         print_error("Usage: %s full/fastlz/quicklz/swap/dump_a/dump_b", argv[0]);
         return 0;
     }
-    if (0 == memcmp(argv[1], "full", 5)) {
+    if (0 == htd_memcmp(argv[1], "full", 5)) {
         htd_boot_fw_full_make();
-    } else if (0 == memcmp(argv[1], "quicklz", 8)) {
+    } else if (0 == htd_memcmp(argv[1], "quicklz", 8)) {
         htd_boot_fw_compress_make(BOOT_UPDATE_TYPE_COMPRESS_QUICKLZ);
-    } else if (0 == memcmp(argv[1], "fastlz", 7)) {
+    } else if (0 == htd_memcmp(argv[1], "fastlz", 7)) {
         htd_boot_fw_compress_make(BOOT_UPDATE_TYPE_COMPRESS_FASTLZ);
-    } else if (0 == memcmp(argv[1], "swap", 5)) {
+    } else if (0 == htd_memcmp(argv[1], "swap", 5)) {
         htd_boot_process(NULL);
-    } else if (0 == memcmp(argv[1], "dump_a", 6)) {
+    } else if (0 == htd_memcmp(argv[1], "dump_a", 6)) {
         if (argc != 3) {
             print_error("Usage: %s dump_a file", argv[0]);
             return 0;
         }
         htd_boot_dump_data(true, argv[2]);
-    } else if (0 == memcmp(argv[1], "dump_b", 6)) {
+    } else if (0 == htd_memcmp(argv[1], "dump_b", 6)) {
         if (argc != 3) {
             print_error("Usage: %s dump_b file", argv[0]);
             return 0;

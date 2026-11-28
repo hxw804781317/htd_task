@@ -68,7 +68,7 @@ void htd_delay_ms(uint32_t ms)
 
 //////////////////////////////////////////////////////////////////////
 #if defined(SOC_SERIES_STM32F7) 
-static htd_heap_dev_t* m_drv_heap = NULL;
+static htd_memheap_dev_t* m_drv_heap = NULL;
 
 // @brief 申请内存
 void* htd_drv_malloc(uint32_t size)
@@ -94,7 +94,7 @@ void htd_drv_free(void* p_ptr)
 // @brief 初始化堆
 int32_t htd_drv_heap_init(void)
 {
-    m_drv_heap = htd_heap_ff_init((void*)RAMDTCM_BASE, RAMDTCM_SIZE);
+    m_drv_heap = htd_memheap_ff_init((void*)RAMDTCM_BASE, RAMDTCM_SIZE);
     ASSERT(m_drv_heap);
     return 0;
 }

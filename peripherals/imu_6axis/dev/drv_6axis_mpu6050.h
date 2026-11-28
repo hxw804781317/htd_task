@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #ifndef _DRV_6AXIS_MPU6050_H_
 #define _DRV_6AXIS_MPU6050_H_
 

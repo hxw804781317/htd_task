@@ -24,6 +24,7 @@ typedef struct {
 #define FLASHVAR_ALIGN(n)                        FLASHVAR_ALIGN_UP(n, sizeof(flashvar_head_t))
 #define FLASHVAR_MAGIC                           0x8a
 const static uint32_t m_flashvar_init_flag = 0x3535bcbc;
+const static uint32_t m_flashvar_index_max = 0xfffffff8;
 
 
 // @brief 内存页剩余多少字节
@@ -57,35 +58,81 @@ static bool flashvar_addr_assert(uint32_t start, uint32_t end, uint32_t erase_un
     return true;
 }
 
-// @brief 检查数据
-static void flashvar_data_check(boot_ftl_var_t* p_var)
+// @brief 从 addr 开始(按环形)找下一个空白槽位, 跳过残渣/已写记录
+static uint32_t flashvar_waddr_find(boot_flashvar_t* p_var, uint32_t addr)
+{
+    flashvar_head_t head;
+    const boot_flash_handle_t* p_flash = p_var->p_flash;
+    uint32_t guard = (p_var->end - p_var->start) / FLASHVAR_ALIGN(1) + 2;
+    uint32_t begin;
+
+    if (addr < p_var->start || addr >= p_var->end) {
+        addr = p_var->start;
+    }
+    begin = addr;
+    while (guard--) {
+        htd_memset(&head, 0xff, sizeof(flashvar_head_t));
+        boot_flash_read(p_flash, addr, (uint8_t*)&head, sizeof(flashvar_head_t));
+        if (head.magic == 0xff && head.len == 0xffff && head.crc == 0xff && head.index == 0xffffffff) {
+            return addr;
+        }
+        if (head.magic == FLASHVAR_MAGIC &&
+            head.len <= (BOOT_FLASHVAR_MAX_SIZE - sizeof(flashvar_head_t)) &&
+            head.index <= m_flashvar_index_max) {
+            addr += sizeof(flashvar_head_t) + FLASHVAR_ALIGN(head.len);
+        } else {
+            addr += FLASHVAR_ALIGN(1); 
+        }
+        if (addr >= p_var->end) {
+            addr = p_var->start;
+        }
+    }
+    // 整片写满: 从"起点所在页"的下一页(最旧的一页)开始, set 里会擦除
+    addr = ERASE_ADDR(begin, p_var->erase_unit) + p_var->erase_unit;
+    if (addr >= p_var->end) {
+        addr = p_var->start;
+    }
+    return addr;
+}
+
+// @brief 检查数据, 同时算出下次可写地址(从最新记录末尾往后找第一个空白)
+static void flashvar_data_check(boot_flashvar_t* p_var)
 {
     flashvar_head_t head;
     uint8_t data[BOOT_FLASHVAR_MAX_SIZE];
 
     // 获取最新的地址
     uint32_t addr = p_var->start;
+    uint32_t wend = FLASHVAR_INVALID_ADDR;                  // 最新记录的末尾
+    const boot_flash_handle_t* p_flash = p_var->p_flash;
     while (addr + sizeof(flashvar_head_t) < p_var->end) {
         // 先读取头部
         htd_memset(&head, 0xff, sizeof(flashvar_head_t));
-        boot_flash_read(p_var->p_flash, addr, (uint8_t*)&head, sizeof(flashvar_head_t));
+        boot_flash_read(p_flash, addr, (uint8_t*)&head, sizeof(flashvar_head_t));
         if (head.magic == 0xff && head.len == 0xffff && head.crc == 0xff && head.index == 0xffffffff) {
-            // 跳到下一页
-            addr = ERASE_ADDR(addr, p_var->erase_unit) + p_var->erase_unit;
+            if (IS_ERASE_ADDR(addr, p_var->erase_unit)) {
+                // 页首就是空白: 整页跳过
+                addr = ERASE_ADDR(addr, p_var->erase_unit) + p_var->erase_unit;
+            } else {
+                // 页内空洞(掉电残渣之后): 继续按步长往后扫, 不能跳页
+                addr += FLASHVAR_ALIGN(1);
+            }
             continue;
-        } 
-        if (head.magic != FLASHVAR_MAGIC || head.len > (BOOT_FLASHVAR_MAX_SIZE - sizeof(flashvar_head_t))) {
+        }
+        if (head.magic != FLASHVAR_MAGIC || 
+            head.len > (BOOT_FLASHVAR_MAX_SIZE - sizeof(flashvar_head_t)) ||
+            head.index > m_flashvar_index_max) {
             addr += FLASHVAR_ALIGN(1);
             continue;
         }
         
-        // 读取数据
-        htd_memset(data, 0xff, head.len);
-        boot_flash_read(p_var->p_flash, addr + sizeof(flashvar_head_t), data, head.len);
-        // 判断校验是否通过
+        // 读取数据(按 8 字节补齐读, 尾部多读几个 0xff 不影响 crc)
+        htd_memset(data, 0xff, FLASHVAR_ALIGN(head.len));
+        boot_flash_read(p_flash, addr + sizeof(flashvar_head_t), data, FLASHVAR_ALIGN(head.len));
         if (boot_checksum_get(data, head.len) != head.crc) {
-            print_error("ftl param checksum failed. addr=0x%08x, var_addr=0x%08x", addr, p_var->var_addr);
-            addr += FLASHVAR_ALIGN(1);
+            // 掉电写坏/写了一半的记录: 整条越过
+            print_debug("var checksum failed. addr=%08x, len=%d", addr, head.len);
+            addr += sizeof(flashvar_head_t) + FLASHVAR_ALIGN(head.len);
             continue;
         }
         // 判断序列号是否更大
@@ -93,22 +140,26 @@ static void flashvar_data_check(boot_ftl_var_t* p_var)
             p_var->index = head.index;
             p_var->var_addr = addr;
             p_var->var_len = head.len;
+            wend = addr + sizeof(flashvar_head_t) + FLASHVAR_ALIGN(head.len);
         }
         addr += (sizeof(flashvar_head_t) + FLASHVAR_ALIGN(head.len));
-        print_debug("index=%d->%d, addr=%08x, next_addr=%08x", head.index, p_var->index, p_var->var_addr, addr);
     }
-    
+
     // 未写入过数据
     if (p_var->var_addr == FLASHVAR_INVALID_ADDR) {
         p_var->var_addr = p_var->start;
         p_var->index = 0;
         p_var->var_len = 0;
-        boot_flash_erase(p_var->p_flash, p_var->start, p_var->erase_unit);
+        p_var->var_waddr = p_var->start;
+        boot_flash_erase(p_flash, p_var->var_addr, p_var->erase_unit);
+    } else {
+        // 从最新记录末尾开始找空白, 掉电残渣/已写记录整条越过(环形)
+        p_var->var_waddr = flashvar_waddr_find(p_var, wend);
     }
 }
 
 // @brief 初始化参数
-static int32_t boot_flashvar_init(boot_ftl_var_t* p_var, uint32_t start, uint32_t end)
+static int32_t boot_flashvar_init(boot_flashvar_t* p_var, uint32_t start, uint32_t end)
 {
     ASSERT(p_var);
     const boot_flash_handle_t* p_flash = boot_flash_handle_get(start);
@@ -117,50 +168,50 @@ static int32_t boot_flashvar_init(boot_ftl_var_t* p_var, uint32_t start, uint32_
         return (-ERROR_CODE_INVALID_PARAM);
     }
     
-    htd_memset(p_var, 0, sizeof(boot_ftl_var_t));
+    htd_memset(p_var, 0, sizeof(boot_flashvar_t));
     p_var->p_flash = p_flash;
-    p_var->init_flag = m_flashvar_init_flag;
     p_var->var_addr = FLASHVAR_INVALID_ADDR;
     p_var->start = start;
     p_var->end = end;
     p_var->erase_unit = erase_unit;
     flashvar_data_check(p_var);
+    p_var->init_flag = m_flashvar_init_flag;
     print_debug("====>var init finish. p_flash=%p, var_addr=%08x, start=%08x, end=%08x", p_flash, p_var->var_addr, start, end);
     return ERROR_CODE_SUCCESS;
 }
 
 // @brief 去初始化
-static int32_t boot_flashvar_deinit(boot_ftl_var_t* p_var)
+static int32_t boot_flashvar_deinit(boot_flashvar_t* p_var)
 {
     if (p_var) {
-        htd_memset(p_var, 0, sizeof(boot_ftl_var_t));
+        htd_memset(p_var, 0, sizeof(boot_flashvar_t));
     }
     return ERROR_CODE_SUCCESS;
 }
 
 // @brief 判断是否已经初始化
-static bool boot_flashvar_is_init(boot_ftl_var_t* p_var)
+static bool boot_flashvar_is_init(boot_flashvar_t* p_var)
 {
     return (p_var->init_flag == m_flashvar_init_flag);
 }
 
-// @brief 更新变量值
-static int32_t boot_flashvar_set(boot_ftl_var_t* p_var, const void* p_buff, uint16_t buff_len)
+// @brief 更新变量值, 成功返回写入的数据长度，失败返回对应的错误码(负值)
+int32_t boot_flashvar_set(boot_flashvar_t* p_var, const void* p_buff, uint16_t buff_len)
 {
     ASSERT(p_var);
     ASSERT(p_var->init_flag == m_flashvar_init_flag);
-    ASSERT(p_buff && buff_len > 0);
-    ASSERT(buff_len + sizeof(flashvar_head_t) <= BOOT_FLASHVAR_MAX_SIZE);
-    
-    uint32_t addr = p_var->var_addr;
-    if (p_var->var_len) {
-        addr += sizeof(flashvar_head_t) + FLASHVAR_ALIGN(p_var->var_len);
-        if (addr >= p_var->end) {
-            addr = p_var->start;
-        } 
+    ASSERT(p_buff);
+    if (p_buff == NULL || buff_len == 0 || buff_len + sizeof(flashvar_head_t) > BOOT_FLASHVAR_MAX_SIZE) {
+        return ERROR_CODE_INVALID_PARAM;
     }
-
+    
+    const boot_flash_handle_t* p_flash = p_var->p_flash;
+    uint32_t addr = p_var->var_waddr;
+    if (addr < p_var->start || addr >= p_var->end) {
+        addr = p_var->start;                        // 越界(整片写满)时从头开始
+    }
     uint16_t align_len = FLASHVAR_ALIGN(buff_len);
+    // 当前页已经不够写，跳到下一页
     uint16_t remained_len = boot_flash_page_remain_len(addr, p_var->erase_unit);
     if (remained_len < align_len + sizeof(flashvar_head_t)) {
         addr += remained_len;
@@ -169,62 +220,77 @@ static int32_t boot_flashvar_set(boot_ftl_var_t* p_var, const void* p_buff, uint
         }
     }
 
-    // 擦除
+    // 擦除内存页
     if (ERASE_ADDR(addr, p_var->erase_unit) != ERASE_ADDR(p_var->var_addr, p_var->erase_unit)) {
-        boot_flash_erase(p_var->p_flash, ERASE_ADDR(addr, p_var->erase_unit), p_var->erase_unit);
+        boot_flash_erase(p_flash, ERASE_ADDR(addr, p_var->erase_unit), p_var->erase_unit);
     }
-    
-    // 写入头部数据
+
     uint8_t data[BOOT_FLASHVAR_MAX_SIZE];
-    flashvar_head_t head;
-    head.magic = FLASHVAR_MAGIC;
-    head.crc = boot_checksum_get(p_buff, buff_len);
-    head.len = buff_len;
-    head.index = p_var->index + 1;
-    htd_memcpy(data, &head, sizeof(flashvar_head_t));
+    flashvar_head_t* p_head = (flashvar_head_t*)data;
+    // 写入头部数据
+    htd_memset(data, 0xff, sizeof(data));
+    p_head->magic = FLASHVAR_MAGIC;
+    p_head->crc = boot_checksum_get(p_buff, buff_len);
+    p_head->len = buff_len;
+    p_head->index = p_var->index + 1;
     htd_memcpy(&data[sizeof(flashvar_head_t)], p_buff, buff_len);
-    
     // 写入数据
-    int32_t ret = boot_flash_write(p_var->p_flash, addr, data, buff_len + sizeof(flashvar_head_t));
-    if (ret != buff_len + sizeof(flashvar_head_t)) {
+    int32_t ret = boot_flash_write(p_flash, addr, data, sizeof(flashvar_head_t) + align_len);
+    if (ret != ERROR_CODE_SUCCESS) {
         print_error("hal flash write failed. ret=%d, addr=0x%08x", ret, addr);
         return ret;
     }
     p_var->index++;
     p_var->var_len = buff_len;
-    print_debug("addr=0x%08x->0x%08x, var_len=%d, index=%u", addr, p_var->var_addr, p_var->var_len, head.index);
     p_var->var_addr = addr;
-    return ret;
+    // 下次可写地址
+    addr += sizeof(flashvar_head_t) + align_len;
+    if (addr >= p_var->end) {
+        addr = p_var->start;
+    } 
+    p_var->var_waddr = addr;
+    //print_debug("addr=0x%08x->0x%08x, var_len=%d, index=%u", addr, p_var->var_addr, p_var->var_len, head.index);
+    return p_var->var_len;
 }
 
-// @brief 读取变量值, 返回读取到的数据长度
-static int32_t boot_flashvar_get(boot_ftl_var_t* p_var, void* p_buff, uint16_t buff_size)
+// @brief 读取变量值, 成功返回读取到的数据长度，失败返回对应的错误码(负值)
+int32_t boot_flashvar_get(boot_flashvar_t* p_var, void* p_buff, uint16_t buff_size)
 {
     ASSERT(p_var);
     ASSERT(p_var->init_flag == m_flashvar_init_flag);
     ASSERT(p_buff && buff_size > 0);
     
     // 没有数据
-    if (p_var->var_len == 0 || p_var->var_len > buff_size) {
-        print_error("ftl var not find. var_len=%d, start=%08x", p_var->var_len, p_var->start);
-        return (-ERROR_CODE_NOT_FOUND);
+    if (p_var->var_len == 0) {
+        print_error("flash var not find. var_len=%d, start=%08x", p_var->var_len, p_var->start);
+        return ERROR_CODE_NOT_FOUND;
+    }
+    if (p_var->var_len > buff_size) {
+        print_error("flash var buffer too small. var_len=%d->%d", p_var->var_len, buff_size);
+        return ERROR_CODE_INVALID_PARAM;
     }
     
-    // 读取头部数据
     flashvar_head_t head;
     uint32_t addr = p_var->var_addr;
-    boot_flash_read(p_var->p_flash, addr, (uint8_t*)&head, sizeof(flashvar_head_t));
+    const boot_flash_handle_t* p_flash = p_var->p_flash;
+    
+    // 读取头部数据
+    boot_flash_read(p_flash, addr, (uint8_t*)&head, sizeof(flashvar_head_t));
     if (head.magic != FLASHVAR_MAGIC || head.len != p_var->var_len) {
         print_error("flash read failed. var_len=%d->%d", p_var->var_len, head.len);
-        return (-ERROR_CODE_INVALID_DATA);
+        return ERROR_CODE_INVALID_DATA;
+        
     }
+    addr += sizeof(flashvar_head_t);
     
     // 读取数据内容
-    boot_flash_read(p_var->p_flash, addr+sizeof(flashvar_head_t), p_buff, head.len);
-    if (head.crc != boot_checksum_get(p_buff, head.len)) {
+    uint8_t data[BOOT_FLASHVAR_MAX_SIZE];
+    boot_flash_read(p_flash, addr, data, FLASHVAR_ALIGN(head.len));
+    if (head.crc != boot_checksum_get(data, head.len)) {
         print_error("flash read failed. head.len=%d, crc=%d, var_len=%d, addr=%u", head.len, head.crc, p_var->var_len, addr);
-        return (-ERROR_CODE_INVALID_DATA);
+        return ERROR_CODE_INVALID_DATA;
     }
+    htd_memcpy(p_buff, data, head.len);
     //print_debug("read data. addr=%08x, buff_size=%d, len=%d", addr, buff_size, head.len);
     return head.len;
 }
@@ -232,7 +298,7 @@ static int32_t boot_flashvar_get(boot_ftl_var_t* p_var, void* p_buff, uint16_t b
 
 
 //////////////////////////////////////////////////////////////////////
-static boot_ftl_var_t m_ftl_var_boot_config;
+static boot_flashvar_t m_ftl_var_boot_config;
 static boot_info_t m_boot_info;
 
 

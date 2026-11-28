@@ -52,7 +52,8 @@ uint32_t htd_wkup_timer_ms_set(uint32_t time_ms)
     sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_NONE;
     // 关闭原有闹钟，重新配置并开启闹钟中断
     if (HAL_RTC_SetAlarm_IT(m_rtc_ref, &sAlarm, RTC_FORMAT_BIN) != HAL_OK) {
-        Error_Handler();
+        print_error("set alarm failed.");
+        ASSERT(0);
     }
     return now_ticks;
 }

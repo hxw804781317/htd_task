@@ -151,6 +151,8 @@ void htd_sem_unlock(htd_sem_lock_t* p_sem_lock)
 
 
 /////////////////////////////////互斥锁/////////////////////////////////////
+static htd_mutex_lock_t m_mutex_lock;
+
 // @brief 初始化互斥锁
 bool htd_mutex_lock_init(htd_mutex_lock_t* p_lock, const char* p_name)
 {

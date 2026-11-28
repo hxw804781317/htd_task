@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Daven <804781317@qq.com>
+// SPDX-License-Identifier: MIT
 #ifndef _HTD_6AXIS_DEV_H_
 #define _HTD_6AXIS_DEV_H_
 

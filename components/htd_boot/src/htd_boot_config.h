@@ -49,13 +49,14 @@ typedef struct {
 typedef struct {
     uint32_t init_flag;                 // 初始化标志
     uint32_t index;
+    uint32_t var_waddr;
     uint32_t var_addr;                  // 最后写入的地址
     uint16_t var_len;                   // 最后参数大小
     uint32_t erase_unit;
     uint32_t start;
     uint32_t end;
     const boot_flash_handle_t* p_flash;
-}boot_ftl_var_t;
+}boot_flashvar_t;
 
 
 // @brief 初始化 boot 配置信息，成功返回 true

@@ -76,6 +76,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\components\htd_console\htd_console_history.c">
+      <ObjectFileName>$(IntDir)kernel\components\htd_console\</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="..\..\..\components\htd_console\htd_console_printf_fmt.c">
       <ObjectFileName>$(IntDir)kernel\components\htd_console\</ObjectFileName>
     </ClCompile>
@@ -83,9 +86,6 @@
       <ObjectFileName>$(IntDir)kernel\components\htd_console\</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\..\..\components\htd_console\htd_console_process.c">
-      <ObjectFileName>$(IntDir)kernel\components\htd_console\</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\..\..\components\htd_console\htd_console_history.c">
       <ObjectFileName>$(IntDir)kernel\components\htd_console\</ObjectFileName>
     </ClCompile>
   </ItemGroup>
@@ -182,19 +182,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\components\htd_elfdl\arch\htd_elfdl_arch_x86.c">
-      <ObjectFileName>$(IntDir)kernel\components\htd_elfdl\arch\</ObjectFileName>
+    <ClCompile Include="..\..\..\components\htd_elfdl\htd_elfdl_process.c">
+      <ObjectFileName>$(IntDir)kernel\components\htd_elfdl\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\..\components\htd_elfdl\htd_elfdl_dev.c">
+      <ObjectFileName>$(IntDir)kernel\components\htd_elfdl\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\..\components\htd_elfdl\htd_elfdl_dev_simulator.c">
+      <ObjectFileName>$(IntDir)kernel\components\htd_elfdl\</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\..\..\components\htd_elfdl\htd_elfdl_parse.c">
-      <ObjectFileName>$(IntDir)kernel\components\htd_elfdl\</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\..\..\components\htd_elfdl\htd_elfdl_dev_ram.c">
-      <ObjectFileName>$(IntDir)kernel\components\htd_elfdl\</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\..\..\components\htd_elfdl\htd_elfdl_dev_xip.c">
-      <ObjectFileName>$(IntDir)kernel\components\htd_elfdl\</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\..\..\components\htd_elfdl\htd_elfdl_process.c">
       <ObjectFileName>$(IntDir)kernel\components\htd_elfdl\</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\..\..\components\htd_elfdl\arch\htd_elfdl_arch_arm.c">
@@ -203,24 +200,24 @@
     <ClCompile Include="..\..\..\components\htd_elfdl\arch\htd_elfdl_arch_riscv.c">
       <ObjectFileName>$(IntDir)kernel\components\htd_elfdl\arch\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\components\htd_elfdl\htd_elfdl_dev_simulator.c">
+    <ClCompile Include="..\..\..\components\htd_elfdl\htd_elfdl_dev_xip.c">
       <ObjectFileName>$(IntDir)kernel\components\htd_elfdl\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\components\htd_elfdl\htd_elfdl_dev.c">
+    <ClCompile Include="..\..\..\components\htd_elfdl\htd_elfdl_dev_ram.c">
       <ObjectFileName>$(IntDir)kernel\components\htd_elfdl\</ObjectFileName>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\components\htd_flash\htd_flash_common.c">
-      <ObjectFileName>$(IntDir)kernel\components\htd_flash\</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\..\..\components\htd_flash\htd_flash_var.c">
+    <ClCompile Include="..\..\..\components\htd_flash\htd_flash_log.c">
       <ObjectFileName>$(IntDir)kernel\components\htd_flash\</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\..\..\components\htd_flash\htd_flash_kv.c">
       <ObjectFileName>$(IntDir)kernel\components\htd_flash\</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\components\htd_flash\htd_flash_log.c">
+    <ClCompile Include="..\..\..\components\htd_flash\htd_flash_var.c">
+      <ObjectFileName>$(IntDir)kernel\components\htd_flash\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\..\components\htd_flash\htd_flash_common.c">
       <ObjectFileName>$(IntDir)kernel\components\htd_flash\</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\..\..\components\htd_flash\htd_flash_box.c">
@@ -322,17 +319,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\components\htd_vfs\lib\dhara\dhara\journal.c">
-      <ObjectFileName>$(IntDir)kernel\components\htd_vfs\lib\dhara\dhara\</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="..\..\..\components\htd_vfs\lib\dhara\dhara\map.c">
-      <ObjectFileName>$(IntDir)kernel\components\htd_vfs\lib\dhara\dhara\</ObjectFileName>
-    </ClCompile>
     <ClCompile Include="..\..\..\components\htd_vfs\lib\dhara\dhara\error.c">
       <ObjectFileName>$(IntDir)kernel\components\htd_vfs\lib\dhara\dhara\</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\..\..\components\htd_vfs\lib\dhara\dhara_port.c">
       <ObjectFileName>$(IntDir)kernel\components\htd_vfs\lib\dhara\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\..\components\htd_vfs\lib\dhara\dhara\map.c">
+      <ObjectFileName>$(IntDir)kernel\components\htd_vfs\lib\dhara\dhara\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\..\components\htd_vfs\lib\dhara\dhara\journal.c">
+      <ObjectFileName>$(IntDir)kernel\components\htd_vfs\lib\dhara\dhara\</ObjectFileName>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
