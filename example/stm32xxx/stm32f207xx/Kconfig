@@ -1,0 +1,22 @@
+mainmenu "Configuration"
+config SOC_FAMILY_STM32
+    bool 
+    default n
+config SOC_SERIES_STM32F2
+    bool
+    default n
+config SOC_SERIES_STM32F207XX
+    bool
+    default n
+    
+config SOC_STM32F207XC
+    bool
+    select SOC_FAMILY_STM32
+    select SOC_SERIES_STM32F2
+    select SOC_SERIES_STM32F207XX
+    select ARCH_ARM_CORTEX_M3
+    default y
+
+rsource "../../../Kconfig"
+rsource "../../../mcu_sdk/stm32fxxx/stm32f207.Kconfig"
+
