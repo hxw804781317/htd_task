@@ -1,0 +1,32 @@
+from building import *
+import os
+
+cwd = GetCurrentDir()
+src = []
+CPPPATH = [cwd]
+
+# STM32F722xx 
+# STM32F723xx
+# STM32F730xx
+# STM32F732xx
+# STM32F733xx
+# STM32F746xx
+# STM32F745xx
+# STM32F750xx
+# STM32F756xx
+# STM32F765xx
+# STM32F767xx
+# STM32F769xx
+# STM32F777xx
+# STM32F779xx
+CPPDEFINES = ['STM32F730xx']
+
+src = Glob('*.c')
+src += Glob('startup_stm32f730xx.s');
+
+group = DefineGroup('stm32f7xx', src, depend = [''], CPPPATH = CPPPATH, CPPDEFINES = CPPDEFINES)
+list = os.listdir(cwd)
+for item in list:
+    if os.path.isfile(os.path.join(cwd, item, 'SConscript')):
+        group = group + SConscript(os.path.join(item, 'SConscript'))
+Return('group')

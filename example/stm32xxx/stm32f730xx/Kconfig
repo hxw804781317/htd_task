@@ -1,0 +1,23 @@
+mainmenu "Configuration"
+config SOC_FAMILY_STM32
+    bool 
+    default n
+config SOC_SERIES_STM32F7
+    bool
+    default n
+config SOC_SERIES_STM32F730XX
+    bool
+    default n
+    
+config SOC_STM32F730X8
+    bool
+    select SOC_FAMILY_STM32
+    select SOC_SERIES_STM32F7
+    select SOC_SERIES_STM32F730XX
+    select ARCH_ARM_CORTEX_M7
+    select ARCH_ARM_CORTEX_FPU
+    default y
+
+rsource "../../../Kconfig"
+rsource "../../../mcu_sdk/stm32fxxx/stm32f730.Kconfig"
+
